@@ -18,7 +18,7 @@
                                             <div class="row g-3 mb-0 align-items-center">
 
                                                 <div class="col-auto">
-                                                    <a href="{{ route('dashboard.produits') }}" type="button" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Ajouter un produit</a>
+                                                    <a href="#" type="button" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Ajouter un produit</a>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-auto">
@@ -71,18 +71,18 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 overflow-hidden">
-                                             <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Commandes</p>
+                                             <p class="text-uppercase fw-medium text-muted text-truncate mb-0">reservations</p>
                                             </div>
                                             <div class="flex-shrink-0">
                                                 <h5 class="text-danger fs-14 mb-0">
-                                                    <i class="ri-arrow-right-down-line fs-13 align-middle"></i> @if($total_order) {{ App\Models\Commande::whereMonth('created_at', date('m'))->whereYear('created_at', date('Y'))->count() * 100 / $total_order}} @else 0 @endif%
+                                                    <i class="ri-arrow-right-down-line fs-13 align-middle"></i> @if($total_order) {{ App\Models\Reservation::whereMonth('created_at', date('m'))->whereYear('created_at', date('Y'))->count() * 100 / $total_order}} @else 0 @endif%
                                                 </h5>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$total_order}}">{{ $total_order }}</span></h4>
-                                                <a href="{{ route('dashboard.orders') }}" class="text-decoration-underline">View les commandes</a>
+                                                <a href="#" class="text-decoration-underline">View les reservations</a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-soft-info rounded fs-3">
@@ -129,7 +129,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 overflow-hidden">
-                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Produits</p>
+                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Services</p>
                                             </div>
                                             <div class="flex-shrink-0">
                                                 <h5 class="text-muted fs-14 mb-0">
@@ -139,8 +139,8 @@
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
-                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$total_produits}}">0</span> </h4>
-                                                <a href="{{ route('dashboard.produits') }}" class="text-decoration-underline">afficher plus</a>
+                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$total_Services}}">0</span> </h4>
+                                                <a href="#" class="text-decoration-underline">afficher plus</a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-soft-primary rounded fs-3">
@@ -174,7 +174,7 @@
                             <div class="col-xl-4">
                                 <div class="card card-height-100">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Produits Vendus</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Services Vendus</h4>
                                         <div class="flex-shrink-0">
                                             <div class="dropdown card-header-dropdown">
                                                 <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -201,15 +201,15 @@
                             <div class="col-xl-6">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Produits récents                                   </h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Services récents                                   </h4>
                                     </div><!-- end card header -->
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
                                             <table class="table table-hover table-centered align-middle table-nowrap mb-0">
                                                 <tbody>
-                                                    @if($list_produits && count($list_produits) > 0)
-                                                        @foreach($list_produits as $produit)
+                                                    @if($list_Services && count($list_Services) > 0)
+                                                        @foreach($list_Services as $produit)
                                                         <tr>
                                                             <td>
                                                                 <div class="d-flex align-items-center">
@@ -217,7 +217,7 @@
                                                                         <img src="{{ json_decode($produit->images)[0] }}" alt="" class="img-fluid d-block" />
                                                                     </div>
                                                                     <div>
-                                                                        <h5 class="fs-14 my-1"><a href="{{ route('dashboard.produits.show', $produit->slug) }}" class="text-reset">{{ Illuminate\Support\Str::limit($produit->libelle, 25,'...') }}</a></h5>
+                                                                        <h5 class="fs-14 my-1"><a href="{{ route('dashboard.Services.show', $produit->slug) }}" class="text-reset">{{ Illuminate\Support\Str::limit($produit->libelle, 25,'...') }}</a></h5>
                                                                         <span class="text-muted">{{ $produit->categorie?->libelle }}</span>
                                                                     </div>
                                                                 </div>
@@ -232,7 +232,7 @@
                                                             </td>
                                                             <td>
                                                                 <h5 class="fs-14 my-1 fw-normal">62</h5>
-                                                                <span class="text-muted">commandes</span>
+                                                                <span class="text-muted">reservations</span>
                                                             </td>
                                                             <td>
                                                                 <h5 class="fs-14 my-1 fw-normal">{{ $produit->stock }}</h5>
@@ -318,7 +318,7 @@
                             <div class="col-xl-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Commandes récentes </h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">reservations récentes </h4>
                                         <div class="flex-shrink-0">
                                             <button type="button" class="btn btn-soft-info btn-sm">
                                                 <i class="ri-file-list-3-line align-middle"></i>  Report
@@ -333,15 +333,15 @@
                                                     <tr>
                                                         <th scope="col">références</th>
                                                         <th scope="col">utilisateurs</th>
-                                                        <th scope="col">Produits</th>
+                                                        <th scope="col">Services</th>
                                                         <th scope="col">Montant</th>
                                                         <th scope="col">Status</th>
                                                         <th scope="col">Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @if($list_commandes && count($list_commandes) > 0)
-                                                    @foreach($list_commandes as $order)
+                                                    @if($list_Reservations && count($list_Reservations) > 0)
+                                                    @foreach($list_Reservations as $order)
                                                     <tr>
                                                         <td>
                                                             <a href="{{ route('dashboard.orders.show', $order->slug) }}" class="fw-medium link-primary">#{{Illuminate\Support\Str::limit($order->reference, 20)}}</a>

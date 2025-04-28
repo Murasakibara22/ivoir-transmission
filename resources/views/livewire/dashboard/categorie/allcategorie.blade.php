@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">CATEGORIES DE produits</h4>
+                        <h4 class="mb-sm-0">CATEGORIES DE Services</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -51,7 +51,7 @@
                 <div class="col-xl-6 col-md-6">
                     <!-- card -->
                     <div class="card card-animate">
-                        <a href="{{route('dashboard.produits')}}" class="card-body bg-secondary shadow">
+                        <a href="#" class="card-body bg-secondary shadow">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1 overflow-hidden">
                                  <p class="text-uppercase fw-medium text-truncate mb-0 text-white">Tous les produits</p>
@@ -60,7 +60,7 @@
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4 text-white"><span>{{ App\Models\Produit::count() }}</span></h4>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4 text-white"><span>{{ App\Models\Service::count() }}</span></h4>
                                 </div>
                                 <div class="avatar-sm flex-shrink-0">
                                     <span class="avatar-title bg-success rounded fs-3">
@@ -102,7 +102,7 @@
                                                     <th scope="col">logo</th>
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Description</th>
-                                                    <th scope="col">produits</th>
+                                                    <th scope="col">Services</th>
                                                     <th scope="col">Date d'ajout</th>
                                                     <th scope="col" style="width: 150px;">Action</th>
                                                 </tr>
@@ -126,7 +126,7 @@
 
 
                                                     <td>
-                                                        <button class="btn btn-sm btn-light" wire:click="showServiceCategorie({{ $item->id }})"><i class="ri-eye-fill align-bottom me-1"> </i> {{ $item->produits->count() }}</button>
+                                                        <button class="btn btn-sm btn-light" wire:click="showServiceCategorieService({{ $item->id }})"><i class="ri-eye-fill align-bottom me-1"> </i> {{ $item->produits->count() }}</button>
                                                     </td>
                                                     <td>
                                                         {{ $item->created_at->format('d-m-Y') }}
@@ -251,8 +251,8 @@
                     <form wire:submit.prevent='updateCategorie'>
                         <div class="row">
                             <div class="col-12">
-                                <img class="image icon-shape icon-xxxl bg-light rounded-4" @if (!is_null($Aslogo)) src="{{ $Aslogo->temporaryUrl() }}" @elseif(!is_null(App\Models\Categorie::find($idCategorie)))
-                                src="{{ App\Models\Categorie::find($idCategorie)->logo }}"
+                                <img class="image icon-shape icon-xxxl bg-light rounded-4" @if (!is_null($Aslogo)) src="{{ $Aslogo->temporaryUrl() }}" @elseif(!is_null(App\Models\CategorieService::find($idCategorieService)))
+                                src="{{ App\Models\CategorieService::find($idCategorieService)->logo }}"
                                 @else
                                 src="../Backend/images"
                                 @endif alt="logo categorie"  style="height: 150px ; width: 150px"/>
@@ -298,7 +298,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div wire:ignore.self class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="show_service_categorie" aria-hidden="true">
+    <div wire:ignore.self class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="show_service_CategorieService" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header p-3 bg-light">
@@ -378,7 +378,7 @@
                             <tfoot class="table-light">
                                 <tr>
                                     <td colspan="6">
-                                        <a href="{{ route('dashboard.produits') }}">Voir plus </a>
+                                        <a href="#">Voir plus </a>
                                     </td>
                                 </tr>
                             </tfoot>

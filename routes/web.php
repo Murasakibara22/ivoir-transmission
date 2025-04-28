@@ -57,7 +57,14 @@ Route::group(['middleware' => 'auth'], function () {
                 return view('Dashboard.pages.paiement.show', compact('paiement'));
              })->name('paiements.show');
             Route::view('avis','Dashboard.pages.avis.index')->name('avis');
+            Route::view('etat_financiers','Dashboard.pages.finance.index')->name('finance');
 
         });
     });
 });
+
+
+Route::get('/deconnexion', function () {
+    auth()->logout();
+    return redirect('/');
+})->name('deconnexion');

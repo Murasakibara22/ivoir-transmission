@@ -6,12 +6,12 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>OUKALE | @stack('title')</title>
+    <title>IVOIRE TRANSMISSION | @stack('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Tableau de bord OUKALE" name="description" />
+    <meta content="Tableau de bord IVOIRE TRANSMISSION" name="description" />
     <meta content="joackim_clby" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('icologOukale.jpg')}}">
+    <link rel="shortcut icon" href="{{ asset('icologIVOIRE TRANSMISSION.jpg')}}">
 
     <!-- Layout config Js -->
     <script src="{{ asset('assets/js/layout.js') }}"></script>

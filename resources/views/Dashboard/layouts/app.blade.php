@@ -2,39 +2,39 @@
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
 
 
-<!-- Mirrored from themesbrand.com/TWINS'S Hair/html/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 23 Jun 2023 15:30:56 GMT -->
+<!-- Mirrored from themesbrand.com/IVOIRE TRANSMISSION/html/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 23 Jun 2023 15:30:56 GMT -->
 <head>
 
     <meta charset="utf-8" />
-    <title>Dashboard | TWINS'S Hair - @stack('title') </title>
+    <title>Dashboard | IVOIRE TRANSMISSION - @stack('title') </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Language" content="fr-FR">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- SEO Général -->
-    <meta name="description" content="Tableau de bord de gestion de TWIN'S HAIR. Suivez les ventes, les commandes, les stocks et optimisez la gestion de votre boutique de mèches en Côte d'Ivoire.">
-    <meta name="keywords" content="tableau de bord, gestion boutique, administration, suivi des ventes, commandes, stocks, Twin's Hair, Côte d'Ivoire">
-    <meta name="author" content="TWIN'S HAIR">
-    <meta name="copyright" content="by TWIN'S HAIR">
+    <meta name="description" content="Tableau de bord de gestion de IVOIRE TRANSMISSION. Suivez les ventes, les commandes, les stocks et optimisez la gestion de votre boutique de mèches en Côte d'Ivoire.">
+    <meta name="keywords" content="tableau de bord, gestion boutique, administration, suivi des ventes, commandes, stocks, IVOIRE TRANSMISSION, Côte d'Ivoire">
+    <meta name="author" content="IVOIRE TRANSMISSION">
+    <meta name="copyright" content="by IVOIRE TRANSMISSION">
     <meta name="robots" content="noindex, nofollow">
-    <meta name="generator" content="TWIN'S HAIR">
+    <meta name="generator" content="IVOIRE TRANSMISSION">
 
     <!-- Open Graph (Facebook, WhatsApp) -->
     <meta property="og:type" content="website">
     <meta property="og:locale" content="fr-FR">
-    <meta property="og:site_name" content="TWIN'S HAIR - Tableau de Bord">
-    <meta property="og:title" content="TWIN'S HAIR - Tableau de Bord Administratif">
-    <meta property="og:description" content="Gérez facilement les ventes, les commandes et les stocks de votre boutique TWIN'S HAIR. Interface intuitive pour optimiser la gestion de votre commerce.">
+    <meta property="og:site_name" content="IVOIRE TRANSMISSION - Tableau de Bord">
+    <meta property="og:title" content="IVOIRE TRANSMISSION - Tableau de Bord Administratif">
+    <meta property="og:description" content="Gérez facilement les ventes, les commandes et les stocks de votre boutique IVOIRE TRANSMISSION. Interface intuitive pour optimiser la gestion de votre commerce.">
     <meta property="og:url" content="https://twinshair-ci.com/dashboard/home">
     <meta property="og:image" content="https://twinshair-ci.com/public/frontend/assets/logo.jpeg">
-    <meta property="og:image:alt" content="TWIN'S HAIR - Interface de Gestion">
+    <meta property="og:image:alt" content="IVOIRE TRANSMISSION - Interface de Gestion">
     <meta property="og:country-name" content="Côte d'Ivoire">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="TWIN'S HAIR - Tableau de Bord">
-    <meta name="twitter:description" content="Accédez au tableau de bord de gestion de votre boutique TWIN'S HAIR et optimisez vos ventes en Côte d'Ivoire.">
+    <meta name="twitter:title" content="IVOIRE TRANSMISSION - Tableau de Bord">
+    <meta name="twitter:description" content="Accédez au tableau de bord de gestion de votre boutique IVOIRE TRANSMISSION et optimisez vos ventes en Côte d'Ivoire.">
     <meta name="twitter:image" content="https://twinshair-ci.com/images/dashboard.jpg">
     <meta name="twitter:site" content="@TwinsHairCI">
 

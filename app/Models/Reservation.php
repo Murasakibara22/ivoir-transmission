@@ -11,6 +11,14 @@ class Reservation extends Model
 {
     use HasFactory;
 
+    CONST PENDING = "en attente";
+    CONST CANCELED = "ANNULER";
+    CONST COMPLETED = "TERMINEE";
+    CONST VALIDATE = "VALIDEE";
+    CONST SUCCESSFUL = "SUCCESSFUL";
+    CONST NOT_PAID = "NOT_PAID";
+    CONST INITIATED = "INITIATED";
+
     protected $fillable = [
         'montant',
         'status',

@@ -1,6 +1,7 @@
 <?php
 use Livewire\Volt\Component;
-use App\Models\Admin;
+use App\Models\User;
+use App\Models\Role;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -26,10 +27,11 @@ new Class extends Component {
                 'email.string' => 'Email n\'est pas valide',
             ]);
 
+
             if($this->email){
-                $user = Admin::where('deleted_at', null)->where('email', $this->email)->first();
+                $user = User::where('email', $this->email)->first();
             }elseif($this->phone){
-                $user = Admin::where('deleted_at', null)->where('phone', $this->phone)->first();
+                $user = User::where('phone', $this->phone)->first();
             }
 
             if(!$user){
@@ -39,9 +41,9 @@ new Class extends Component {
 
             if (auth('web')->attempt(['email' => $this->email, 'password' => $this->password])) {
                 // Log
-                ActivityLog("Connexion via email et mot de passe", "Admin");
+                // ActivityLog("Connexion via email et mot de passe", "Admin");
 
-                return  redirect(RouteServiceProvider::HOME);
+                return  redirect()->route('dashboard.home');
             }else{
                 $this->messageError = "Les informations que vous avez entrez ne correspondent pas !!";
             }

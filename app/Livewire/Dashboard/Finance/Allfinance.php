@@ -3,7 +3,7 @@
 namespace App\Livewire\Dashboard\Finance;
 
 use Livewire\Component;
-use App\Models\Commande;
+use App\Models\Reservation;
 use App\Livewire\UtilsSweetAlert;
 
 class Allfinance extends Component
@@ -21,7 +21,7 @@ class Allfinance extends Component
 
 
     public function mount() {
-        $this->list_commandes = Commande::where('status', Commande::COMPLETED)->get();
+        $this->list_commandes = Reservation::where('status', Reservation::COMPLETED)->get();
         $this->getStatsGains();
 
         $this->getNumberPaymentPendingByMonth();
@@ -34,18 +34,18 @@ class Allfinance extends Component
     public function getStatsGains($year = null) {
         $year = $year ?? now()->year; // Définit l'année actuelle par défaut si aucun paramètre n'est envoyé
 
-        $this->gains_total = Commande::whereYear('created_at', $year)->sum('montant');
-        $this->gains_a_avoir = Commande::whereYear('created_at', $year)
-            ->where('status', Commande::VALIDATE)
+        $this->gains_total = Reservation::whereYear('created_at', $year)->sum('montant');
+        $this->gains_a_avoir = Reservation::whereYear('created_at', $year)
+            ->where('status', Reservation::VALIDATE)
             ->sum('montant');
-        $this->gains_perdu = Commande::whereYear('created_at', $year)
-            ->where('status', Commande::CANCELED)
+        $this->gains_perdu = Reservation::whereYear('created_at', $year)
+            ->where('status', Reservation::CANCELED)
             ->sum('montant');
-        $this->gains_en_attente = Commande::whereYear('created_at', $year)
-            ->where('status', Commande::PENDING)
+        $this->gains_en_attente = Reservation::whereYear('created_at', $year)
+            ->where('status', Reservation::PENDING)
             ->sum('montant');
-        $this->gains_obtenu = Commande::whereYear('created_at', $year)
-            ->where('status', Commande::COMPLETED)
+        $this->gains_obtenu = Reservation::whereYear('created_at', $year)
+            ->where('status', Reservation::COMPLETED)
             ->sum('montant');
 
     }
@@ -81,7 +81,7 @@ class Allfinance extends Component
 
         $this->stats_by_month_pending = collect($months)->mapWithKeys(function ($monthNumber, $monthName) use ($year) {
             return [
-                $monthName => Commande::where('status', Commande::PENDING)
+                $monthName => Reservation::where('status', Reservation::PENDING)
                     ->whereMonth('created_at', $monthNumber)
                     ->whereYear('created_at', $year)
                     ->sum('montant')
@@ -101,7 +101,7 @@ class Allfinance extends Component
 
         $this->stats_by_month_effectuer = collect($months)->mapWithKeys(function ($monthNumber, $monthName) use ($year) {
             return [
-                $monthName => Commande::where('status', Commande::COMPLETED)
+                $monthName => Reservation::where('status', Reservation::COMPLETED)
                     ->whereMonth('created_at', $monthNumber)
                     ->whereYear('created_at', $year)
                     ->sum('montant')
@@ -121,7 +121,7 @@ class Allfinance extends Component
 
         $this->stats_by_all_month = collect($months)->mapWithKeys(function ($monthNumber, $monthName) use ($year) {
             return [
-                $monthName => Commande::whereMonth('created_at', $monthNumber)
+                $monthName => Reservation::whereMonth('created_at', $monthNumber)
                     ->whereYear('created_at', $year)
                     ->sum('montant')
             ];

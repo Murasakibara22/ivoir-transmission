@@ -214,11 +214,11 @@
                                                             <td>
                                                                 <div class="d-flex align-items-center">
                                                                     <div class="avatar-sm bg-light rounded p-1 me-2">
-                                                                        <img src="{{ json_decode($produit->images)[0] }}" alt="" class="img-fluid d-block" />
+                                                                        <img src="" alt="" class="img-fluid d-block" />
                                                                     </div>
                                                                     <div>
-                                                                        <h5 class="fs-14 my-1"><a href="{{ route('dashboard.Services.show', $produit->slug) }}" class="text-reset">{{ Illuminate\Support\Str::limit($produit->libelle, 25,'...') }}</a></h5>
-                                                                        <span class="text-muted">{{ $produit->categorie?->libelle }}</span>
+                                                                        <h5 class="fs-14 my-1"><a href="" class="text-reset">{{ Illuminate\Support\Str::limit($produit->libelle, 25,'...') }}</a></h5>
+                                                                        <span class="text-muted">dsjfsgj</span>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -354,7 +354,7 @@
                                                                 <div class="flex-grow-1">{{$order->user->username}}</div>
                                                             </div>
                                                         </td>
-                                                        <td>{{$order->produit()->count()}}</td>
+                                                        <td>iwhssd</td>
                                                         <td>
                                                             <span class="text-success">{{number_format($order->montant, 0, ',', '.')}} fcfa</span>
                                                         </td>

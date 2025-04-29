@@ -37,19 +37,19 @@
                     </a>
                 </li> <!-- end Dashboard Menu -->
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#" role="button">
+                    <a class="nav-link menu-link   {{ Route::currentRouteName() == 'dashboard.reservations' ? 'active' : '' }}" href="{{ route('dashboard.reservations') }}" role="button">
                         <i class="ri-order-play-line"></i> <span data-key="t-dashboards">Réservations</span>
                     </a>
                 </li> <!-- end Dashboard Menu -->
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#" role="button">
+                    <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.paiements' ? 'active' : '' }}" href="{{ route('dashboard.paiements') }}" role="button">
                         <i class="ri-wallet-2-line"></i> <span data-key="t-dashboards">Paiements</span>
                     </a>
                 </li> <!-- end Dashboard Menu -->
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link " href="#" role="button">
+                    <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.finance' ? 'active' : '' }}" href="{{ route('dashboard.finance') }}"  role="button">
                         <i class="ri-bank-card-2-line"></i> <span data-key="t-dashboards">États financiers</span>
                     </a>
                 </li> <!-- end Dashboard Menu -->
@@ -69,7 +69,7 @@
                 </li> <!-- end Dashboard Menu --> --}}
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link " href="#" role="button">
+                    <a class="nav-link menu-link {{ request()->routeIs('dashboard.services') ? 'active' : ''}}" href="{{ route('dashboard.services') }}" role="button">
                         <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-dashboards">Services</span>
                     </a>
                 </li> <!-- end Dashboard Menu -->
@@ -77,6 +77,12 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.users' ? 'active' : '' }}" href="{{ route('dashboard.users') }}" role="button">
                         <i class="ri-user-line"></i> <span data-key="t-dashboards">Utilisateurs</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.marque' ? 'active' : '' }}" href="{{ route('dashboard.marque') }}" role="button">
+                        <i class="ri-user-line"></i> <span data-key="t-dashboards">Modèle / Marques</span>
                     </a>
                 </li>
 
@@ -123,7 +129,7 @@
                             <li class="nav-item">
                                 <a href="{{ route('dashboard.terms') }}" class="nav-link {{ Route::currentRouteName() == 'dashboard.terms' ? 'active' : '' }}" data-key="t-remix">Terms & Conditions</a>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </li>

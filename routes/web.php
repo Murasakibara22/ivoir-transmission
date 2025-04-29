@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Paiement;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -58,6 +61,10 @@ Route::group(['middleware' => 'auth'], function () {
              })->name('paiements.show');
             Route::view('avis','Dashboard.pages.avis.index')->name('avis');
             Route::view('etat_financiers','Dashboard.pages.finance.index')->name('finance');
+            Route::view('services','Dashboard.pages.service.index')->name('services');
+
+
+            Route::view('reservations','Dashboard.pages.Reservation.index')->name('reservations');
 
         });
     });

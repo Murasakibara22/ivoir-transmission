@@ -54,7 +54,7 @@
                         <a href="#" class="card-body bg-secondary shadow">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1 overflow-hidden">
-                                 <p class="text-uppercase fw-medium text-truncate mb-0 text-white">Tous les produits</p>
+                                 <p class="text-uppercase fw-medium text-truncate mb-0 text-white">Tous les services</p>
                                 </div>
 
                             </div>
@@ -82,7 +82,7 @@
 
                                 <div class="flex-shrink-0">
 
-                                    <button type="button" class="btn btn-primary custom-toggle" wire:click='addCategorie'>
+                                    <button type="button" class="btn btn-primary custom-toggle" wire:click='addCategorieService'>
                                         <span class="icon-on"><i class=" ri-add-circle-fill align-bottom me-1" ></i> Ajouter une catégorie</span>
                                     </button>
                                 </div>
@@ -102,6 +102,7 @@
                                                     <th scope="col">logo</th>
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Description</th>
+                                                    <th scope="col">Frais Service</th>
                                                     <th scope="col">Services</th>
                                                     <th scope="col">Date d'ajout</th>
                                                     <th scope="col" style="width: 150px;">Action</th>
@@ -115,7 +116,7 @@
                                                         {{ $key+1 }}
                                                     </td>
                                                     <td class="d-flex">
-                                                        <img src="{{ $item->logo }}" alt="" class="avatar-xs rounded-3 me-2">
+                                                        <img src="{{ $item->logo ?? 'https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=$item->libelle' }}" alt="" class="avatar-xs rounded-3 me-2">
                                                     </td>
                                                     <td class="text-uppercase text-primary">{{ Str::words($item->libelle, 5) }}</td>
                                                     @if($item->description)
@@ -123,17 +124,19 @@
                                                     @else
                                                     <td>Aucune description</td>
                                                     @endif
-
+                                                    <td>
+                                                        {{ $item->frais_service ? number_format($item->frais_service, 0, ',', '.').' FCFA' : 'Aucun'}}
+                                                    </td>
 
                                                     <td>
-                                                        <button class="btn btn-sm btn-light" wire:click="showServiceCategorieService({{ $item->id }})"><i class="ri-eye-fill align-bottom me-1"> </i> {{ $item->produits->count() }}</button>
+                                                        <button class="btn btn-sm btn-light" wire:click="showServiceCategorieService({{ $item->id }})"><i class="ri-eye-fill align-bottom me-1"> </i> {{ $item->services->count() }}</button>
                                                     </td>
                                                     <td>
                                                         {{ $item->created_at->format('d-m-Y') }}
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-sm btn-warning" wire:click="editCategorie({{ $item->id }})"><i class="ri-pencil-fill align-bottom me-1"></i> Modifier</button>
-                                                        <button type="button" class="btn btn-sm btn-danger" wire:click="deleteCategorie({{ $item->id }})"><i class="ri-delete-bin-fill align-bottom me-1"></i> Supprimer</button>
+                                                        <button type="button" class="btn btn-sm btn-warning" wire:click="editCategorieService({{ $item->id }})"><i class="ri-pencil-fill align-bottom me-1"></i> Modifier</button>
+                                                        <button type="button" class="btn btn-sm btn-danger" wire:click="deleteCategorieService({{ $item->id }})"><i class="ri-delete-bin-fill align-bottom me-1"></i> Supprimer</button>
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -182,7 +185,7 @@
                 </div> --}}
 
                 <div class="modal-body text-center p-4">
-                    <form wire:submit.prevent='submitCategorie'>
+                    <form wire:submit.prevent='submitCategorieService'>
                         <div class="row">
                             @if (!is_null($Aslogo))
                             <div class="col-12">
@@ -206,7 +209,7 @@
                                     <input type="file" class="form-control" accept=".png, .jpg, .jpeg" wire:model='Aslogo' placeholder="Enter your lastname" >
                                 </div>
                             </div><!--end col-->
-                            <div class="col-12">
+                            <div class="col-6">
                                 <div class="mb-3" wire:ignore>
                                     <label for="compnayNameinput" class="form-label">Description</label>
                                     <textarea class="form-control" id="description" wire:model='description' rows="5"></textarea>
@@ -216,6 +219,12 @@
                                         {{ $message }}
                                     </span>
                                 @enderror
+                            </div><!--end col-->
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label text-start">Frais de service <span class="text-muted">( FACULTATIF )</span> </label>
+                                    <input type="number" class="form-control" wire:model='frais_service' placeholder="Entrer les frais de service" >
+                                </div>
                             </div><!--end col-->
                             <div class="col-lg-12">
                                 <div class="text-end">
@@ -248,7 +257,7 @@
                 </div> --}}
 
                 <div class="modal-body text-center p-4">
-                    <form wire:submit.prevent='updateCategorie'>
+                    <form wire:submit.prevent='updateCategorieService'>
                         <div class="row">
                             <div class="col-12">
                                 <img class="image icon-shape icon-xxxl bg-light rounded-4" @if (!is_null($Aslogo)) src="{{ $Aslogo->temporaryUrl() }}" @elseif(!is_null(App\Models\CategorieService::find($idCategorieService)))
@@ -271,11 +280,17 @@
                             </div><!--end col-->
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-start">Logo(facultatif)</label>
+                                    <label class="form-label text-start">Logo  <span class="text-muted">( FACULTATIF )</span> </label>
                                     <input type="file" class="form-control" accept=".png, .jpg, .jpeg" wire:model='Aslogo' placeholder="Enter your lastname" >
                                 </div>
                             </div><!--end col-->
-                            <div class="col-12" wire:ignore>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label text-start">Frais de service <span class="text-muted">( FACULTATIF )</span> </label>
+                                    <input type="number" class="form-control" wire:model='frais_service' placeholder="Entrer les frais de service" >
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-6" wire:ignore>
                                 <div class="mb-3" >
                                     <label for="compnayNameinput" class="form-label">Description</label>
                                     <textarea class="form-control" id="description2"  wire:model.lazy='description' name="description" rows="5"></textarea>
@@ -302,7 +317,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header p-3 bg-light">
-                    <h4 class="card-title  mb-0">Tous les produits de la catégorie: <strong>{{ $libelle }} </strong> </h4>
+                    <h4 class="card-title  mb-0">Tous les services de la catégorie: <strong>{{ $libelle }} </strong> </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <!-- <div class="alert alert-success  rounded-0 mb-0">
@@ -324,14 +339,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($list_produit && $list_produit->count() > 0)
-                                @foreach ($list_produit as $key => $item)
+                                @if ($list_service && $list_service->count() > 0)
+                                @foreach ($list_service as $key => $item)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>
                                         <div class="d-flex gap-2 align-items-center">
                                             <div class="flex-shrink-0">
-                                                <img src="{{ json_decode(App\Models\Produit::find($item->id)->images)[0] }}" alt="" class="avatar-xs rounded-2" />
+                                                <img src="{{ json_decode(App\Models\Service::find($item->id)->images)[0] }}" alt="" class="avatar-xs rounded-2" />
                                             </div>
                                             <div class="flex-grow-1">
                                                 {{ str::words($item->libelle, 3) }}

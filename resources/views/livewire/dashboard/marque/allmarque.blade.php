@@ -20,6 +20,7 @@
             <!-- end page title -->
 
             <div class="row">
+
                 {{-- <div class="col-xl-6 col-md-6">
                     <!-- card -->
                     <div class="card card-animate">
@@ -54,7 +55,7 @@
                         <a href="#" class="card-body bg-secondary shadow">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1 overflow-hidden">
-                                 <p class="text-uppercase fw-medium text-truncate mb-0 text-white">Tous les produits</p>
+                                 <p class="text-uppercase fw-medium text-truncate mb-0 text-white">Tous les services</p>
                                 </div>
                                 <div class="flex-shrink-0">
                                     <h5 class="text-danger fs-14 mb-0 text-white">
@@ -78,24 +79,23 @@
 
             </div> <!-- end row-->
 
-            <div class="row">
-                    <div class="col-xl-12">
+            <button type="button" class="btn btn-primary custom-toggle" wire:click='addtype'>
+                <span class="icon-on"><i class=" ri-add-circle-fill align-bottom me-1" ></i> Ajouter un type</span>
+            </button>
+
+            <button type="button" class="btn btn-info custom-toggle" wire:click='addmarque'>
+                <span class="icon-on"><i class=" ri-add-circle-fill align-bottom me-1" ></i> Ajouter une marque</span>
+            </button>
+
+            <div class="row mt-4">
+                    <div class="col-lg-6 col-12">
                         <div class="card">
                             <div class="card-header align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Marques de mèches</h4>
-
-                                <div class="flex-shrink-0">
-
-                                    <button type="button" class="btn btn-primary custom-toggle" wire:click='addmarque'>
-                                        <span class="icon-on"><i class=" ri-add-circle-fill align-bottom me-1" ></i> Ajouter une marque</span>
-                                    </button>
-                                </div>
+                                <h4 class="card-title mb-0 flex-grow-1">Marques de voiture</h4>
                             </div><!-- end card header -->
 
                             <div class="card-body">
-                                <p class="text-muted mb-4">
-                                    Liste détaillée des marques de produits
-                                </p>
+
 
                                 <div class="live-preview">
                                     <div class="table-responsive table-card">
@@ -103,9 +103,7 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col">N'</th>
-                                                    <th scope="col">logo</th>
                                                     <th scope="col">Name</th>
-                                                    <th scope="col">Produits</th>
                                                     <th scope="col">Date d'ajout</th>
                                                     <th scope="col" style="width: 150px;">Action</th>
                                                 </tr>
@@ -117,16 +115,8 @@
                                                     <td>
                                                         {{ $key+1 }}
                                                     </td>
-                                                    <td class="d-flex">
-                                                        <img src="{{ $item->logo }}" alt="" class="avatar-xs rounded-3 me-2">
-                                                    </td>
                                                     <td class="text-uppercase text-primary">{{ Str::words($item->libelle, 10) }}</td>
 
-
-
-                                                    <td>
-                                                        <button class="btn btn-sm btn-light" wire:click="showServicemarque({{ $item->id }})"><i class="ri-eye-fill align-bottom me-1"> </i> {{ $item->produits->count() }}</button>
-                                                    </td>
                                                     <td>
                                                         {{ $item->created_at->format('d-m-Y') }}
                                                     </td>
@@ -153,7 +143,69 @@
                             </div><!-- end card-body -->
                         </div><!-- end card -->
                     </div><!-- end col -->
+
+
+                    <div class="col-lg-6 col-12">
+                        <div class="card">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Type de Véhicule</h4>
+                            </div><!-- end card header -->
+
+                            <div class="card-body">
+                                <p class="text-muted mb-4">
+                                    Liste détaillée des Types de Véhicules
+                                </p>
+
+                                <div class="live-preview">
+                                    <div class="table-responsive table-card">
+                                        <table class="table align-middle table-nowrap mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th scope="col">N'</th>>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Date d'ajout</th>
+                                                    <th scope="col" style="width: 150px;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if($list_type && $list_type->count() > 0)
+                                                @foreach ($list_type as $key => $item)
+                                                <tr>
+                                                    <td>
+                                                        {{ $key+1 }}
+                                                    </td>
+                                                    <td class="text-uppercase text-primary">{{ Str::words($item->libelle, 10) }}</td>
+
+                                                    <td>
+                                                        {{ $item->created_at->format('d-m-Y') }}
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm btn-warning" wire:click="edittype({{ $item->id }})"><i class="ri-pencil-fill align-bottom me-1"></i> Modifier</button>
+                                                        <button type="button" class="btn btn-sm btn-danger" wire:click="deletetype({{ $item->id }})"><i class="ri-delete-bin-fill align-bottom me-1"></i> Supprimer</button>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                                @else
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <div class="text-center">
+                                                            <h5 class="text-danger fs-16">Aucun Type de voiture </h5>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div><!-- end card-body -->
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+
             </div>
+
+
         </div>
     </div>
 
@@ -162,7 +214,7 @@
     {{-- Modal --}}
 
     <div wire:ignore.self class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="add_marque" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                  {{-- chargement --}}
                 <div wire:loading >
@@ -184,9 +236,6 @@
                     <form wire:submit.prevent='submitmarque'>
                         <div class="row">
                             <div class="col-12">
-                                <img class="image icon-shape icon-xxxl bg-light rounded-4" style="height: 150px ; width: 150px" @if (!is_null($Aslogo))  src="{{ $Aslogo->temporaryUrl()}}" @endif alt="logo marque service " />
-                            </div>
-                            <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label text-start">Libelle marque</label>
                                     <input type="text" class="form-control" wire:model='libelle' placeholder="Entrer le nom de la category" id="firstNameinput">
@@ -197,12 +246,12 @@
                                     @enderror
                                 </div>
                             </div><!--end col-->
-                            <div class="col-6">
+                            {{-- <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label text-start">Logo(facultatif)</label>
                                     <input type="file" class="form-control" accept=".png, .jpg, .jpeg" wire:model='Aslogo' placeholder="Enter your lastname" >
                                 </div>
-                            </div><!--end col-->
+                            </div><!--end col--> --}}
                             <div class="col-lg-12">
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-success">Valider les informations</button>
@@ -216,7 +265,7 @@
     </div><!-- /.modal -->
 
     <div wire:ignore.self class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="edit_marque" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                    {{-- chargement --}}
                    <div wire:loading >
@@ -236,15 +285,8 @@
                 <div class="modal-body text-center p-4">
                     <form wire:submit.prevent='updatemarque'>
                         <div class="row">
-                            <div class="col-12">
-                                <img class="image icon-shape icon-xxxl bg-light rounded-4" @if (!is_null($Aslogo)) src="{{ $Aslogo->temporaryUrl() }}" @elseif(!is_null(App\Models\marque::find($idmarque)))
-                                src="{{ App\Models\marque::find($idmarque)->logo }}"
-                                @else
-                                src="../Backend/images"
-                                @endif alt="logo marque service"  style="height: 150px ; width: 150px"/>
-                            </div>
 
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="mb-3">
                                     <label class="form-label text-start">Libelle marque</label>
                                     <input type="text" class="form-control" wire:model='libelle' placeholder="Entrer le nom de la category" id="firstNameinput">
@@ -255,10 +297,111 @@
                                     @enderror
                                 </div>
                             </div><!--end col-->
-                            <div class="col-6">
+                            {{-- <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label text-start">Logo(facultatif)</label>
                                     <input type="file" class="form-control" accept=".png, .jpg, .jpeg" wire:model='Aslogo' placeholder="Enter your lastname" >
+                                </div>
+                            </div><!--end col--> --}}
+                            <div class="col-lg-12">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-warning">Modifier</button>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+    {{-- Type  --}}
+
+
+    <div wire:ignore.self class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="add_type" aria-hidden="true">
+        <div class="modal-dialog modal-md ">
+            <div class="modal-content">
+                 {{-- chargement --}}
+                <div wire:loading >
+                    <div class="overlay">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+
+
+                <div class="modal-header p-3 bg-light">
+                    <h4 class="card-title mb-0">Nouveau type</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                {{-- <div class="alert alert-success  rounded-0 mb-0">
+                    <p class="mb-0">Up to <span class="fw-semibold">50% OFF</span>, Hurry up before the stock ends</p>
+                </div> --}}
+
+                <div class="modal-body text-center p-4">
+                    <form wire:submit.prevent='submittype'>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="form-label text-start">Libelle Type</label>
+                                    <input type="text" class="form-control"  wire:model='libelle_type' placeholder="Exemple: (SUV , Berling)" id="firstNameinput">
+                                    @error('libelle_type')
+                                        <span class="feedback-text">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div><!--end col-->
+                            {{-- <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label text-start">Logo(facultatif)</label>
+                                    <input type="file" class="form-control" accept=".png, .jpg, .jpeg" wire:model='Aslogo' placeholder="Enter your lastname" >
+                                </div>
+                            </div><!--end col--> --}}
+                            <div class="col-lg-12">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Valider</button>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div wire:ignore.self class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="edit_type" aria-hidden="true">
+        <div class="modal-dialog modal-md ">
+            <div class="modal-content">
+                   {{-- chargement --}}
+                   <div wire:loading >
+                        <div class="overlay">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+
+                <div class="modal-header p-3 bg-warning">
+                    <h4 class="card-title text-white mb-0">Modifier Le type : {{ $libelle }}</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                {{-- <div class="alert alert-success  rounded-0 mb-0">
+                    <p class="mb-0">Up to <span class="fw-semibold">50% OFF</span>, Hurry up before the stock ends</p>
+                </div> --}}
+
+                <div class="modal-body text-center p-4">
+                    <form wire:submit.prevent='updatetype'>
+                        <div class="row">
+
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="form-label text-start">Libelle </label>
+                                    <input type="text" class="form-control" wire:model='libelle_type' placeholder="Exemple: (SUV , Berling)" id="firstNameinput">
+                                    @error('libelle_type')
+                                        <span class="feedback-text">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-12">
@@ -273,11 +416,13 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+
+
     <div wire:ignore.self class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="show_service_marque" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header p-3 bg-light">
-                    <h4 class="card-title  mb-0">Tous les produits de la catégorie: <strong>{{ $libelle }} </strong> </h4>
+                    <h4 class="card-title  mb-0">Tous les services de la catégorie: <strong>{{ $libelle }} </strong> </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <!-- <div class="alert alert-success  rounded-0 mb-0">
@@ -353,7 +498,7 @@
                             <tfoot class="table-light">
                                 <tr>
                                     <td colspan="6">
-                                        <a href="{{ route('dashboard.produits') }}">Voir plus </a>
+                                        <a href="{{ route('dashboard.services') }}">Voir plus </a>
                                     </td>
                                 </tr>
                             </tfoot>

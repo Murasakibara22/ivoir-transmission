@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Dashboard\Categorie;
 
-use App\Models\Produit;
+use App\Models\Service;
 use Livewire\Component;
 use App\Models\CategorieService;
 use Livewire\Attributes\On;
@@ -19,9 +19,9 @@ class AllCategorie extends Component
     #[Locked]
     public $idCategorieService;
 
-    public $libelle , $description , $Aslogo ;
+    public $libelle , $description , $Aslogo, $frais_service ;
 
-    public $list_produit;
+    public $list_service;
 
     protected $rules=[
         'libelle' =>  ['required','min:3']
@@ -59,12 +59,15 @@ class AllCategorie extends Component
         if($this->description){
             $CategorieService->description = $this->description;
         }
+        if($this->frais_service){
+            $CategorieService->frais_service = $this->frais_service;
+        }
         if($this->Aslogo){
             $img = $this->Aslogo;
             $messi = md5($img->getClientOriginalExtension().time().$this->Aslogo).".".$img->getClientOriginalExtension();
 
             $uploadedImage = Cloudinary::upload($img->getRealPath(),[
-                'folder' => 'twins',
+                'folder' => 'ivoireTransmission',
                 'transformation' => [
                     'width' => 150,
                     'height' => 150,
@@ -96,6 +99,7 @@ class AllCategorie extends Component
             $this->idCategorieService = $CategorieService->id;
             $this->libelle = $CategorieService->libelle;
             $this->description = $CategorieService->description;
+            $this->frais_service = $CategorieService->frais_service;
 
             $this->sendContentAtSummernote("description2", $this->description);
             $this->launch_modal("edit_categorie");
@@ -134,6 +138,9 @@ class AllCategorie extends Component
                $CategorieService->logo  = $imageUrl;
             }
             $CategorieService->libelle = $this->libelle ;
+            if($this->frais_service){
+                $CategorieService->frais_service = $this->frais_service;
+            }
             $CategorieService->description = $this->description != null && $this->description != '' ?  $this->description : $CategorieService->description  ;
             $CategorieService->slug = generateSlug('CategorieService' , $CategorieService->libelle);
             $CategorieService->update();
@@ -142,7 +149,7 @@ class AllCategorie extends Component
         //ActivityLog("Modification d'une CategorieService : ".$CategorieService->libelle, "Admin");
 
             $this->send_event_at_sweetAlerte("Valider","Modification effectuer !!", "success");
-            $this->closeModal_after_edit("add_categorie");
+            $this->closeModal_after_edit("edit_categorie");
             $this->reset();
 
         }else{
@@ -154,7 +161,7 @@ class AllCategorie extends Component
     function deleteCategorieService($id_CategorieService)  {
         $CategorieService = CategorieService::find($id_CategorieService);
         if($CategorieService){
-            // if($CategorieService->produits()->exists()){
+            // if($CategorieService->services()->exists()){
             //     $this->send_event_at_sweet_alert_not_timer("Erreur","La catégorie sélectionnée n'est pas vide ! Veuillez d'abord supprimer les services et les services supplémentaires. !!", "error");
             //     return ;
             // }
@@ -181,7 +188,7 @@ class AllCategorie extends Component
             // Log
             //ActivityLog(" Suppression d'une CategorieService : ".$CategorieService->libelle, "Admin");
 
-            Produit::each(function ($produit) use ($CategorieService) {
+            Service::each(function ($produit) use ($CategorieService) {
                 if($produit->CategorieService_id == $CategorieService->id){
                     $produit->status = 'INACTIVATED';
                     $produit->update();
@@ -200,16 +207,16 @@ class AllCategorie extends Component
     function showServiceCategorieService(int $id_CategorieService)  {
         $CategorieService = CategorieService::find($id_CategorieService);
         if(!$CategorieService){
-            $this->send_event_at_sweetAlerte("Erreur","La CategorieService selectionner n'existe pas !!", "error");
+            $this->send_event_at_sweetAlerte("Erreur","La Categorie selectionner n'existe pas !!", "error");
             return ;
         }
 
         $this->idCategorieService = $id_CategorieService;
         $this->libelle = $CategorieService->libelle;
-        $this->list_produit = Produit::where('CategorieService_id', $CategorieService->id)->get();
+        $this->list_service = Service::where('categorie_service_id', $CategorieService->id)->get();
 
-        if($this->list_produit->count() == 0){
-            $this->send_event_at_sweetAlerte("Erreur","La CategorieService selectionner n'a pas de produits enregistré !!", "info");
+        if($this->list_service->count() == 0){
+            $this->send_event_at_sweetAlerte("Erreur","La Categorie selectionner n'a pas de services enregistré !!", "info");
             return ;
         }
 

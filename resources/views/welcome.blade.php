@@ -10,9 +10,9 @@
             <div id="inner-content" class="inner-content-wrap">
                 <div class="page-content">
                     <!-- SLIDER -->
-                    <div class="rev_slider_wrapper fullwidthbanner-container">
+                    <div class="rev_slider_wrapper fullwidthbanner-container" >
                         <div id="rev-slider1" class="rev_slider fullwidthabanner">
-                            <ul >
+                            <ul>
                                 <!-- Slide 1 -->
                                 <li data-transition="random">
                                     <!-- Main Image -->
@@ -287,69 +287,7 @@
 
 
 
-                    <!-- WHY US -->
-                    <div class="row-why-us ">
-                        <div class="container-fluid">
-                            <div class="row equalize sm-equalize-auto">
-                                <div class="col-md-6 half-background style-1">
-                                    <div class="wprt-icon style-1 clearfix background">
-                                        <a class="icon-wrap popup-video" href="https://www.youtube.com/watch?v=-iN4ebYdsc4">
-                                            <span class="icon"><i class="rt-icon-play-arrow"></i></span>
-                                        </a>
-                                    </div><!-- /.wprt-icon -->
-                                </div><!-- /.col-md-6 -->
 
-                                <div class="col-md-6">
-                                    <div class="wprt-content-box clearfix" data-margin="10% 10% 10% 10%" data-mobimargin="8% 5% 10% 5%">
-                                        <div class="col-md-12">
-                                            <div class="wprt-headings style-1 clearfix">
-                                                <h2 class="heading clearfix">WHY CHOOSE US?</h2>
-                                                <div class="sep clearfix"></div>
-                                                <p class="sub-heading clearfix">Our commitment to you is to provide honest, friendly, and on-time service. Visit a locally owned and operated business that has been serving the community since 1992.</p>
-                                            </div><!-- /.wprt-headings -->
-
-                                            <div class="wprt-spacer clearfix" data-desktop="40" data-mobi="40" data-smobi="40"></div>
-
-                                            <div class="wprt-progress style-1 clearfix numb-grey height-4px">
-                                                <h3 class="title">QUALITY SERVICES</h3>
-                                                <div class="perc-wrap">
-                                                    <div class="perc"><span>80%</span></div>
-                                                </div>
-                                                <div class="progress-bg" data-percent="80%" data-inviewport="yes">
-                                                    <div class="progress-animate"></div>
-                                                </div>
-                                            </div><!-- /.wprt-progress -->
-
-                                            <div class="wprt-spacer clearfix" data-desktop="35" data-mobi="35" data-smobi="35"></div>
-
-                                            <div class="wprt-progress style-1 clearfix numb-grey height-4px">
-                                                <h3 class="title">EXPERIENCED TECHNICIALS</h3>
-                                                <div class="perc-wrap">
-                                                    <div class="perc"><span>90%</span></div>
-                                                </div>
-                                                <div class="progress-bg" data-percent="90%" data-inviewport="yes">
-                                                    <div class="progress-animate"></div>
-                                                </div>
-                                            </div><!-- /.wprt-progress -->
-
-                                            <div class="wprt-spacer clearfix" data-desktop="35" data-mobi="35" data-smobi="35"></div>
-
-                                            <div class="wprt-progress style-1 clearfix numb-grey height-4px">
-                                                <h3 class="title">LONG TERM WARRANTY</h3>
-                                                <div class="perc-wrap">
-                                                    <div class="perc"><span>70%</span></div>
-                                                </div>
-                                                <div class="progress-bg" data-percent="70%" data-inviewport="yes">
-                                                    <div class="progress-animate"></div>
-                                                </div>
-                                            </div><!-- /.wprt-progress -->
-                                        </div><!-- /.col-md-12 -->
-                                    </div><!-- /.wprt-content-box -->
-                                </div><!-- /.col-md-6 -->
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END WHY US -->
 
 
                     <!-- 1 -->
@@ -902,6 +840,72 @@
                     </div>
                     <!-- END CERTIFIED 1 -->
 
+
+
+
+                       <!-- WHY US -->
+                    <div class="row-why-us">
+                        <div class="container-fluid" style="margin-top: 50px !important;">
+                            <div class="row equalize sm-equalize-auto">
+                                <div class="col-md-6 half-background style-1">
+                                    <div class="wprt-icon style-1 clearfix background">
+                                        <a class="icon-wrap popup-video" href="https://www.youtube.com/watch?v=-iN4ebYdsc4">
+                                            <span class="icon"><i class="rt-icon-play-arrow"></i></span>
+                                        </a>
+                                    </div><!-- /.wprt-icon -->
+                                </div><!-- /.col-md-6 -->
+
+                                <div class="col-md-6">
+                                    <div class="wprt-content-box clearfix" data-margin="10% 10% 10% 10%" data-mobimargin="8% 5% 10% 5%">
+                                        <div class="col-md-12">
+                                            <div class="wprt-headings style-1 clearfix">
+                                                <h2 class="heading clearfix">WHY CHOOSE US?</h2>
+                                                <div class="sep clearfix"></div>
+                                                <p class="sub-heading clearfix">Our commitment to you is to provide honest, friendly, and on-time service. Visit a locally owned and operated business that has been serving the community since 1992.</p>
+                                            </div><!-- /.wprt-headings -->
+
+                                            <div class="wprt-spacer clearfix" data-desktop="40" data-mobi="40" data-smobi="40"></div>
+
+                                            <div class="wprt-progress style-1 clearfix numb-grey height-4px">
+                                                <h3 class="title">QUALITY SERVICES</h3>
+                                                <div class="perc-wrap">
+                                                    <div class="perc"><span>80%</span></div>
+                                                </div>
+                                                <div class="progress-bg" data-percent="80%" data-inviewport="yes">
+                                                    <div class="progress-animate"></div>
+                                                </div>
+                                            </div><!-- /.wprt-progress -->
+
+                                            <div class="wprt-spacer clearfix" data-desktop="35" data-mobi="35" data-smobi="35"></div>
+
+                                            <div class="wprt-progress style-1 clearfix numb-grey height-4px">
+                                                <h3 class="title">EXPERIENCED TECHNICIALS</h3>
+                                                <div class="perc-wrap">
+                                                    <div class="perc"><span>90%</span></div>
+                                                </div>
+                                                <div class="progress-bg" data-percent="90%" data-inviewport="yes">
+                                                    <div class="progress-animate"></div>
+                                                </div>
+                                            </div><!-- /.wprt-progress -->
+
+                                            <div class="wprt-spacer clearfix" data-desktop="35" data-mobi="35" data-smobi="35"></div>
+
+                                            <div class="wprt-progress style-1 clearfix numb-grey height-4px">
+                                                <h3 class="title">LONG TERM WARRANTY</h3>
+                                                <div class="perc-wrap">
+                                                    <div class="perc"><span>70%</span></div>
+                                                </div>
+                                                <div class="progress-bg" data-percent="70%" data-inviewport="yes">
+                                                    <div class="progress-animate"></div>
+                                                </div>
+                                            </div><!-- /.wprt-progress -->
+                                        </div><!-- /.col-md-12 -->
+                                    </div><!-- /.wprt-content-box -->
+                                </div><!-- /.col-md-6 -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END WHY US -->
 
 
                       <!-- GALLERY -->

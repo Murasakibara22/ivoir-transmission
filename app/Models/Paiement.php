@@ -10,6 +10,10 @@ use Illuminate\Support\Str;
 
 class Paiement extends Model
 {
+
+    CONST CLIENID = "9e7852c1-6f0f-4544-9a08-b6180c888caf";
+    CONST CLIENSECRET =  "br6YoIFLuSxA94gbA3HMZFn6PwC1q9voHMMNs3Yh";
+
     CONST CANCELED = 'ANNULER';
     CONST PENDING = 'en attente';
     CONST PAID = 'PAYE';

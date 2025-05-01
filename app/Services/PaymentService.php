@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Paiement;
-use App\Models\Commande;
+use App\Models\Reservation;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Http;
 class PaymentService {
 
 
-    static public function store($commande_id)
+    static public function store($reservation_id, $contact)
     {
 
         $clientAuth = new Client();
@@ -36,17 +36,29 @@ class PaymentService {
         // dd($token);
 
 
-        $commande = Commande::find($commande_id);
+        $reservation = Reservation::find($reservation_id);
 
         $paiement = new Paiement();
         $paiement->reference = Paiement::generateUniqueReference();
-        $paiement->montant = $commande->montant;
-        $paiement->commande_id = $commande_id;
+        $paiement->montant = $reservation->montant;
+        $paiement->reservation_id = $reservation_id;
         $paiement->status = Paiement::INITIATED;
-        $paiement->user_name = auth()->user()->name;
-        $paiement->user_phone = auth()->user()->phone;
-        $paiement->user_photo_url = auth()->user()->photo_url;
         $paiement->user_id = auth()->user()->id;
+        $paiement->snapshot_users = json_encode([
+            'id' => auth()->user()->id,
+            'username' => auth()->user()->username,
+            'phone' => auth()->user()->phone,
+        ]);
+        $paiement->snapshot_reservation = json_encode([
+            'id' => $reservation->id,
+            'montant' => $reservation->montant,
+            'status' => $reservation->status,
+            'adresse_name' => $reservation->adresse_name,
+            'location' => $reservation->location,
+            'date_debut' => $reservation->date_debut,
+            'date_fin' => $reservation->date_fin,
+            'slug' => $reservation->slug,
+        ]);
         $paiement->slug = generateSlug('Paiement',$paiement->ref);
         $paiement->save();
 
@@ -59,16 +71,16 @@ class PaymentService {
         ];
 
         $body = [
-            "amount"=> intval($commande->montant), //$paiement->montant
+            "amount"=> intval($reservation->montant), //$paiement->montant
             "currency_code"=>"XOF",
             "merchant_trans_id"=> $paiement->reference,
             "seller_username"=>"Alphakb",
             "payment_type"=>"gateway",
-            "designation"=> "Paiement de commande ".$paiement->commande->reference,
-            "webhook_url"=> "https://twinshair-ci.com/api/webhook/adjeminpay",
-            "return_url"=> "https://twinshair-ci.com/return_payment_url/twinshair",
-            "cancel_url"=> "https://twinshair-ci.com/",
-            "customer_recipient_number"=> auth()->user()->phone_number,
+            "designation"=> "Paiement de reservation ".$paiement->reservation->reference,
+            "webhook_url"=> "http://127.0.0.1:9000/api/webhook/adjeminpay",
+            "return_url"=> "http://127.0.0.1:9000/",
+            "cancel_url"=> "http://127.0.0.1:9000/",
+            "customer_recipient_number"=> $contact,
             "customer_email"=> auth()->user()->email ?? "",
             "customer_firstname"=>auth()->user()->username,
             "customer_lastname"=>auth()->user()->username
@@ -120,16 +132,16 @@ class PaymentService {
        return json_decode($response->getBody())->access_token;
     }
 
-    public function createPayment($commande_id)  {
+    public function createPayment($reservation_id)  {
 
-        $commande = Commande::find($commande_id);
+        $reservation = Reservation::find($reservation_id);
 
         $paiement = new Paiement();
         $paiement->ref = Paiement::generateUniqueReference();
-        $paiement->montant = $commande->prix;
+        $paiement->montant = $reservation->prix;
         $paiement->taxes =  0;
-        $paiement->prix_initiale = $commande->prix;
-        $paiement->commande_id = $commande_id;
+        $paiement->prix_initiale = $reservation->prix;
+        $paiement->reservation_id = $reservation_id;
         $paiement->currency_code = "XOF";
         $paiement->status = Paiement::PENDING;
         $paiement->customer_name = auth('api')->user()->name;
@@ -153,16 +165,16 @@ class PaymentService {
 
 
         $paiement = Paiement::where('ref',$transaction_reference)->first();
-        $commande = Commande::where('id',$paiement->commande_id)->first();
-        if(!$commande) {
-            return 'commande introuvable';
+        $reservation = Reservation::where('id',$paiement->reservation_id)->first();
+        if(!$reservation) {
+            return 'reservation introuvable';
         }
 
 
 
         switch ($status) {
             case Paiement::SUCCESSFUL:
-                    $this->validatecommande($commande);
+                    $this->validatereservation($reservation);
 
                     $paiement->status = Paiement::SUCCESSFUL;
                     $paiement->methode = $request->payment_method ?? "Wave_ci";
@@ -171,7 +183,7 @@ class PaymentService {
 
                 break;
             case Paiement::CANCELED:
-                    $this->Cancelcommande($commande);
+                    $this->Cancelreservation($reservation);
 
                     $paiement->status = Paiement::CANCELED;
                     $paiement->methode = $request->payment_method ?? "Wave_ci";
@@ -180,7 +192,7 @@ class PaymentService {
 
                 break;
             case Paiement::FAILED:
-                $this->Cancelcommande($commande);
+                $this->Cancelreservation($reservation);
 
                     $paiement->status = Paiement::FAILED;
                     $paiement->methode = $request->payment_method ?? "Wave_ci";
@@ -188,7 +200,7 @@ class PaymentService {
                     $paiement->save();
                 break;
             case Paiement::EXPIRED:
-                $this->Cancelcommande($commande);
+                $this->Cancelreservation($reservation);
 
                     $paiement->status = Paiement::EXPIRED;
                     $paiement->methode = $request->payment_method ?? "Wave_ci";
@@ -206,51 +218,51 @@ class PaymentService {
     }
 
 
-    function validatecommande($commande) {
-        $offer = Offer::where('id',$commande->offer_id)->first();
-        $last_commande = Commande::where('id','!=',$commande->id)->where('customers','like','%'.json_decode($commande->customers)[0].'%')->where('offer_id',$commande->offer_id)->orderBy('id','desc')->first();
+    function validatereservation($reservation) {
+        $offer = Offer::where('id',$reservation->offer_id)->first();
+        $last_reservation = Reservation::where('id','!=',$reservation->id)->where('customers','like','%'.json_decode($reservation->customers)[0].'%')->where('offer_id',$reservation->offer_id)->orderBy('id','desc')->first();
 
 
-        if($last_commande) {
-            if(Carbon::parse($last_commande->date_fin) >= now() && $last_commande->status == Commande::ACTIF) {
+        if($last_reservation) {
+            if(Carbon::parse($last_reservation->date_fin) >= now() && $last_reservation->status == Reservation::ACTIF) {
                 $todays =Carbon::createFromDate(now());
-                $old_date_debut = Carbon::createFromDate($last_commande->date_debut);
-                $old_date_fin = Carbon::createFromDate($last_commande->date_fin);
+                $old_date_debut = Carbon::createFromDate($last_reservation->date_debut);
+                $old_date_fin = Carbon::createFromDate($last_reservation->date_fin);
                 $diff_days = intval($todays->diffInDays($old_date_fin));
                 $new_nb_jour = $diff_days + $offer->nb_jours;
 
 
-                $last_commande->status = Commande::INACTIF;
-                $last_commande->save();
+                $last_reservation->status = Reservation::INACTIF;
+                $last_reservation->save();
 
-                $commande->status = Commande::ACTIF;
-                $commande->date_debut = Carbon::now();
-                $commande->is_paid = true;
-                $commande->date_fin = Carbon::now()->addDays($new_nb_jour);
-                $commande->save();
+                $reservation->status = Reservation::ACTIF;
+                $reservation->date_debut = Carbon::now();
+                $reservation->is_paid = true;
+                $reservation->date_fin = Carbon::now()->addDays($new_nb_jour);
+                $reservation->save();
             }else{
-                $commande->status = Commande::ACTIF;
-                $commande->date_debut = Carbon::now();
-                $commande->is_paid = true;
-                $commande->date_fin = Carbon::now()->addDays($offer->nb_jours);
-                $commande->save();
+                $reservation->status = Reservation::ACTIF;
+                $reservation->date_debut = Carbon::now();
+                $reservation->is_paid = true;
+                $reservation->date_fin = Carbon::now()->addDays($offer->nb_jours);
+                $reservation->save();
             }
         }else{
-            $commande->status = Commande::ACTIF;
-            $commande->is_paid = true;
-            $commande->date_debut = Carbon::now();
-            $commande->date_fin = Carbon::now()->addDays($offer->nb_jours);
-            $commande->save();
+            $reservation->status = Reservation::ACTIF;
+            $reservation->is_paid = true;
+            $reservation->date_debut = Carbon::now();
+            $reservation->date_fin = Carbon::now()->addDays($offer->nb_jours);
+            $reservation->save();
         }
 
-        $customer_send = Customer::where('id',json_decode($commande->customers)[0])->first();
-        $this->sendNotificationToCustomer($customer_send,"commande validé",'Le paiement de votre commande a été confirmé avec succès.', $offer);
+        $customer_send = Customer::where('id',json_decode($reservation->customers)[0])->first();
+        $this->sendNotificationToCustomer($customer_send,"reservation validé",'Le paiement de votre reservation a été confirmé avec succès.', $offer);
     }
 
-    function Cancelcommande($commande)  {
-        $commande->status = Commande::NOT_PAID;
-        $commande->is_paid = false;
-        $commande->save();
+    function Cancelreservation($reservation)  {
+        $reservation->status = Reservation::NOT_PAID;
+        $reservation->is_paid = false;
+        $reservation->save();
     }
 
 

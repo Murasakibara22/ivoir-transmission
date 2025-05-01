@@ -70,6 +70,9 @@ Route::group(['middleware' => 'auth'], function () {
     });
 });
 
+Route::view('rendez-vous','Frontend.pages.rdv.index2')->name('rendez-vous');
+Route::view('rendez-vous2','Frontend.pages.rdv.index')->name('rendez-vous2');
+
 
 Route::get('/deconnexion', function () {
     auth()->logout();

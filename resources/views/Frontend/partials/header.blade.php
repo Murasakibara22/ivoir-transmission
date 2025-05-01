@@ -51,7 +51,7 @@
                         <li class="menu-item"><a href="#">NOS SERVICES</a>
                         </li>
 
-                        <li class="menu-item menu-item-has-children"><a href="#">RENDEZ-VOUS ?</a>
+                        <li class="menu-item menu-item-has-children"><a href="{{ route('rendez-vous') }}">RENDEZ-VOUS ?</a>
                         </li>
 
                         <li class="menu-item"><a href="page-blog.html">A PROPOS</a></li>

@@ -22,6 +22,7 @@
 
 
 
+
             <div class="row">
                 <div class="col-xxl-12 order-xxl-0 order-first">
                     <div class="d-flex flex-column h-100">
@@ -90,6 +91,13 @@
                         </div><!-- end row -->
                     </div>
                 </div><!-- end col -->
+            </div>
+
+
+            <div class="row my-4" wire:ignore>
+                <div class="col-lg-12">
+                    <div id="map" style="height: 400px; width: 100%;"></div>
+                </div><!--end col-->
             </div>
 
 
@@ -524,4 +532,114 @@
             color: #f06548;
         }
     </style>
+@endpush
+
+
+
+
+@push('scripts')
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNZfIwGs9Y1hlRDCyiw3LV8dpLu1biIbM&libraries=places" async></script>
+
+
+<script>
+
+   async function initGeneralMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            center: {lat: 5.3432680297640, lng: -3.996286299639},
+            mapTypeId: 'roadmap',
+            styles: [
+                {
+                    featureType: 'poi',
+                    stylers: [{ visibility: 'off' }]
+                },
+                {
+                    featureType: 'transit',
+                    elementType: 'labels.icon',
+                    stylers: [{ visibility: 'off' }]
+                }
+            ]
+        });
+
+        MarkerPlaceForRdv(map);
+    }
+
+
+
+    function MarkerPlaceForRdv(map) {
+        var listReservation = @json($list_marker_reservations_pending);
+
+        const infowindow2 = new google.maps.InfoWindow();
+
+
+        for (let i = 0; i < listReservation.length; i++) {
+
+            const statusIcons = {
+                'PENDING': 'FFD700',   // Jaune
+                'ANNULER': 'FF0000',  // Rouge
+                'TERMINEE': '2ecc71',  // Vert
+                'STARTED': '00c3ff'    // Bleu ciel
+            };
+
+            const statusBadge = {
+                'PENDING': 'badge-soft-warning',   // Jaune
+                'ANNULER': 'badge-soft-danger',  // Rouge
+                'TERMINEE': 'badge-soft-success',  // Vert
+                'STARTED': 'badge-soft-info'    // Bleu ciel
+            };
+
+            const color = statusIcons[listReservation[i].status] || '000000'; // fallback noir
+            const iconUser ='data:image/svg+xml;base64,' + btoa(`
+            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="#${color}">
+                <path d="M5 11L6.5 6.5C6.8 5.7 7.5 5 8.4 5H15.6C16.5 5 17.2 5.7 17.5 6.5L19 11V17C19 17.6 18.6 18 18 18H17C16.4 18 16 17.6 16 17V16H8V17C8 17.6 7.6 18 7 18H6C5.4 18 5 17.6 5 17V11ZM7 11H17L15.5 7H8.5L7 11ZM21 4H19V2H17V4H15V6H17V8H19V6H21V4Z"/>
+            </svg>`);
+
+
+
+
+            const badgeColor = statusBadge[listReservation[i].status] || 'badge-soft-warning';
+            const contentString = `
+                <div class="info-content">
+                    <strong class="text-success">Lieu du rendez-vous </strong><br>
+                    <hr />
+                    <div class="details">
+                        <strong>  <span class="badge ${badgeColor} text-uppercase"> ${listReservation[i].status} </span></strong><br>
+                        <strong>adresse : </strong>${listReservation[i].adresse_name}<br>
+                        <strong>Date du rendez-vous : </strong> ${listReservation[i].date_debut}<br>
+                    </div>
+                </div>
+            `;
+
+                var markerDomicile = new google.maps.Marker({
+                    position: { lat: Number(listReservation[i].location.latitude), lng: Number(listReservation[i].location.longitude) },
+                    map: map,
+                    icon: iconUser,
+                    title: 'Chauffeur : ' + listReservation[i].adresse_name
+                });
+
+                (function(marker, content) {
+                    marker.addListener('click', function () {
+                        infowindow2.close();
+                        infowindow2.setContent(content);
+                        infowindow2.open(map, marker);
+                    });
+                })(markerDomicile, contentString);
+
+        }
+
+
+    }
+
+
+
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        //init la MAp Générale
+        window.setTimeout(() => {
+            initGeneralMap();
+        },1000);
+    });
+</script>
+
+
 @endpush

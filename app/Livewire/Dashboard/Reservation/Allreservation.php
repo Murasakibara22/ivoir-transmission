@@ -120,7 +120,20 @@ class Allreservation extends Component
     {
         $this->getStats();
         return view('livewire.dashboard.reservation.allreservation',[
-            'list_order' => Reservation::OrderBy('created_at', 'desc')->paginate(40)
+            'list_order' => Reservation::OrderBy('created_at', 'desc')->paginate(40),
+            'list_marker_reservations' => Reservation::get()
+            ->map(function ($res) {
+                return [
+                    'latitude' => $res->latitude,
+                    'longitude' => $res->longitude,
+                    'status' => $res->status,
+                    'address' => $res->adresse_name,
+                    'status_paiement' => $res->status_paiement,
+                    'slug' => $res->slug,
+                    'phone' => $res->user->phone
+                ];
+            }),
+            'list_marker_reservations_pending' => Reservation::get()
         ]);
     }
 }

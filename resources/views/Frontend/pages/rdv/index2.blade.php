@@ -121,9 +121,9 @@
 
         <nav class="navbar navbar-expand-lg navbar-landing fixed-top job-navbar is-sticky" id="navbar">
             <div class="container-fluid custom-container">
-                <a class="navbar-brand" href="index.html">
-                    <img src="assets/images/logo-dark.png" class="card-logo card-logo-dark" alt="logo dark" height="17">
-                    <img src="assets/images/logo-light.png" class="card-logo card-logo-light" alt="logo light" height="17">
+                <a class="navbar-brand" href="/">
+                    <img src="{{ asset('logo.jpg') }}" class="card-logo card-logo-dark" alt="logo dark" height="47">
+                    <img src="{{ asset('logo.jpg') }}" class="card-logo card-logo-light" alt="logo light" height="47">
                 </a>
                 <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="mdi mdi-menu"></i>
@@ -132,28 +132,28 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto mt-2 mt-lg-0" id="navbar-example">
                         <li class="nav-item">
-                            <a class="nav-link fw-semibold fs-15" href="#hero">Home</a>
+                            <a class="nav-link fw-semibold fs-15" href="#hero">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-semibold fs-15 active" href="#process">Process</a>
+                            <a class="nav-link fw-semibold fs-15 active" href="#process">Nos services </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-semibold fs-15" href="#categories">Categories</a>
+                            <a class="nav-link fw-semibold fs-15" href="#categories">Rendez-vous ?</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-semibold fs-15" href="#findJob">Find Jobs</a>
+                            <a class="nav-link fw-semibold fs-15" href="#findJob">A propos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-semibold fs-15" href="#candidates">Candidates</a>
+                            <a class="nav-link fw-semibold fs-15" href="#candidates">Contactez-nous</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link fw-semibold fs-15" href="#blog">Blog</a>
-                        </li>
+
                     </ul>
 
+                    @if(Auth::check() && Auth::user()->role_id == App\Models\Role::where('libelle','SuperAdmin')->first()?->id)
                     <div class="">
-                        <a href="auth-signin-basic.html" class="btn btn-soft-primary"><i class="ri-user-3-line align-bottom me-1"></i> Login &amp; Register</a>
+                        <a href="{{ route('dashboard.home') }}" class="btn btn-soft-primary"><i class="ri-user-3-line align-bottom me-1"></i>Tableau de bord</a>
                     </div>
+                    @endif
                 </div>
 
             </div>

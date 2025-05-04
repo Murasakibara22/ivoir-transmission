@@ -341,10 +341,10 @@
                                                 </thead>
                                                 <tbody>
                                                     @if($list_Reservations && count($list_Reservations) > 0)
-                                                    @foreach($list_Reservations as $order)
+                                                    @foreach($list_Reservations as $key => $order)
                                                     <tr>
                                                         <td>
-                                                            <a href="{{ route('dashboard.orders.show', $order->slug) }}" class="fw-medium link-primary">#{{Illuminate\Support\Str::limit($order->reference, 20)}}</a>
+                                                            <a href="{{ route('dashboard.reservations.show', $order->slug) }}" class="fw-medium link-primary">#{{ $key + 1  }}</a>
                                                         </td>
                                                         <td>
                                                             <div class="d-flex align-items-center">
@@ -359,7 +359,7 @@
                                                             <span class="text-success">{{number_format($order->montant, 0, ',', '.')}} fcfa</span>
                                                         </td>
                                                         <td>
-                                                            @if($order->status == "en attente")
+                                                            @if($order->status == "PENDING")
                                                             <span class="badge badge-soft-warning">{{$order->status}}</span>
                                                             @elseif($order->status == "TERMINEE")
                                                             <span class="badge badge-soft-success">{{$order->status}}</span>
@@ -370,7 +370,7 @@
                                                             @endif
                                                         </td>
                                                         <td>
-                                                            <a href="{{ route('dashboard.orders.show', $order->slug) }}" class="btn btn-sm btn-soft-primary"><i class="ri-eye-line align-middle me-1"></i>voir plus</a>
+                                                            <a href="{{ route('dashboard.reservations.show', $order->slug) }}" class="btn btn-sm btn-soft-primary"><i class="ri-eye-line align-middle me-1"></i>voir plus</a>
                                                         </td>
                                                     </tr><!-- end tr -->
                                                    @endforeach

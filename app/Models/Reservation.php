@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Service;
+use App\Models\Paiement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,6 +16,7 @@ class Reservation extends Model
     CONST CANCELED = "ANNULER";
     CONST COMPLETED = "TERMINEE";
     CONST VALIDATE = "VALIDEE";
+    CONST STARTED = "STARTED";
     CONST SUCCESSFUL = "SUCCESSFUL";
     CONST NOT_PAID = "NOT_PAID";
     CONST INITIATED = "INITIATED";
@@ -49,6 +51,10 @@ class Reservation extends Model
         'start_at' => 'datetime',
         'date_fin' => 'datetime',
     ];
+
+    public function paiements()  {
+        return $this->hasMany(Paiement::class);
+    }
 
     // ================================
     // Boot pour formater les snapshots avant save

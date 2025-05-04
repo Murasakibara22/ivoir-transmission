@@ -99,18 +99,18 @@ class PaymentController extends Controller
     function validatereservation($reservation) {
         $reservation = Reservation::find($reservation->id);
 
-        $reservation->status = Reservation::VALIDATE;
-        $reservation->status_payement = Reservation::SUCCESSFUL;
+        // $reservation->status = Reservation::VALIDATE;
+        $reservation->status_paiement = Reservation::SUCCESSFUL;
         $reservation->save();
     }
 
     function Cancelreservation($reservation)  {
-        $reservation->status_payement = Reservation::NOT_PAID;
+        $reservation->status_paiement = Reservation::NOT_PAID;
         $reservation->save();
     }
 
     function initiatedStatusreservation($reservation) {
-        $reservation->status_payement = Reservation::INITIATED;
+        $reservation->status_paiement = Reservation::INITIATED;
         $reservation->save();
     }
 }

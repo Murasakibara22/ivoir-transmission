@@ -56,7 +56,7 @@
                                                 </span>
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <p class="text-uppercase fw-semibold fs-12 text-muted mb-1">Commande en attente</p>
+                                                <p class="text-uppercase fw-semibold fs-12 text-muted mb-1">reservation en attente</p>
                                                 <h4 class=" mb-0"><span>{{ $pending_order }}</span></h4>
                                             </div>
                                             <div class="flex-shrink-0 align-self-end">
@@ -76,7 +76,7 @@
                                                 </span>
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <p class="text-uppercase fw-semibold fs-12 text-muted mb-1">Commande Terminé</p>
+                                                <p class="text-uppercase fw-semibold fs-12 text-muted mb-1">reservation Terminé</p>
                                                 <h4 class=" mb-0"><span >{{ $finish_order }}</span></h4>
                                             </div>
                                             <div class="flex-shrink-0 align-self-end">
@@ -99,16 +99,16 @@
                         <div class="card-header border-0">
                             <div class="row align-items-center gy-3">
                                 <div class="col-sm">
-                                    <h5 class="card-title mb-0">Historique des Commandes</h5>
+                                    <h5 class="card-title mb-0">Historique des reservations</h5>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body border border-dashed border-end-0 border-start-0">
-                            <form wire:submit.prevent='filterCommande'>
+                            <form wire:submit.prevent='filterreservation'>
                                 <div class="row g-3">
                                     <div class="col-xxl-5 col-sm-6">
                                         <div class="search-box">
-                                            <input type="text" wire:model="search_filter"  class="form-control search" placeholder="rechercher une commande....">
+                                            <input type="text" wire:model="search_filter"  class="form-control search" placeholder="rechercher une reservation....">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
@@ -126,7 +126,7 @@
                                                 <option value="en attente">En attente</option>
                                                 <option value="ANNULER">Annuler</option>
                                                 <option value="TERMINEE">Terminer</option>
-                                                <option value="VALIDEE">Valider</option>
+                                                <option value="STARTED">Valider</option>
                                             </select>
                                         </div>
                                     </div>
@@ -158,12 +158,12 @@
                                 <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link @if($currentPage == 'all') active @endif All py-3" wire:click="selectPage('all')"  href="javascript:void(0);" role="tab" @if($currentPage == 'all') aria-selected="true" @else aria-selected="false" @endif>
-                                            <i class="ri-store-2-fill me-1 align-bottom"></i> Toutes les commandes
+                                            <i class="ri-store-2-fill me-1 align-bottom"></i> Toutes les reservations
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link @if($currentPage == 'Terminer') active @endif py-3 Pickups"  wire:click="selectPage('Terminer')" href="javascript:void(0);" role="tab" @if($currentPage == 'Terminer') aria-selected="true" @else aria-selected="false" @endif>
-                                            <i class="ri-truck-line me-1 align-bottom"></i> Livrer <span class="badge bg-danger align-middle ms-1">2</span>
+                                            <i class="ri-truck-line me-1 align-bottom"></i> Terminer {{-- <span class="badge bg-danger align-middle ms-1">2</span> --}}
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -180,12 +180,13 @@
 
                                                 <th class="sort" data-sort="id">REF</th>
                                                 <th class="sort" data-sort="customer_name">Clients</th>
-                                                <th class="sort" data-sort="product_name">Produits</th>
-                                                <th class="sort" data-sort="date">Date</th>
+                                                <th class="sort" data-sort="date">Services</th>
+                                                <th class="sort" data-sort="date">A faire le </th>
                                                 <th class="sort" data-sort="amount">Montant</th>
-                                                <th class="sort" data-sort="payment">Methode de paiements</th>
+                                                <th class="sort" data-sort="payment">Status du paiements</th>
                                                 <th class="sort" data-sort="status">Status</th>
-                                                <th class="sort" data-sort="lieu">Lieu de livraison</th>
+                                                <th class="sort" data-sort="lieu">Adresses</th>
+                                                <th class="sort" data-sort="lieu">Date de création</th>
                                                 <th class="sort" data-sort="city">Action</th>
                                             </tr>
                                         </thead>
@@ -196,29 +197,44 @@
                                                         <td class="id">
                                                             <a href="apps-ecommerce-order-details.html" class="fw-medium link-primary">#{{ Illuminate\Support\Str::limit($order->reference, 10) }}</a>
                                                         </td>
-                                                        <td class="customer_name">{{$order->user->username}}</td>
-                                                        <td class="product_name">
-                                                            <button type="button" wire:click="showProducts({{$order->id}})" class="btn btn-link link-success fw-medium text-decoration-none"> voir les produits <i class="ri-arrow-right-s-line"></i></button>
+                                                        <td class="customer_name">{{$order->user->phone}}</td>
+                                                        <td>
+                                                            {{ $order->snapshot_services['libelle']}}
                                                         </td>
-                                                        <td class="date">{{ $order->created_at->diffForHumans()}}</td>
+                                                        <td class="date">{{ $order->date_debut->format('d, M Y') }} à {{ $order->date_debut->format('H:i') }} </td>
                                                         <td class="amount text-success">{{ number_format($order->montant , 0, ',', '.') }} fcfa</td>
-                                                        <td class="payment">{{$order->methode_payment}}</td>
+                                                        <td class="payment">
+                                                            @if($order->status_paiement == "NOT_PAID" || $order->status_paiement == "PENDING")
+                                                                <span class="badge badge-soft-danger text-uppercase">Non payé</span>
+
+                                                            @elseif($order->status_paiement == "SUCCESSFUL")
+                                                                <span class="badge badge-soft-success text-uppercase">Régler</span>
+
+                                                            @endif
+                                                        </td>
                                                         <td class="status">
-                                                            @if($order->status == "en attente")
+                                                            @if($order->status == "en attente" || $order->status == "PENDING")
                                                             <span class="badge badge-soft-warning text-uppercase">En attente</span>
                                                             @elseif($order->status == "TERMINEE")
                                                             <span class="badge badge-soft-success text-uppercase">Terminer</span>
                                                             @elseif($order->status == "ANNULER")
                                                             <span class="badge badge-soft-danger text-uppercase">Annuler</span>
-                                                            @elseif($order->status == "VALIDEE")
-                                                            <span class="badge badge-soft-info text-uppercase">Valider</span>
+                                                            @elseif($order->status == "STARTED")
+                                                            <span class="badge badge-soft-info text-uppercase">A débutée</span>
                                                             @endif
                                                         </td>
-                                                        <td class="status">{{$order->adresse ?? 'Récuperation (PDV)'}}</td>
+                                                        <td class="status">  @if($order->location )
+                                                            <a href="https://www.google.com/maps?q={{ $order->location['latitude']  }},{{ $order->location['longitude'] }}" target="_blank">{{ Illuminate\Support\Str::limit($order->adresse_name, 40) ?? $order->adresse_name}} </a>
+                                                            @else
+                                                            {{ Illuminate\Support\Str::limit($order->adresse_name, 40) ?? $order->adresse_name}}
+                                                            @endif </td>
+                                                        <td>
+                                                            {{ $order->created_at->diffForHumans() }}
+                                                        </td>
                                                         <td>
                                                             <ul class="list-inline hstack gap-2 mb-0">
                                                                 <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                                    <a href="{{ route('dashboard.orders.show', $order->slug) }}" class="text-primary d-inline-block">
+                                                                    <a href="{{ route('dashboard.reservations.show', $order->slug) }}" class="text-primary d-inline-block">
                                                                         <i class="ri-eye-fill fs-16"></i>
                                                                     </a>
                                                                 </li>
@@ -238,29 +254,47 @@
                                                             <td class="id">
                                                                 <a href="apps-ecommerce-order-details.html" class="fw-medium link-primary">#{{ Illuminate\Support\Str::limit($order->reference, 10) }}</a>
                                                             </td>
-                                                            <td class="customer_name">{{$order->user->username}}</td>
-                                                            <td class="product_name">
-                                                                <button type="button" wire:click="showProducts({{$order->id}})" class="btn btn-link link-success fw-medium text-decoration-none"> voir les produits <i class="ri-arrow-right-s-line"></i></button>
+                                                            <td class="customer_name">{{$order->user->phone}}</td>
+                                                            {{-- Je veux avoir le format 12, Decembre 2025 à 17h 20 --}}
+                                                            <td>
+                                                                {{ $order->snapshot_services['libelle']}}
                                                             </td>
-                                                            <td class="date">{{ $order->created_at->diffForHumans()}}</td>
+                                                            <td class="date">{{ $order->date_debut->format('d, M Y') }} à {{ $order->date_debut->format('H:i') }} </td>
                                                             <td class="amount text-success">{{ number_format($order->montant , 0, ',', '.') }} fcfa</td>
-                                                            <td class="payment">{{$order->methode_payment}}</td>
+                                                            <td class="payment">
+                                                                @if($order->status_paiement == "NOT_PAID" || $order->status_paiement == "PENDING")
+                                                                    <span class="badge badge-soft-danger text-uppercase">Non payé</span>
+
+                                                                @elseif($order->status_paiement == "SUCCESSFUL")
+                                                                    <span class="badge badge-soft-success text-uppercase">Régler</span>
+
+                                                                @endif
+                                                            </td>
                                                             <td class="status">
-                                                                @if($order->status == "en attente")
+                                                                @if($order->status == "en attente" || $order->status == "PENDING")
                                                                 <span class="badge badge-soft-warning text-uppercase">En attente</span>
                                                                 @elseif($order->status == "TERMINEE")
                                                                 <span class="badge badge-soft-success text-uppercase">Terminer</span>
                                                                 @elseif($order->status == "ANNULER")
                                                                 <span class="badge badge-soft-danger text-uppercase">Annuler</span>
-                                                                @elseif($order->status == "VALIDEE")
-                                                                <span class="badge badge-soft-info text-uppercase">Valider</span>
+                                                                @elseif($order->status == "STARTED")
+                                                                <span class="badge badge-soft-info text-uppercase">A débutée</span>
                                                                 @endif
                                                             </td>
-                                                            <td class="status">{{$order->adresse ?? 'Récuperation (PDV)'}}</td>
+                                                            <td class="status">
+                                                                @if($order->location )
+                                                                <a href="https://www.google.com/maps?q={{ $order->location['latitude']  }},{{ $order->location['longitude'] }}" target="_blank">{{ Illuminate\Support\Str::limit($order->adresse_name, 40) ?? $order->adresse_name}} </a>
+                                                                @else
+                                                                {{ Illuminate\Support\Str::limit($order->adresse_name, 40) ?? $order->adresse_name}}
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                {{ $order->created_at->diffForHumans() }}
+                                                            </td>
                                                             <td>
                                                                 <ul class="list-inline hstack gap-2 mb-0">
                                                                     <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                                        <a href="{{ route('dashboard.orders.show', $order->slug) }}" class="text-primary d-inline-block">
+                                                                        <a href="{{ route('dashboard.reservations.show', $order->slug) }}" class="text-primary d-inline-block">
                                                                             <i class="ri-eye-fill fs-16"></i>
                                                                         </a>
                                                                     </li>
@@ -281,7 +315,7 @@
                                         <div class="text-center">
                                             <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
                                             <h5 class="mt-2">Sorry! No Result Found</h5>
-                                            <p class="text-muted">We've searched more than 150+ Commandes We did not find any Commandes for you search.</p>
+                                            <p class="text-muted">We've searched more than 150+ reservations We did not find any reservations for you search.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -417,7 +451,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header p-3 bg-light">
-                    <h4 class="card-title  mb-0">Commande: <strong> # {{ $show_commande?->reference }} </strong> </h4>
+                    <h4 class="card-title  mb-0">reservation: <strong> # {{ $show_reservation?->reference }} </strong> </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -458,7 +492,7 @@
                                             <th colspan="2">Montant Total :</th>
                                             <td class="text-end">
                                                 <span class="fw-semibold h4 text-info">
-                                                    {{ number_format($show_commande?->montant, 0, ',','.') }} fcfa
+                                                    {{ number_format($show_reservation?->montant, 0, ',','.') }} fcfa
                                                 </span>
                                             </td>
                                         </tr>

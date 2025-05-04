@@ -9,6 +9,7 @@ use App\Models\Marque;
 use App\Models\Service;
 use Livewire\Component;
 use App\Models\Reservation;
+use Illuminate\Support\Str;
 use App\Models\TypeVehicule;
 use Livewire\WithFileUploads;
 use App\Services\PaymentService;

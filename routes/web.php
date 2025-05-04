@@ -3,6 +3,7 @@
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Paiement;
+use App\Models\Reservation;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,7 +12,7 @@ Route::get('/', function () {
 
 
 Route::get('connexion', function() {
-    if(auth()->check())  return redirect('/dashboard');
+    if(auth()->check())  return redirect('/');
 
     return view('auth.login');
 })->name('login');
@@ -65,6 +66,22 @@ Route::group(['middleware' => 'auth'], function () {
 
 
             Route::view('reservations','Dashboard.pages.Reservation.index')->name('reservations');
+            Route::get('reservations/show/{slug}', function ($slug) {
+                $reservation = Reservation::where('slug',$slug)->first();
+                if(!$reservation){
+                    return redirect()->back();
+                }
+
+                return view('Dashboard.pages.reservation.show', compact('reservation'));
+             })->name('reservations.show');
+             Route::get('reservations/invoice/{slug}',  function ($slug) {
+
+                $show_reservation = Reservation::where('slug', $slug)->first();
+                if(!$show_reservation){
+                    return redirect()->back();
+                }
+                return view('Dashboard.pages.reservation.invoice', compact('show_reservation'));
+            })->name('reservations.invoice');
 
         });
     });

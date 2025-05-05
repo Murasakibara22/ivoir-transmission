@@ -86,6 +86,12 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.villes' ? 'active' : '' }}" href="{{ route('dashboard.villes') }}" role="button">
+                        <i class="ri-road-map-line"></i> <span data-key="t-dashboards">Villes / Communes</span>
+                    </a>
+                </li>
+
                 <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-components">Paramètres système</span></li>
 
                 <li class="nav-item">

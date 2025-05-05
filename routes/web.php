@@ -63,6 +63,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::view('avis','Dashboard.pages.avis.index')->name('avis');
             Route::view('etat_financiers','Dashboard.pages.finance.index')->name('finance');
             Route::view('services','Dashboard.pages.service.index')->name('services');
+            Route::view('ville-communes','Dashboard.pages.Ville.index')->name('villes');
 
 
             Route::view('reservations','Dashboard.pages.Reservation.index')->name('reservations');

@@ -508,8 +508,94 @@
 @push('scripts')
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNZfIwGs9Y1hlRDCyiw3LV8dpLu1biIbM&libraries=places" async></script>
 
-
 <script>
+
+async function initReservationMap() {
+    const { Map } = await google.maps.importLibrary("maps");
+
+    var directionsService = new google.maps.DirectionsService();
+    var directionsRenderer = new google.maps.DirectionsRenderer({
+        polylineOptions: {
+            strokeColor: 'blue' // Couleur de la ligne d'itinéraire
+        },
+        suppressMarkers: true // Supprime les marqueurs par défaut
+    });
+
+    var listCustomer = @json($show_reservation->location);
+
+
+    const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: { lat: 5.3432680297640, lng: -3.996286299639 },
+        mapTypeId: 'roadmap'
+    });
+
+    directionsRenderer.setMap(map);
+
+
+    var request = {
+        origin: { lat: 5.355991574870066, lng: -3.9784689426916398 },
+        destination: { lat: Number(listCustomer.latitude), lng: Number(listCustomer.longitude) },
+        travelMode: 'DRIVING'
+    };
+
+
+    const infoWindow = new google.maps.InfoWindow();
+
+    directionsService.route(request, function(result, status) {
+        if (status == 'OK') {
+            directionsRenderer.setDirections(result);
+
+            // Marqueur pour le point de départ
+            const startMarker = new google.maps.Marker({
+                position: request.origin,
+                map: map,
+                title: "Ivoire transmission",
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png", // Icône personnalisée pour le départ
+                    scaledSize: new google.maps.Size(40, 40)
+                }
+            });
+
+
+            // Afficher les informations au clic sur le marqueur de départ
+            startMarker.addListener("click", () => {
+                infoWindow.setContent("Ivoire transmission"); // Affiche l'adresse de départ
+                infoWindow.open(map, startMarker);
+            });
+
+            const iconTravail = 'data:image/svg+xml;base64,' + btoa(`
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-276.95 -276.95 1023.30 1023.30" xml:space="preserve" width="64px" height="64px" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle style="fill:#345e31;" cx="234.7" cy="234.7" r="234.7"></circle> <path style="fill:#296a34;" d="M78,409.4c41.6,37.3,96.5,60,156.7,60s115.2-22.7,156.7-60H78z"></path> <polygon style="fill:#e96958;" points="227.9,119.7 227.9,181 227.9,242.3 355.1,242.3 331.6,181 355.1,119.7 "></polygon> <rect x="150.6" y="106.8" style="fill:#ec4e32;" width="95.8" height="122.7"></rect> <g> <polygon style="fill:#e6e6e6;" points="246.4,229.4 227.9,242.3 227.9,229.4 "></polygon> <path style="fill:#e6e6e6;" d="M158.2,85.3c0-6.7-5.5-12.2-12.2-12.2s-12.2,5.5-12.2,12.2c0,5.1,3.2,9.5,7.6,11.3v313.2h9.1V96.6 C155,94.8,158.2,90.4,158.2,85.3z"></path> </g> </g></svg>
+            `);
+
+            // Marqueur pour le point de fin
+            const endMarker = new google.maps.Marker({
+                position: request.destination,
+                map: map,
+                title: "Lieu de la prestation",
+                icon: iconTravail
+            });
+
+            // Afficher les informations au clic sur le marqueur de destination
+            endMarker.addListener("click", () => {
+                infoWindow.setContent("Lieu de la prestation : {{$show_reservation->location['adresse_name'] }}"); // Affiche l'adresse d'arrivée
+                infoWindow.open(map, endMarker);
+            });
+
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+        //init la MAp Générale
+        window.setTimeout(() => {
+            initReservationMap();
+        },1000);
+    });
+
+</script>
+
+{{-- <script>
 
 
     function initReservationMap() {
@@ -575,7 +661,7 @@
             initReservationMap();
         },1000);
     });
-</script>
+</script> --}}
 
 
 @endpush

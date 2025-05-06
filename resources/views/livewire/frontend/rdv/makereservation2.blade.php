@@ -172,7 +172,7 @@
                                                     @error('AsImages') <span class="text-danger">{{ $message }}</span> @enderror
                                                 </div>
 
-                                                <div class="col-12">
+                                                <div class="col-12"> 
                                                     <div class="mb-3">
                                                         <label for="billinginfo-address" class="form-label">Détails</label>
                                                         <textarea class="form-control" wire:model="detail_vehicule" id="billinginfo-address" placeholder="Plus de détails" rows="3"></textarea>

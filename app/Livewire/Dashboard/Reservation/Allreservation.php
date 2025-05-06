@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 use App\Mail\ConfirmationDevis;
 use App\Livewire\UtilsSweetAlert;
 use Illuminate\Support\Facades\Mail;
+use App\Services\SendSMS;
 
 
 class Allreservation extends Component
@@ -91,6 +92,8 @@ class Allreservation extends Component
         ];
 
         Mail::to($user->email)->send(new ConfirmationDevis($data));
+
+        // SendSMS::send("+225", $user->phone_number, "Votre devis est de ".number_format($reservation->montant, 2, ',', '.')." FCFA , veuillez vous rendre sur ".url(). " pour éffectuer le paiement et valider votre réservation");
 
         $this->reset('montant_change');
         $this->closeModal_after_edit('add_montant');

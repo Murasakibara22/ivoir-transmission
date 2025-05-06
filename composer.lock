@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "029efc70676165f357da1659695a1944",
+    "content-hash": "8655beaed3bfe527867f8523ec4ebe25",
     "packages": [
         {
             "name": "brick/math",
@@ -3696,6 +3696,47 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
+        },
+        {
+            "name": "reactsms_sdk_php/reactsms_sdk_php",
+            "version": "v1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hub-coffee/reactsms_sdk_php.git",
+                "reference": "24ce9bdff00c9181f1a11ff9d37459116dc15aa2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hub-coffee/reactsms_sdk_php/zipball/24ce9bdff00c9181f1a11ff9d37459116dc15aa2",
+                "reference": "24ce9bdff00c9181f1a11ff9d37459116dc15aa2",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.0",
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "reactsms_sdk_php\\SDK\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "React SMS",
+                    "email": "contact@react-sms.com"
+                }
+            ],
+            "description": "SDK PHP pour React SMS",
+            "support": {
+                "issues": "https://github.com/hub-coffee/reactsms_sdk_php/issues",
+                "source": "https://github.com/hub-coffee/reactsms_sdk_php/tree/v1.0.4"
+            },
+            "time": "2024-08-21T10:12:08+00:00"
         },
         {
             "name": "symfony/clock",

@@ -56,7 +56,7 @@ trait UtilsSweetAlert {
         ]);
     }
 
-    
+
     public function launch_offcanvas(string $nom_modal) : void {
         $this->dispatch('OpenOffcanvas', [
             'id_offcanvas' => $nom_modal,
@@ -65,6 +65,16 @@ trait UtilsSweetAlert {
 
     public function sweetAlert_confirm_options($model, string $title, string $message , $event_retour, $type) : void  {
         $this->dispatch('swal:modalDeleteOptions', [
+            'title' => $title,
+            'text' => $message,
+            'type' => $type,
+            'id' => $model->id ,
+            'eventRetour' =>  $event_retour,
+        ]);
+    }
+
+    public function sweetAlert_confirm_success($model, string $title, string $message , $event_retour, $type) : void  {
+        $this->dispatch('swal:modalConfirmOptions', [
             'title' => $title,
             'text' => $message,
             'type' => $type,

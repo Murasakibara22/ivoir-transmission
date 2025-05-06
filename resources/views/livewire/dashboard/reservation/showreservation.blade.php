@@ -45,11 +45,15 @@
                                                     <tr>
                                                         <th scope="row" style="width: 200px;">
                                                             Services</th>
-                                                        <td>{{$show_reservation->snapshot_services['libelle']}}</td>
+                                                        <td>{{$show_reservation->snapshot_services ? $show_reservation->snapshot_services['libelle'] : 'Entretien'}}</td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="row">Adresse</th>
-                                                        <td>{{$show_reservation->adresse_name}}</td>
+                                                        <th scope="row">Commune / Adresse</th>
+                                                        <td> {{$show_reservation->commune}} /  {{$show_reservation->adresse_name}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Numéro de chassis</th>
+                                                        <td>{{$show_reservation->chassis}}</td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">A faire le </th>

@@ -15,6 +15,7 @@ use Livewire\WithFileUploads;
 use App\Services\PaymentService;
 use App\Livewire\UtilsSweetAlert;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Commune;
 use Illuminate\Support\Facades\Hash;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -25,15 +26,18 @@ class Makereservation2 extends Component
     use UtilsSweetAlert, WithFileUploads;
 
 
-    public $adresse_livraison, $date_rdv, $phone, $location, $detail_rdv, $select_service;
+    public $adresse_livraison, $date_rdv, $time_rdv, $phone, $location, $detail_rdv, $select_service;
     public $montant_service = 50000;
 
+    public $select_commune ;
+    public $joursAutorises = [];
+
     //Vehicule
-    public $select_marque, $select_type , $detail_vehicule;
+    public $select_marque, $select_type , $detail_vehicule , $chassis;
     public $AsImages = [];
 
     //Paiement
-    public $username , $contact_livraison;
+    public $username , $contact_livraison, $email_livraison;
 
     public $dialCode = "225";
 
@@ -53,11 +57,54 @@ class Makereservation2 extends Component
         }
     }
 
+
+
+    public function updatedSelectCommune()
+    {
+        $commune = Commune::find($this->select_commune);
+
+        if (!$commune || !$commune->jours) {
+            $this->joursAutorises = [];
+            return;
+        }
+
+        // Conversion sûre en tableau
+        $joursBruts = is_string($commune->jours) ? json_decode($commune->jours, true) : $commune->jours;
+
+        if (!is_array($joursBruts)) {
+            $this->joursAutorises = [];
+            return;
+        }
+
+        setlocale(LC_TIME, 'fr_FR.UTF-8');
+
+        $joursPermis = collect($joursBruts)->map(fn($jour) => strtolower($jour));
+        $dates = [];
+
+        $today = Carbon::today();
+        $endOfMonth = Carbon::now()->endOfMonth();
+
+        for ($date = $today->copy(); $date->lte($endOfMonth); $date->addDay()) {
+            $timestamp = $date->getTimestamp();
+            $jourEnCours = strtolower(strftime('%A', $timestamp));
+
+            if ($joursPermis->contains($jourEnCours)) {
+                $dates[$date->format('Y-m-d')] = utf8_encode(strftime('%A %d %B %Y', $timestamp));
+            }
+        }
+
+        $this->joursAutorises = $dates;
+    }
+
+
+
+
     public function SubmitRendezVous(){
         $this->validate([
-            'select_service' => 'required|exists:services,id',
             'adresse_livraison' => 'required',
             'date_rdv' => 'required',
+            'time_rdv' => 'required',
+            'chassis' => 'required',
             'contact_livraison' => 'required|numeric|min:8',
         ],[
             'select_service.required' => 'Le service est obligatoire',
@@ -68,6 +115,7 @@ class Makereservation2 extends Component
             'contact_livraison.required' => 'Le contact est obligatoire',
             'contact_livraison.min' => 'Le contact doit etre superieur ou egal a 8',
             'contact_livraison.numeric' => 'Le contact doit etre numerique',
+            'chassis.required' => 'Le chassis est obligatoire',
         ]);
 
 
@@ -115,14 +163,15 @@ class Makereservation2 extends Component
 
 
         $reservation = new Reservation();
-        $reservation->montant = $this->montant_service;
+        // $reservation->montant = $this->montant_service;
+        $reservation->chassis = $this->chassis;
         $reservation->description = $description;
         $reservation->adresse_name = $this->adresse_livraison;
         $reservation->location = $this->location;
-        $reservation->date_debut = Carbon::parse($this->date_rdv);
+        $reservation->date_debut = Carbon::parse($this->date_rdv . ' ' . $this->time_rdv);
         $reservation->user_id = auth()->user()->id;
         $reservation->name_prestataire =  auth()->user()->username ?? null;
-        $reservation->service_id = $this->select_service;
+        $reservation->service_id = $this->select_service ?? null;
         $reservation->slug = generateSlug('Reservation', $this->adresse_livraison);
 
 
@@ -150,11 +199,14 @@ class Makereservation2 extends Component
             }
          $reservation->images = json_encode($table_img);
         }
+        $reservation->commune = Commune::find($this->select_commune)->nom;
         $reservation->save();
 
-        $url_payment = PaymentService::store($reservation->id, $this->contact_livraison);
-        return redirect()->to($url_payment);
+        // $url_payment = PaymentService::store($reservation->id, $this->contact_livraison);
+        // return redirect()->to($url_payment);
 
+        $this->send_event_at_sweet_alert_not_timer('Réservation enregistrée', 'Votre réservation a été enregistrée avec succès, vous recevrez un SMS et un lien de paiement pour effectuer le paiement.', 'success');
+        $this->reset();
     }
 
     function loginUser()  {
@@ -167,6 +219,7 @@ class Makereservation2 extends Component
                 'phone' => $contact,
                 'dial_code' => $this->dialCode,
                 'phone_number' => $this->contact_livraison,
+                'email' => $this->email_livraison ?? null,
                 'password' => Hash::make(Str::random(10)),
                 'username' => generateNameCustomer(),
                 'slug' => generateSlug('User', generateNameCustomer()),
@@ -184,6 +237,7 @@ class Makereservation2 extends Component
             'list_service' => Service::OrderBy('libelle', 'asc')->get(),
             'list_marque' => Marque::OrderBy('libelle', 'asc')->get(),
             'list_type' => TypeVehicule::OrderBy('libelle', 'asc')->get(),
+            'list_commune' => Commune::OrderBy('nom', 'asc')->get()
         ]);
     }
 }

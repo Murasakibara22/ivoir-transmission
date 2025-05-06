@@ -113,6 +113,39 @@ document.addEventListener('livewire:init', () => {
           });
     })
 
+    Livewire.on('swal:modalConfirmOptions', (event) => {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: "btn btn-success",
+              cancelButton: "btn btn-danger me-3"
+            },
+            buttonsStyling: false
+          });
+          swalWithBootstrapButtons.fire({
+            title: event[0].title,
+            text: event[0].text,
+            icon: event[0].type,
+            showCancelButton: true,
+            confirmButtonText: "Oui, Confirmer !",
+            cancelButtonText: "Non, Annuler!",
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+                console.log(event[0].eventRetour);
+                Livewire.dispatch(event[0].eventRetour, { id: event[0].id} )
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire({
+                title: "Anuler",
+                text: "Cette action vient d'être annulée",
+                icon: "error"
+              });
+            }
+          });
+    })
+
 
 
 });

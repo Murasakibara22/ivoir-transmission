@@ -44,7 +44,7 @@ class Allservice extends Component
 
     protected $rules = [
         'libelle' => 'required|string|max:255|unique:services,libelle|min:3',
-        'category_id' => 'required|exists:categorie_services,id',
+        // 'category_id' => 'required|exists:categorie_services,id',
     ];
 
     protected $messages = [
@@ -77,6 +77,15 @@ class Allservice extends Component
     public function store () {
         $this->validate();
 
+        if($this->category_id){
+            $this->validate([
+                'category_id' => 'required|exists:categorie_services,id',
+            ],[
+                'category_id.required' => 'La catégorie est obligatoire',
+                'category_id.exists' => 'La catégorie n\'existe pas',
+            ]);
+        }
+
         $name = htmlspecialchars($this->libelle);
 
         $service = new Service();
@@ -88,7 +97,7 @@ class Allservice extends Component
         }
         $service->description = $this->description;
 
-        $service->categorie_service_id = $this->category_id;
+        $service->categorie_service_id = $this->category_id ?? NULL;
         $service->slug = generateSlug('Service' , $service->libelle);
         $service->save();
 
@@ -124,20 +133,21 @@ class Allservice extends Component
 
         $this->validate([
             'libelle' => 'required|string|max:255|min:3',
-            'category_id' => 'required|exists:categorie_services,id',
         ],[
             'libelle.required' => 'Le libelle est obligatoire',
             'libelle.max' => 'Le libelle ne doit pas dépasser 255 caractères',
             'libelle.min' => 'Le libelle doit avoir au moins 3 caractères',
             'libelle.unique' => 'Ce Service avec pour libelle : :input existe déja',
-            'type.required' => 'Le type est obligatoire',
-            'category_id.required' => 'La catégorie est obligatoire',
-            'category_id.exists' => 'La catégorie n\'existe pas',
-            'price.required' => 'Le prix est obligatoire',
-            'price.numeric' => 'Le prix doit être un nombre',
-            'price.min' => 'Le prix doit être supérieur ou égal à 100',
         ]);
 
+        if($this->category_id){
+            $this->validate([
+                'category_id' => 'required|exists:categorie_services,id',
+            ],[
+                'category_id.required' => 'La catégorie est obligatoire',
+                'category_id.exists' => 'La catégorie n\'existe pas',
+            ]);
+        }
 
         $service_exist = Service::where('libelle', $this->libelle)->where('id', '!=', $this->id_service)->first();
         if($service_exist){
@@ -155,7 +165,7 @@ class Allservice extends Component
         }
         $service->description = $this->description;
 
-        $service->categorie_service_id = $this->category_id;
+        $service->categorie_service_id = $this->category_id ?? NULL;
         $service->slug = generateSlug('Service' , $service->libelle);
         $service->update();
 

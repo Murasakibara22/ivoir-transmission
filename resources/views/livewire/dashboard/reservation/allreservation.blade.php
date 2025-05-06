@@ -188,12 +188,13 @@
 
                                                 <th class="sort" data-sort="id">REF</th>
                                                 <th class="sort" data-sort="customer_name">Clients</th>
-                                                <th class="sort" data-sort="date">Services</th>
+                                                <th class="sort" data-sort="date">Chassis</th>
                                                 <th class="sort" data-sort="date">A faire le </th>
                                                 <th class="sort" data-sort="amount">Montant</th>
                                                 <th class="sort" data-sort="payment">Status du paiements</th>
                                                 <th class="sort" data-sort="status">Status</th>
                                                 <th class="sort" data-sort="lieu">Adresses</th>
+                                                <th class="sort" data-sort="lieu">Commune</th>
                                                 <th class="sort" data-sort="lieu">Date de création</th>
                                                 <th class="sort" data-sort="city">Action</th>
                                             </tr>
@@ -207,10 +208,18 @@
                                                         </td>
                                                         <td class="customer_name">{{$order->user->phone}}</td>
                                                         <td>
-                                                            {{ $order->snapshot_services['libelle']}}
+                                                            {{ $order->chassis ?? '' }}
                                                         </td>
                                                         <td class="date">{{ $order->date_debut->format('d, M Y') }} à {{ $order->date_debut->format('H:i') }} </td>
-                                                        <td class="amount text-success">{{ number_format($order->montant , 0, ',', '.') }} fcfa</td>
+                                                        <td class="amount text-success">
+                                                        @if($order->montant)
+                                                            {{ number_format($order->montant , 0, ',', '.') }} fcfa
+                                                        @else
+                                                             <a href="javascript:void(0)" wire:click="addMontant({{ $order->id }})"  class="text-primary d-inline-block edit-item-btn">
+                                                                <i class="ri-edit-fill fs-16"></i>
+                                                            </a>
+                                                         @endif
+                                                        </td>
                                                         <td class="payment">
                                                             @if($order->status_paiement == "NOT_PAID" || $order->status_paiement == "PENDING")
                                                                 <span class="badge badge-soft-danger text-uppercase">Non payé</span>
@@ -235,7 +244,11 @@
                                                             <a href="https://www.google.com/maps?q={{ $order->location['latitude']  }},{{ $order->location['longitude'] }}" target="_blank">{{ Illuminate\Support\Str::limit($order->adresse_name, 40) ?? $order->adresse_name}} </a>
                                                             @else
                                                             {{ Illuminate\Support\Str::limit($order->adresse_name, 40) ?? $order->adresse_name}}
-                                                            @endif </td>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            {{ $order->commune ?? '' }}
+                                                        </td>
                                                         <td>
                                                             {{ $order->created_at->diffForHumans() }}
                                                         </td>
@@ -265,10 +278,18 @@
                                                             <td class="customer_name">{{$order->user->phone}}</td>
                                                             {{-- Je veux avoir le format 12, Decembre 2025 à 17h 20 --}}
                                                             <td>
-                                                                {{ $order->snapshot_services['libelle']}}
+                                                                {{ $order->chassis ?? '' }}
                                                             </td>
                                                             <td class="date">{{ $order->date_debut->format('d, M Y') }} à {{ $order->date_debut->format('H:i') }} </td>
-                                                            <td class="amount text-success">{{ number_format($order->montant , 0, ',', '.') }} fcfa</td>
+                                                            <td class="amount text-success">
+                                                                @if($order->montant)
+                                                                    {{ number_format($order->montant , 0, ',', '.') }} fcfa
+                                                                @else
+                                                                     <a href="javascript:void(0)" wire:click="addMontant({{ $order->id }})"  class="text-primary d-inline-block edit-item-btn">
+                                                                        <i class="ri-edit-fill fs-16"></i>
+                                                                    </a>
+                                                                 @endif
+                                                            </td>
                                                             <td class="payment">
                                                                 @if($order->status_paiement == "NOT_PAID" || $order->status_paiement == "PENDING")
                                                                     <span class="badge badge-soft-danger text-uppercase">Non payé</span>
@@ -295,6 +316,9 @@
                                                                 @else
                                                                 {{ Illuminate\Support\Str::limit($order->adresse_name, 40) ?? $order->adresse_name}}
                                                                 @endif
+                                                            </td>
+                                                            <td>
+                                                                {{ $order->commune ?? '' }}
                                                             </td>
                                                             <td>
                                                                 {{ $order->created_at->diffForHumans() }}
@@ -511,6 +535,51 @@
                         </div>
                         <!-- end card body -->
                     </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div wire:ignore.self class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="add_montant" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered ">
+            <div class="modal-content">
+                   {{-- chargement --}}
+                   <div wire:loading >
+                        <div class="overlay">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+
+                <div class="modal-header p-3 bg-light">
+                    <h4 class="card-title mb-0">Ajouter les Frais de services pour la reservation: <strong> # {{ $show_reservation?->reference }} </strong></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                {{-- <div class="alert alert-success  rounded-0 mb-0">
+                    <p class="mb-0">Up to <span class="fw-semibold">50% OFF</span>, Hurry up before the stock ends</p>
+                </div> --}}
+
+                <div class="modal-body text-center p-4">
+                    <form wire:submit.prevent='SubmitMontnantChange'>
+                        <div class="row">
+
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="form-label text-start">Montant </label>
+                                    <input type="number" class="form-control" wire:model='montant_change' min="0" placeholder="Entrer un montant ( Ex: 50000 )" id="firstNameinput">
+                                    @error('montant_change')
+                                        <span class="feedback-text">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-lg-12">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Valider</button>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

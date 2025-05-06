@@ -55,58 +55,75 @@
                                 <div class="tab-content">
                                     <div class="tab-pane fade show active" id="pills-bill-info" role="tabpanel" aria-labelledby="pills-bill-info-tab">
                                         <div>
-                                            <h5 class="mb-1 text-primary">INFORMATIONS DUR LE RENDEZ-VOUS</h5>
+                                            <h5 class="mb-1 text-primary">INFORMATIONS SUR LE RENDEZ-VOUS</h5>
                                             <p class="text-muted mb-4">s'il vous plaît remplissez les informations ci-dessous.</p>
                                         </div>
 
                                         <div>
 
                                             <div class="row">
-                                                <div class="col-sm-6">
+
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="country" class="form-label">Communes <span class="text-danger">*</span> </label>
+                                                        <select  class="form-select" id="country"  wire:model.live="select_commune">
+                                                            <option value="">Sélectionnez...</option>
+                                                            @if($list_commune && $list_commune->count() > 0)
+                                                                @foreach($list_commune as $commune)
+                                                                        <option value="{{$commune->id}}">{{$commune->nom}}</option>
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
+                                                    </div>
+                                                    @error('select_commune') <span class="text-danger">{{ $message }}</span> @enderror
+                                                </div>
+
+                                                <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="billinginfo-phone" class="form-label">Adresse <span class="text-danger">*</span> </label>
-                                                        <input type="text" class="form-control" wire:model="adresse_livraison" placeholder="Renseignez une adresse" id="autocomplete">
+                                                        <input type="text" class="form-control" wire:model="adresse_livraison" placeholder="Renseignez une adresse" autocomplete="false" id="autocomplete">
                                                     </div>
                                                     @error('adresse_livraison') <span class="text-danger">{{ $message }}</span> @enderror
                                                 </div>
 
 
-                                                <div class="col-sm-6">
+
+
+                                                <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="billinginfo-phone" class="form-label">Date du rendez-vous <span class="text-danger">*</span> </label>
-                                                        <input type="datetime-local" wire:model="date_rdv" class="form-control" min="{{ now()->format('Y-m-d\TH:i') }}" placeholder="Enter phone no.">
-                                                    </div>
-                                                    @error('date_rdv') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label for="country" class="form-label">Services <span class="text-danger">*</span> </label>
-                                                        <select  class="form-select" id="country"  wire:model.live="select_service">
+                                                        <select  class="form-select" id="country"  wire:model.live="date_rdv">
                                                             <option value="">Sélectionnez...</option>
-                                                            @if($list_service && $list_service->count() > 0)
-                                                                @foreach($list_service as $service)
-                                                                        <option value="{{$service->id}}">{{$service->libelle}}</option>
+                                                            @if($joursAutorises && count($joursAutorises) > 0)
+                                                                @foreach($joursAutorises as $date => $label)
+                                                                    <option value="{{ $date }}">{{ $label }}</option>
                                                                 @endforeach
                                                             @endif
                                                         </select>
                                                     </div>
-                                                    @error('select_service') <span class="text-danger">{{ $message }}</span> @enderror
+                                                    @error('date_rdv') <span class="text-danger">{{ $message }}</span> @enderror
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <label for="billinginfo-phone" class="form-label">Heure du rendez-vous <span class="text-danger">*</span> </label>
+                                                    <div class="mb-3">
+                                                        <input type="time" wire:model="time_rdv" class="form-control" min="{{ now()->format('H:i') }}" placeholder="Enter  no.">
+                                                    </div>
                                                 </div>
 
 
-                                                <div class="col-lg-6">
+
+
+                                                {{-- <div class="col-lg-6">
                                                     <div class="form-check card-radio">
                                                         <input id="shippingMethod01" name="shippingMethod" type="radio" class="form-check-input" checked="">
                                                         <label class="form-check-label" for="shippingMethod01">
                                                             <span class="fs-18 float-end mt-2 text-wrap d-block">{{number_format($montant_service,0,'.',' ')}} fcfa</span>
                                                             <span class="fs-14 mb-1 text-wrap text-primary d-block">Frais de services
                                                                 </span>
-                                                            {{-- <span class="text-muted fw-normal text-wrap d-block">Expected
-                                                                Delivery 3 to 5 Days</span> --}}
                                                         </label>
                                                     </div>
-                                                </div>
+                                                </div> --}}
 
                                             </div>
 
@@ -123,21 +140,6 @@
                                             <div class="row mt-4">
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
-                                                        <label for="country" class="form-label">Type de voiture <span class="text-muted"> (FACULTATIF)</span> </label>
-                                                        <select class="form-select" id="country"  wire:model="select_type">
-                                                            <option selected>Sélectionnez...</option>
-                                                            @if($list_type && $list_type->count() > 0)
-                                                                @foreach($list_type as $type)
-                                                                <option value="{{$type->id}}">{{$type->libelle}}</option>
-                                                                @endforeach
-                                                            @endif
-                                                        </select>
-                                                    </div>
-                                                    @error('select_type') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
                                                         <label for="state" class="form-label">Marques <span class="text-muted"> (FACULTATIF)</span> </label>
                                                         <select class="form-select" id="state"  wire:model="select_marque">
                                                             <option value="">Selectionnez...</option>
@@ -150,6 +152,17 @@
                                                     </div>
                                                     @error('select_marque') <span class="text-danger">{{ $message }}</span> @enderror
                                                 </div>
+
+
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="country" class="form-label">Numéro de chassis<span class="text-danger">*</span> </label>
+                                                        <input type="text" wire:model="chassis" class="form-control" id="billinginfo-firstName" placeholder="Entrer le numéro de chassis" autocomplete="false">
+                                                    </div>
+                                                    @error('chassis') <span class="text-danger">{{ $message }}</span> @enderror
+                                                </div>
+
+
 
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
@@ -176,7 +189,6 @@
 
                                             <div>
                                                 <h5 class="mb-1 mt-3 text-primary">Moyens de paiements</h5>
-                                                <p class="text-muted mb-4">Please select and enter your billing information</p>
                                             </div>
 
                                             <div class="row g-4">
@@ -209,7 +221,7 @@
                                             <div class="collapse show" id="paymentmethodCollapse">
                                                 <div class="card p-4 border shadow-none mb-0 mt-4">
                                                     <div class="row gy-3">
-                                                            <div class="col-sm-6">
+                                                            <div class="col-lg-4">
                                                                 <div class="mb-3">
                                                                     <label for="billinginfo-firstName" class="form-label">Nom & Prénoms <span class="text-muted">( FACULTATIF )</span> </label>
                                                                     <input type="text" wire:model="username" class="form-control" id="billinginfo-firstName" placeholder="Enter first name" value="">
@@ -217,13 +229,23 @@
                                                                 @error('username') <span class="text-danger">{{ $message }}</span> @enderror
                                                             </div>
 
-                                                            <div class="col-sm-6">
+                                                            <div class="col-lg-4">
                                                                 <div class="mb-3" wire:ignore>
                                                                     <label for="billinginfo-phone" class="form-label">Contact <span class="text-danger">*</span> </label>
                                                                     <input type="text" class="form-control"  wire:model="contact_livraison"  placeholder="Entrer votre numéro de téléphone...">
                                                                     {{-- <p id="output">Please enter a valid number below</p>            --}}
                                                                 </div>
                                                                 @error('contact_livraison') <span class="text-danger">{{ $message }}</span> @enderror
+
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="mb-3" wire:ignore>
+                                                                    <label for="billinginfo-phone" class="form-label">Email <span class="text-muted">( FACULTATIF )</span> </label>
+                                                                    <input type="text" class="form-control"  wire:model="email_livraison"  placeholder="Entrer votre adresse email...">
+                                                                    {{-- <p id="output">Please enter a valid number below</p>            --}}
+                                                                </div>
+                                                                @error('email_livraison') <span class="text-danger">{{ $message }}</span> @enderror
 
                                                             </div>
 
@@ -390,7 +412,7 @@
 
                         <div class="card">
                             <div class="card-header border-bottom-dashed">
-                                <h5 class="card-title mb-0">Order Summary</h5>
+                                <h5 class="card-title mb-0">Sommes de la reservation</h5>
                             </div>
 
                             <div class="card-body pt-2">

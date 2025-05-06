@@ -23,6 +23,7 @@ class Reservation extends Model
 
     protected $fillable = [
         'montant',
+        'chassis',
         'status',
         'status_paiement',
         'description',
@@ -34,6 +35,7 @@ class Reservation extends Model
         'date_fin',
         'user_id',
         'service_id',
+        'commune',
         'snapshot_services',
         'snapshot_users',
         'snapshot_vehicule',

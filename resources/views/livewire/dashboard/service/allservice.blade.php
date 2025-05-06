@@ -155,7 +155,7 @@
                                             </td>
 
                                             <td>
-                                                {{ $service->categorieService->libelle }}
+                                                {{ $service->categorieService ?  $service->categorieService->libelle : 'Aucune' }}
                                             </td>
                                             <td>
                                                 <button class="btn btn-sm btn-warning" wire:click="edit({{ $service->id }})">

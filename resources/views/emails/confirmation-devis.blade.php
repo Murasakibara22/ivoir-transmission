@@ -86,7 +86,7 @@
 
 
 
-Nous tenons à vous informer que votre transaction de  <b> {{ number_format($data['montant'], 2, ',', '.')}} EUR </b>  vers le : <b> {{ $data['chassis']}} </b> a échoué en raison de problèmes techniques. Nous comprenons la gêne que cela peut causer et nous faisons tout notre possible pour résoudre cette situation dans les plus brefs délais.
+Nous tenons à vous informer que votre transaction de  <b> {{ number_format($data['montant'], 2, ',', '.')}} EUR </b>  vers le : <b> <a href="{{ $data['url_payment']}}" target="_blank">payez ici </a>  </b> a échoué en raison de problèmes techniques. Nous comprenons la gêne que cela peut causer et nous faisons tout notre possible pour résoudre cette situation dans les plus brefs délais.
 
 Vous recevrez un nouvel e-mail dès que cette panne sera réglée, et vous pourrez alors réessayer votre transaction.
 

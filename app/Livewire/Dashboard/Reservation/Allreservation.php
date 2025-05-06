@@ -3,13 +3,14 @@
 namespace App\Livewire\Dashboard\Reservation;
 
 use Livewire\Component;
+use App\Services\SendSMS;
 use App\Models\Reservation;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Mail\ConfirmationDevis;
+use App\Services\PaymentService;
 use App\Livewire\UtilsSweetAlert;
 use Illuminate\Support\Facades\Mail;
-use App\Services\SendSMS;
 
 
 class Allreservation extends Component
@@ -82,10 +83,12 @@ class Allreservation extends Component
         }
 
         $user = $reservation->user()->first();
+        $url_payment = PaymentService::store($reservation->id, $user->phone);
+
         $data = [
             'montant' => $reservation->montant,
             'chassis' => $reservation->chassis,
-            'url_payment' => url(),
+            'url_payment' => $url_payment,
             'date_debut' => $reservation->date_debut,
             'created_at' => $reservation->created_at,
             'description' => $reservation->description,
@@ -93,7 +96,7 @@ class Allreservation extends Component
 
         Mail::to($user->email)->send(new ConfirmationDevis($data));
 
-        // SendSMS::send("+225", $user->phone_number, "Votre devis est de ".number_format($reservation->montant, 2, ',', '.')." FCFA , veuillez vous rendre sur ".url(). " pour éffectuer le paiement et valider votre réservation");
+        // SendSMS::send("+225", $user->phone_number, "Votre devis est de ".number_format($reservation->montant, 2, ',', '.')." FCFA , veuillez vous rendre sur : ". $url_payment. " pour éffectuer le paiement et valider votre réservation");
 
         $this->reset('montant_change');
         $this->closeModal_after_edit('add_montant');

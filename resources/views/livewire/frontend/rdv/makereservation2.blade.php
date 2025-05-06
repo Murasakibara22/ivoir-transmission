@@ -74,8 +74,8 @@
                                                                 @endforeach
                                                             @endif
                                                         </select>
-                                                    </div>
                                                     @error('select_commune') <span class="text-danger">{{ $message }}</span> @enderror
+                                                    </div>
                                                 </div>
 
                                                 <div class="col-lg-6">
@@ -107,23 +107,24 @@
                                                 <div class="col-lg-6">
                                                     <label for="billinginfo-phone" class="form-label">Heure du rendez-vous <span class="text-danger">*</span> </label>
                                                     <div class="mb-3">
-                                                        <input type="time" wire:model="time_rdv" class="form-control" min="{{ now()->format('H:i') }}" placeholder="Enter  no.">
+                                                        <input type="time" wire:model="time_rdv" class="form-control" >
                                                     </div>
+                                                    @error('time_rdv') <span class="text-danger">{{ $message }}</span> @enderror
                                                 </div>
 
 
 
 
-                                                {{-- <div class="col-lg-6">
+                                                <div class="col-lg-12">
                                                     <div class="form-check card-radio">
                                                         <input id="shippingMethod01" name="shippingMethod" type="radio" class="form-check-input" checked="">
                                                         <label class="form-check-label" for="shippingMethod01">
                                                             <span class="fs-18 float-end mt-2 text-wrap d-block">{{number_format($montant_service,0,'.',' ')}} fcfa</span>
-                                                            <span class="fs-14 mb-1 text-wrap text-primary d-block">Frais de services
+                                                            <span class="fs-14 mb-1 text-wrap text-primary d-block">Mains d'œuvres
                                                                 </span>
                                                         </label>
                                                     </div>
-                                                </div> --}}
+                                                </div>
 
                                             </div>
 
@@ -231,8 +232,8 @@
 
                                                             <div class="col-lg-4">
                                                                 <div class="mb-3" wire:ignore>
-                                                                    <label for="billinginfo-phone" class="form-label">Contact <span class="text-danger">*</span> </label>
-                                                                    <input type="text" class="form-control"  wire:model="contact_livraison"  placeholder="Entrer votre numéro de téléphone...">
+                                                                    <label for="billinginfo-phone" class="form-label">Contact / Whatsapp <span class="text-danger">*</span> </label>
+                                                                    <input type="number" class="form-control" maxlength="10" minlength="10"  wire:model="contact_livraison"  placeholder="Entrer votre numéro de téléphone...">
                                                                     {{-- <p id="output">Please enter a valid number below</p>            --}}
                                                                 </div>
                                                                 @error('contact_livraison') <span class="text-danger">{{ $message }}</span> @enderror

@@ -94,6 +94,11 @@ class Makereservation2 extends Component
         }
 
         $this->joursAutorises = $dates;
+        if($commune->frais_service == 0 || $commune->frais_service == null){
+            $this->montant_service = 50000;
+        }else{
+            $this->montant_service = $commune->frais_service;
+        }
     }
 
 
@@ -106,6 +111,7 @@ class Makereservation2 extends Component
             'time_rdv' => 'required',
             'chassis' => 'required',
             'contact_livraison' => 'required|numeric|min:8',
+            'select_commune' => 'required',
         ],[
             'select_service.required' => 'Le service est obligatoire',
             'adresse_livraison.required' => 'L\'adresse est obligatoire',
@@ -116,6 +122,9 @@ class Makereservation2 extends Component
             'contact_livraison.min' => 'Le contact doit etre superieur ou egal a 8',
             'contact_livraison.numeric' => 'Le contact doit etre numerique',
             'chassis.required' => 'Le chassis est obligatoire',
+            'select_commune.required' => 'La commune est obligatoire',
+            'select_commune.exists' => 'La commune n\'existe pas',
+            'time_rdv.required' => 'L\'heure est obligatoire',
         ]);
 
 
@@ -163,7 +172,7 @@ class Makereservation2 extends Component
 
 
         $reservation = new Reservation();
-        // $reservation->montant = $this->montant_service;
+        $reservation->montant = $this->montant_service;
         $reservation->chassis = $this->chassis;
         $reservation->description = $description;
         $reservation->adresse_name = $this->adresse_livraison;
@@ -202,11 +211,11 @@ class Makereservation2 extends Component
         $reservation->commune = Commune::find($this->select_commune)->nom;
         $reservation->save();
 
-        // $url_payment = PaymentService::store($reservation->id, $this->contact_livraison);
-        // return redirect()->to($url_payment);
+        $url_payment = PaymentService::store($reservation->id, $this->contact_livraison);
+        return redirect()->to($url_payment);
 
-        $this->send_event_at_sweet_alert_not_timer('Réservation enregistrée', 'Votre réservation a été enregistrée avec succès, vous recevrez un SMS et un lien de paiement pour effectuer le paiement.', 'success');
-        $this->reset();
+        // $this->send_event_at_sweet_alert_not_timer('Réservation enregistrée', 'Votre réservation a été enregistrée avec succès, vous recevrez un SMS et un lien de paiement pour effectuer le paiement.', 'success');
+        // $this->reset();
     }
 
     function loginUser()  {

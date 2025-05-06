@@ -74,13 +74,15 @@ class Allville extends Component
         $this->validate([
             'nom_commune' => 'required|string|unique:communes,nom',
             'ville_id' => 'required|exists:villes,id',
+            'frais_service' => 'required|numeric',
         ], [
             'nom_commune.required' => 'Le nom de la commune est obligatoire',
             'nom_commune.string' => 'Le nom de la commune doit être une chaîne de caractères',
             'nom_commune.unique' => 'Le nom de la commune doit être unique',
             'ville_id.required' => 'La ville est obligatoire',
             'ville_id.exists' => 'La ville sélectionnée est invalide',
-
+            'frais_service.numeric' => 'La main d\'oeuvre doit être un nombre',
+            'frais_service.required' => 'La main d\'oeuvre est obligatoire',
         ]);
 
         // dd($this->JoursChoice);
@@ -137,6 +139,7 @@ class Allville extends Component
         $this->id_commune = $id;
         $this->nom_commune = $commune->nom;
         $this->ville_id = $commune->ville_id;
+        $this->frais_service = $commune->frais_service;
 
         // Charger les jours sélectionnés de cette commune
         $this->JoursChoice = $commune->jours ? json_decode($commune->jours, true) : [];
@@ -166,38 +169,42 @@ class Allville extends Component
 
 
     public function updateCommune()
-{
-    $commune = Commune::find($this->id_commune);
+    {
+        $commune = Commune::find($this->id_commune);
 
-    if (!$commune) {
-        $this->send_event_at_sweetAlerte('Modification impossible', 'La commune n\'existe pas', 'error');
-        return;
+        if (!$commune) {
+            $this->send_event_at_sweetAlerte('Modification impossible', 'La commune n\'existe pas', 'error');
+            return;
+        }
+
+        $this->validate([
+            'nom_commune' => 'required|string|unique:communes,nom,' . $this->id_commune,
+            'ville_id' => 'required|exists:villes,id',
+            'JoursChoice' => 'nullable|array',
+            'frais_service' => 'required|numeric',
+        ], [
+            'nom_commune.required' => 'Le nom de la commune est obligatoire',
+            'nom_commune.string' => 'Le nom de la commune doit être une chaîne de caractères',
+            'nom_commune.unique' => 'Ce nom de commune est déjà utilisé',
+            'ville_id.required' => 'La ville est obligatoire',
+            'ville_id.exists' => 'La ville sélectionnée n\'existe pas',
+            'frais_service.required' => 'La main d\'oeuvre est obligatoire',
+            'frais_service.numeric' => 'La main d\'oeuvre doit être un nombre',
+        ]);
+
+        $commune->update([
+            'nom' => $this->nom_commune,
+            'ville_id' => $this->ville_id,
+            'frais_service' => $this->frais_service ?? $commune->frais_service,
+            'jours' => $this->JoursChoice ? json_encode($this->JoursChoice) : null,
+        ]);
+
+        $this->send_event_at_sweetAlerte('Modification effectuée', 'La commune a bien été modifiée', 'success');
+
+        $this->reset(['nom_commune', 'ville_id', 'JoursChoice', 'id_commune']);
+
+        $this->closeModal_after_edit('edit_commune');
     }
-
-    $this->validate([
-        'nom_commune' => 'required|string|unique:communes,nom,' . $this->id_commune,
-        'ville_id' => 'required|exists:villes,id',
-        'JoursChoice' => 'nullable|array',
-    ], [
-        'nom_commune.required' => 'Le nom de la commune est obligatoire',
-        'nom_commune.string' => 'Le nom de la commune doit être une chaîne de caractères',
-        'nom_commune.unique' => 'Ce nom de commune est déjà utilisé',
-        'ville_id.required' => 'La ville est obligatoire',
-        'ville_id.exists' => 'La ville sélectionnée n\'existe pas',
-    ]);
-
-    $commune->update([
-        'nom' => $this->nom_commune,
-        'ville_id' => $this->ville_id,
-        'jours' => $this->JoursChoice ? json_encode($this->JoursChoice) : null,
-    ]);
-
-    $this->send_event_at_sweetAlerte('Modification effectuée', 'La commune a bien été modifiée', 'success');
-
-    $this->reset(['nom_commune', 'ville_id', 'JoursChoice', 'id_commune']);
-
-    $this->closeModal_after_edit('edit_commune');
-}
 
 
 

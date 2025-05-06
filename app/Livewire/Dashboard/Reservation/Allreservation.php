@@ -4,9 +4,11 @@ namespace App\Livewire\Dashboard\Reservation;
 
 use Livewire\Component;
 use App\Models\Reservation;
-use Livewire\WithPagination;
-use App\Livewire\UtilsSweetAlert;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
+use App\Mail\ConfirmationDevis;
+use App\Livewire\UtilsSweetAlert;
+use Illuminate\Support\Facades\Mail;
 
 
 class Allreservation extends Component
@@ -77,6 +79,18 @@ class Allreservation extends Component
             $reservation->save();
             $this->send_event_at_sweetAlerte("Modification éffectuée","Le montant de la reservation a été modifié avec success","success");
         }
+
+        $user = $reservation->user()->first();
+        $data = [
+            'montant' => $reservation->montant,
+            'chassis' => $reservation->chassis,
+            'url_payment' => url(),
+            'date_debut' => $reservation->date_debut,
+            'created_at' => $reservation->created_at,
+            'description' => $reservation->description,
+        ];
+
+        Mail::to($user->email)->send(new ConfirmationDevis($data));
 
         $this->reset('montant_change');
         $this->closeModal_after_edit('add_montant');

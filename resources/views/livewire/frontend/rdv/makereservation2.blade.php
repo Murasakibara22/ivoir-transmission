@@ -223,7 +223,7 @@
                                                     <div class="row gy-3">
                                                             <div class="col-lg-4">
                                                                 <div class="mb-3">
-                                                                    <label for="billinginfo-firstName" class="form-label">Nom & Prénoms <span class="text-muted">( FACULTATIF )</span> </label>
+                                                                    <label for="billinginfo-firstName" class="form-label">Nom & Prénoms <span class="text-muted">(FACULTATIF)</span> </label>
                                                                     <input type="text" wire:model="username" class="form-control" id="billinginfo-firstName" placeholder="Enter first name" value="">
                                                                 </div>
                                                                 @error('username') <span class="text-danger">{{ $message }}</span> @enderror

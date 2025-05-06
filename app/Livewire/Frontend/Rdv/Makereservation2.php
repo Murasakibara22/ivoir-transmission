@@ -227,6 +227,8 @@ class Makereservation2 extends Component
             ]);
         }
 
+        $user->email = $this->email_livraison ?? null;
+        $user->save();
         Auth::login($user);
     }
 

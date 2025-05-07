@@ -404,9 +404,9 @@
                             <div class="d-flex align-items-center">
                                 <lord-icon src="https://cdn.lordicon.com/nkmsrxys.json" trigger="loop" colors="primary:#121331,secondary:#f06548" style="width:80px;height:80px"></lord-icon>
                                 <div class="ms-2">
-                                    <h5 class="fs-14 text-danger fw-semibold"> Buying for a loved one?</h5>
-                                    <p class="text-black mb-1">Gift wrap and personalised message on card, <br />Only for <span class="fw-semibold">$9.99</span> USD </p>
-                                    <button type="button" class="btn ps-0 btn-sm btn-link text-danger text-uppercase">Add Gift Wrap</button>
+                                    <h5 class="fs-14 text-danger fw-semibold"> Note importante !!</h5>
+                                    <p class="text-black mb-1">Cumulez des points (Bonus) pour obtenir des coupons de  <br />réductions de <span class="fw-semibold">30%</span> sur votre prochaine réservation </p>
+                                    {{-- <button type="button" class="btn ps-0 btn-sm btn-link text-danger text-uppercase">Add Gift Wrap</button> --}}
                                 </div>
                             </div>
                         </div>
@@ -416,19 +416,28 @@
                                 <h5 class="card-title mb-0">Sommes de la reservation</h5>
                             </div>
 
+                            <div class="card-header bg-light-subtle border-bottom-dashed">
+                                <div class="text-center">
+                                    <h6 class="mb-2">As-tu un code <span class="fw-semibold">promo</span>  ?</h6>
+                                </div>
+                                <div class="hstack gap-3 px-3 mx-n3">
+                                    <input class="form-control me-auto" type="text" placeholder="Enter coupon code" aria-label="Add Promo Code here...">
+                                    <button type="button" class="btn btn-success w-xs">Appliquer</button>
+                                </div>
+                            </div>
+
                             <div class="card-body pt-2">
                                 <div class="table-responsive">
                                     <table class="table table-borderless mb-0">
                                         <tbody>
                                             <tr>
-                                                <td>Sub Total :</td>
-                                                <td class="text-end" id="cart-subtotal">{{ number_format($montant_service, 0, ',','.') }} fcfa </td>
+                                                <td class="text-center text-warning" id="cart-subtotal">La mains d'oeuvre varie selon la commune </td>
                                             </tr>
 
-                                            <tr>
+                                            {{-- <tr>
                                                 <td>Ville :</td>
                                                 <td class="text-end" id="cart-subtotal">Abidjan / 15.000 fcfa</td>
-                                            </tr>
+                                            </tr> --}}
 
                                             <tr class="table-active">
                                                 <th>Total (FCFA) :</th>

@@ -36,7 +36,7 @@
                                         data-splitin="none"
                                         data-splitout="none"
                                         data-responsive_offset="on">
-                                        TRAVAIL HONNÊTE ET DE QUALITÉ
+                                        L'entretien auto arrive chez vous.
                                     </div>
 
                                     <div class="tp-caption tp-resizeme text-white font-heading font-weight-700"
@@ -56,7 +56,7 @@
                                         data-splitin="none"
                                         data-splitout="none"
                                         data-responsive_offset="on">
-                                        À DES PRIX ABORDABLES
+                                        Simple, rapide, sans stress
                                     </div>
 
                                     <div class="tp-caption tp-resizeme text-white"
@@ -77,7 +77,7 @@
                                         data-splitout="none"
                                         data-responsive_offset="on">
 
-                                        Nous offrons un service haut de gamme pour la réparation de véhicules importés et nationaux : entretien des freins, <br> de l'échappement, mises au point, réparations du moteur, des systèmes électriques et de climatisation.
+                                        Réservez votre vidange ou entretien mécanique depuis chez vous. Notre équipe se déplace avec tout l'équipement nécessaire.
 
                                     </div>
 
@@ -96,7 +96,7 @@
                                         data-splitin="none"
                                         data-splitout="none"
                                         data-responsive_offset="on">
-                                        <a href="page-contact.html" class="wprt-button accent big">OBTENEZ DES DEVIS GRATUITS</a>
+                                        <a href="page-contact.html" class="wprt-button accent big">RÉSERVER MAINTENANT</a>
                                     </div>
                                 </li>
                                 <!-- /End Slide 1 -->
@@ -188,7 +188,7 @@
                                         data-splitin="none"
                                         data-splitout="none"
                                         data-responsive_offset="on">
-                                        <a href="page-contact.html" class="wprt-button accent big">RÉSERVEZ MAINTENANT</a>
+                                        <a href="page-contact.html" class="wprt-button accent big">RÉSERVER MAINTENANT</a>
                                     </div>
                                 </li>
                                 <!-- /End Slide 2 -->
@@ -275,7 +275,7 @@
                                         data-splitin="none"
                                         data-splitout="none"
                                         data-responsive_offset="on">
-                                        <a href="page-contact.html" class="wprt-button accent big">RÉSERVEZ VOTRE CONTRÔLE TECHNQUE</a>
+                                        <a href="page-contact.html" class="wprt-button accent big">PRENDRE RENDEZ-VOUS</a>
                                     </div>
                                 </li>
                                 <!-- /End Slide 3 -->

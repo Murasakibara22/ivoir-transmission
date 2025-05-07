@@ -48,8 +48,8 @@
 
                         </li>
 
-                        <li class="menu-item"><a href="#">NOS SERVICES</a>
-                        </li>
+                        {{-- <li class="menu-item"><a href="#">NOS SERVICES</a>
+                        </li> --}}
 
                         <li class="menu-item menu-item-has-children"><a href="{{ route('rendez-vous') }}">RENDEZ-VOUS ?</a>
                         </li>
@@ -61,10 +61,10 @@
                 </nav><!-- /#main-nav -->
 
                 <ul class="nav-extend active">
-                    <li class="ext c">
+                    {{-- <li class="ext c">
                         <a class="cart-info" href="#" title="View your shopping cart">6 items <span class="woocommerce-Price-amount amount">
                         <span class="woocommerce-Price-currencySymbol">$</span>260.00</span></a>
-                    </li>
+                    </li> --}}
                 </ul><!-- /.nav-extend -->
 {{--
                 <div class="nav-top-cart-wrapper">

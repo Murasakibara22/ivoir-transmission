@@ -9,6 +9,7 @@
     <meta name="description" content="AutoService is a responsive Template best suitable for mechanic auto shop, car repair, auto mechanic, car service, auto repair shop, mechanic workshop, auto service, automotive, batteries, tire or wheel shop.">
     <meta name="keywords" content="car repair, auto service, car service, automotive, mechanic auto shop, automotive, mechanic workshop">
     <meta name="author" content="https://ivoiretransmission.com">
+    <meta name="user-id" content="{{auth()->id()}}">
 
     <!-- Mobile Specific Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">

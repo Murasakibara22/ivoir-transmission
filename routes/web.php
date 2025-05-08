@@ -3,6 +3,7 @@
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Paiement;
+use App\Events\MessageSend;
 use App\Models\Reservation;
 use App\Events\TestNotification;
 use Illuminate\Support\Facades\Route;
@@ -96,6 +97,13 @@ Route::view('rendez-vous2','Frontend.pages.rdv.index')->name('rendez-vous2');
 Route::group(['middleware' => 'auth'], function () {
     Route::prefix('account')->as('account.')->group(function () {
         Route::view('reservations','Frontend.pages.dashboard.index')->name('reservations');
+
+        Route::get('broadcast/{id}', function ($id) {
+            $userId = $id;
+            $message = 'Hello joackim';
+            broadcast(new MessageSend($userId,$message));
+            return 'Message envoyé 2';
+        });
     });
 });
 

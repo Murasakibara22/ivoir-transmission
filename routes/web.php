@@ -4,6 +4,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Paiement;
 use App\Models\Reservation;
+use App\Events\TestNotification;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -96,6 +97,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('account')->as('account.')->group(function () {
         Route::view('reservations','Frontend.pages.dashboard.index')->name('reservations');
     });
+});
+
+Route::get('/broadcast', function () {
+    $message = 'Hello joackim';
+    broadcast(new TestNotification($message));
+    return 'Message envoyé';
 });
 
 

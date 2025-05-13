@@ -20,7 +20,7 @@ class Allpaiement extends Component
     public function getMontantPaymentByStatus()  {
         $this->all_payment = Paiement::sum('montant');
         $this->paid_payment = Paiement::where('status', Paiement::PAID)->sum('montant');
-        $this->pending_payment = Paiement::where('status', Paiement::PENDING)->sum('montant');
+        $this->pending_payment = Paiement::where('status', Paiement::PENDING)->OrWhere('status', Paiement::INITIATED)->sum('montant');
         $this->canceled_payment = Paiement::where('status', Paiement::CANCELED)->sum('montant');
     }
 

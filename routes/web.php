@@ -93,6 +93,8 @@ Route::group(['middleware' => 'auth'], function () {
 Route::view('rendez-vous','Frontend.pages.rdv.index2')->name('rendez-vous');
 Route::view('rendez-vous2','Frontend.pages.rdv.index')->name('rendez-vous2');
 
+Route::view('success-transaction','Frontend.pages.transaction-success')->name('success-transaction');
+
 
 Route::group(['middleware' => 'auth'], function () {
     Route::prefix('account')->as('account.')->group(function () {

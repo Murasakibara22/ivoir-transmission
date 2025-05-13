@@ -63,6 +63,7 @@
 
                                             <div class="row">
 
+                                                @if($showCommune)
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="country" class="form-label">Communes <span class="text-danger">*</span> </label>
@@ -70,15 +71,16 @@
                                                             <option value="">Sélectionnez...</option>
                                                             @if($list_commune && $list_commune->count() > 0)
                                                                 @foreach($list_commune as $commune)
-                                                                        <option value="{{$commune->id}}">{{$commune->nom}}</option>
+                                                                        <option value="{{$commune->nom}}">{{$commune->nom}}</option>
                                                                 @endforeach
                                                             @endif
                                                         </select>
                                                     @error('select_commune') <span class="text-danger">{{ $message }}</span> @enderror
                                                     </div>
                                                 </div>
+                                                @endif
 
-                                                <div class="col-lg-6">
+                                                <div class="@if($showCommune) col-lg-6 @else col-lg-12 @endif">
                                                     <div class="mb-3">
                                                         <label for="billinginfo-phone" class="form-label">Adresse <span class="text-danger">*</span> </label>
                                                         <input type="text" class="form-control" wire:model="adresse_livraison" placeholder="Renseignez une adresse" autocomplete="false" id="autocomplete">
@@ -87,6 +89,36 @@
                                                 </div>
 
 
+                                                <div class="@if($list_service_select && count($list_service_select) > 0) col-lg-5 @else col-lg-12 @endif">
+                                                    <div class="mb-3">
+                                                        <label for="billinginfo-phone" class="form-label">J'ai besoin de<span class="text-danger">*</span> </label>
+                                                        <select  class="form-select" id="country"  wire:model.live="categorie">
+                                                            <option value="">Sélectionnez...</option>
+                                                            @if($list_ctegorie && count($list_ctegorie) > 0)
+                                                                @foreach($list_ctegorie as $categorie)
+                                                                    <option value="{{ $categorie->libelle }}">{{ $categorie->libelle }}</option>
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
+                                                    </div>
+                                                    @error('categorie') <span class="text-danger">{{ $message }}</span> @enderror
+                                                </div>
+
+
+                                                @if($list_service_select && count($list_service_select) > 0)
+                                                <div class="col-lg-7">
+                                                    <label for="genderInput" class="form-label">Besoins</label>
+                                                    <div>
+                                                        @foreach($list_service_select as $service)
+                                                        <div class="form-check form-check-inline mb-2">
+                                                            <input class="form-check-input" @if(in_array($service->libelle, $select_service)) @checked(true) @disabled(true) @endif class="form-check-input" type="checkbox" id="formCheck{{ $service->id }}" value="{{ $service->libelle }}" wire:model='select_service'>
+                                                            <label class="form-check-label" for="inlineRadio1">{{ $service->libelle }}</label>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
+                                                    @error('select_service') <span class="text-danger">{{ $message }}</span> @enderror
+                                                </div><!--end col-->
+                                                @endif
 
 
                                                 <div class="col-lg-6">
@@ -139,17 +171,27 @@
 
                                         <div>
                                             <div class="row mt-4">
+
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="country" class="form-label">Numéro de chassis<span class="text-danger">*</span> </label>
+                                                        <input type="text" wire:model.live="chassis" class="form-control" id="billinginfo-firstName" placeholder="Entrer le numéro de chassis" autocomplete="false">
+                                                    </div>
+                                                    @error('chassis') <span class="text-danger">{{ $message }}</span> @enderror
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="state" class="form-label">Modèles <span class="text-muted"> (FACULTATIF)</span> </label>
+                                                        <input type="text" wire:model="select_type" class="form-control" id="billinginfo-firstName" placeholder="Entrer le ..." autocomplete="false">
+                                                    </div>
+                                                    @error('select_type') <span class="text-danger">{{ $message }}</span> @enderror
+                                                </div>
+
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="state" class="form-label">Marques <span class="text-muted"> (FACULTATIF)</span> </label>
-                                                        <select class="form-select" id="state"  wire:model="select_marque">
-                                                            <option value="">Selectionnez...</option>
-                                                            @if($list_marque && $list_marque->count() > 0)
-                                                            @foreach($list_marque as $marque)
-                                                            <option value="{{$marque->id}}">{{$marque->libelle}}</option>
-                                                            @endforeach
-                                                            @endif
-                                                        </select>
+                                                        <input type="text" wire:model="select_marque" class="form-control" id="billinginfo-firstName" placeholder="Entrer la marque..." autocomplete="false">
                                                     </div>
                                                     @error('select_marque') <span class="text-danger">{{ $message }}</span> @enderror
                                                 </div>
@@ -157,11 +199,14 @@
 
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
-                                                        <label for="country" class="form-label">Numéro de chassis<span class="text-danger">*</span> </label>
-                                                        <input type="text" wire:model="chassis" class="form-control" id="billinginfo-firstName" placeholder="Entrer le numéro de chassis" autocomplete="false">
+                                                        <label for="country" class="form-label">Année <span class="text-muted"> (FACULTATIF)</span></label>
+                                                        <input type="text" wire:model="year_vehicule" class="form-control" id="billinginfo-firstName" placeholder="Entrer l'année" autocomplete="false">
                                                     </div>
-                                                    @error('chassis') <span class="text-danger">{{ $message }}</span> @enderror
+                                                    @error('year_vehicule') <span class="text-danger">{{ $message }}</span> @enderror
                                                 </div>
+
+
+
 
 
 
@@ -430,9 +475,9 @@
                                 <div class="table-responsive">
                                     <table class="table table-borderless mb-0">
                                         <tbody>
-                                            <tr>
+                                            {{-- <tr>
                                                 <td class="text-center text-warning" id="cart-subtotal">La mains d'oeuvre varie selon la commune </td>
-                                            </tr>
+                                            </tr> --}}
 
                                             {{-- <tr>
                                                 <td>Ville :</td>
@@ -495,6 +540,19 @@
             var adresse_name = place.name;
             var adresse_complete = place.formatted_address;
 
+
+            let commune = "";
+            place.address_components.forEach(component => {
+                if (component.types.includes("sublocality") || component.types.includes("sublocality_level_1")) {
+                    commune = component.long_name;
+                }
+            });
+
+            // Si aucune commune trouvée
+            if (!commune) {
+               @this.set('select_commune', null)
+            }
+
             // Création de l'objet JSON
             var location = {
                 adresse: adresse_complete,
@@ -508,6 +566,7 @@
             // Transfert vers Livewire
             @this.set('adresse_livraison', adresse_name + ' ' + adresse_complete)
             @this.set('location', location)
+            @this.set('select_commune', commune)
         });
     }
 </script>

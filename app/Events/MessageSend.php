@@ -17,13 +17,15 @@ class MessageSend implements ShouldBroadcastNow
 
     public $userId;
     public $message;
+    public $reservationSlug;
     /**
      * Create a new event instance.
      */
-    public function __construct($userId, $message)
+    public function __construct($userId, $message, $reservationSlug)
     {
         $this->userId = $userId ;
         $this->message = $message;
+        $this->reservationSlug = $reservationSlug;
     }
 
     /**
@@ -44,7 +46,10 @@ class MessageSend implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        return ['message' => $this->message];
+        return [
+            'message' => $this->message,
+            'meta_data' => $this->reservationSlug
+        ];
     }
 
 

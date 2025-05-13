@@ -79,6 +79,10 @@
                                                         <td class="text-danger">Non débutée</td>
                                                         @endif
                                                     </tr>
+                                                    <tr>
+                                                        <th scope="row">Outils</th>
+                                                        <td>  {{$show_reservation->outils ?? ' - '}}<td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>

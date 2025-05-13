@@ -131,15 +131,15 @@
                                         <div>
                                             <select class="form-control" wire:model="status_filter">
                                                 <option value="">Status</option>
-                                                <option value="en attente">En attente</option>
+                                                <option value="PENDING">En attente</option>
                                                 <option value="ANNULER">Annuler</option>
                                                 <option value="TERMINEE">Terminer</option>
-                                                <option value="STARTED">Valider</option>
+                                                <option value="STARTED">Débuter</option>
                                             </select>
                                         </div>
                                     </div>
                                     <!--end col-->
-                                    <div class="col-xxl-2 col-sm-4">
+                                    {{-- <div class="col-xxl-2 col-sm-4">
                                         <div>
                                             <select class="form-control" wire:model="methode_payment_filter">
                                                 <option value="">Select Payment</option>
@@ -147,7 +147,7 @@
                                                 <option value="Mobile Money">Mobile Money</option>
                                             </select>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <!--end col-->
                                     <div class="col-xxl-1 col-sm-4">
                                         <div>

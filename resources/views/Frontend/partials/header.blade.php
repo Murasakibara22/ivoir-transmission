@@ -4,11 +4,11 @@
 
     <!-- Header -->
     <header id="site-header">
-        <div id="site-header-inner" class="wprt-container">
+        <div id="site-header-inner" class="wprt-container" style="padding-top: 18px !important; padding-bottom: 18px !important;">
             <div class="wrap-inner">
                 <div id="site-logo" class="clearfix">
                     <div id="site-logo-inner">
-                        <a href="home.html" title="CarBest" rel="home" class="main-logo"><img src="{{ asset('frontend/assets/img/logo.png') }}" width="202" height="52" alt="AutoServie" data-retina="assets/img/logo@2x.png" data-width="202" data-height="52"></a>
+                        <a href="/" title="CarBest" rel="home" class="main-logo"><img src="{{ asset('logo.jpg') }}" width="130"  alt="Ivoire transmission" data-retina="{{ asset('logo.jpg') }}" data-width="130" ></a>
                     </div>
                 </div><!-- #site-logo -->
 
@@ -16,7 +16,7 @@
 
                 <div id="header-aside">
                     <div class="header-aside-btn">
-                        <a target="_blank" href="#"><span>RÉSERVEZ ICI</span></a>
+                        <a href="/rendez-vous"><span>RÉSERVEZ ICI</span></a>
                     </div>
 
                     <div class="header-info">
@@ -24,14 +24,14 @@
                             <div class="info-one">
                                 <div class="info-wrap">
                                     <div class="info-i"><span><i class="rt-icon-chat2"></i></span></div>
-                                    <div class="info-c"><span class="title">+1 718-999-3939</span><br><span class="subtitle">contact@autoser.com</span></div>
+                                    <div class="info-c"><span class="title">+1 718-999-3939</span><br><span class="subtitle">contact@ivoiretransmission.com</span></div>
                                 </div>
                             </div>
 
                             <div class="info-two">
                                 <div class="info-wrap">
                                     <div class="info-i"><span><i class="rt-icon-alarm-clock"></i></span></div>
-                                    <div class="info-c"><span class="title">8:00 - 17:30</span><br><span class="subtitle">Monday to Saturday</span></div>
+                                    <div class="info-c"><span class="title">8:00 - 17:30</span><br><span class="subtitle">Lundi au Samedi</span></div>
                                 </div>
                             </div>
                         </div>
@@ -51,10 +51,13 @@
                         {{-- <li class="menu-item"><a href="#">NOS SERVICES</a>
                         </li> --}}
 
+
                         <li class="menu-item menu-item-has-children"><a href="{{ route('rendez-vous') }}">RENDEZ-VOUS ?</a>
                         </li>
 
-                        <li class="menu-item"><a href="page-blog.html">A PROPOS</a></li>
+                        <li class="menu-item"><a href="#CMCCM">COMMENT ÇA MARCHE ?</a></li>
+
+
 
                         <li class="menu-item"><a href="page-appointment.html">CONTACT</a></li>
                     </ul>

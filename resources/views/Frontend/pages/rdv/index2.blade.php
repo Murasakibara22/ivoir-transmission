@@ -132,16 +132,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto mt-2 mt-lg-0" id="navbar-example">
                         <li class="nav-item">
-                            <a class="nav-link fw-semibold fs-15" href="/">Accueil</a>
+                            <a class="nav-link fw-semibold fs-15 active" href="/rendez-vous">Rendez-vous </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-semibold fs-15 active" href="#process">Nos services </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link fw-semibold fs-15" href="#categories">Rendez-vous ?</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link fw-semibold fs-15" href="#findJob">A propos</a>
+                            <a class="nav-link fw-semibold fs-15" href="/#CMCM">Comment ça marche ?</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link fw-semibold fs-15" href="#candidates">Contactez-nous</a>

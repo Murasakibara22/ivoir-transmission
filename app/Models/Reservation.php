@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Service;
 use App\Models\Paiement;
+use App\Models\CategorieService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -36,11 +37,13 @@ class Reservation extends Model
         'user_id',
         'service_id',
         'commune',
+        'category',
         'snapshot_services',
         'snapshot_users',
         'snapshot_vehicule',
         'slug',
         'name_prestataire',
+        'outils',
     ];
 
     protected $casts = [
@@ -57,6 +60,10 @@ class Reservation extends Model
     public function paiements()  {
         return $this->hasMany(Paiement::class);
     }
+
+    // public function categorieService()  {
+    //     $this->belongsTo(CategorieService::class, 'category_id');
+    // }
 
     // ================================
     // Boot pour formater les snapshots avant save

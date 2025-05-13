@@ -35,7 +35,7 @@
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$all_payment}}">0</span> fcfa</h4>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$all_payment}}">{{ number_format($all_payment, 0, ',', ' ') }}</span> fcfa</h4>
                                      <span class="text-muted">Paiements </span>
                                 </div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -59,7 +59,7 @@
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $paid_payment }}">0</span>fcfa</h4>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $paid_payment }}">{{ number_format($paid_payment,0, ',', ' ') }}</span>fcfa</h4>
                                    <span class="text-muted">Payé par les clients</span>
                                 </div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -84,7 +84,7 @@
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$pending_payment}}">0</span>fcfa</h4>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$pending_payment}}">{{ number_format($pending_payment,0, ',', ' ') }}</span>fcfa</h4>
                                     <span class="badge bg-warning me-1">338</span> <span class="text-muted">paiements en attente</span>
                                 </div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -108,7 +108,7 @@
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$canceled_payment}}">0</span>fcfa</h4>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$canceled_payment}}">{{ number_format($canceled_payment,0, ',', ' ')}}</span>fcfa</h4>
                                     <span class="badge bg-warning me-1">502</span> <span class="text-muted">Annulé par les clients</span>
                                 </div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -203,13 +203,13 @@
                                                     <td class="email">{{ $paiement->user()->first()->phone }}</td>
                                                     <td class="date">{{ date('d M, Y', strtotime($paiement->created_at)) }}</td>
                                                     <td class="invoice_amount">{{ number_format($paiement->montant, 0, ',', '.') }} fcfa</td>
-                                                    <td class="payment">{{ $paiement->methode_payment }}</td>
+                                                    <td class="payment">{{ $paiement->methode }}</td>
                                                     <td class="status">
-                                                        @if($paiement->status == "en attente")
+                                                        @if($paiement->status == "en attente" || $paiement->status == "INITIATED")
                                                             <span class="badge badge-soft-warning text-uppercase">En attente</span>
                                                         @elseif($paiement->status == "TERMINEE" || $paiement->status == "PAYE")
                                                             <span class="badge badge-soft-success text-uppercase">Valider</span>
-                                                        @elseif($paiement->status == "ANNULER")
+                                                        @elseif($paiement->status == "ANNULER" || $paiement->status == "EXPIRED")
                                                             <span class="badge badge-soft-danger text-uppercase">Annuler</span>
                                                         @endif
                                                     </td>

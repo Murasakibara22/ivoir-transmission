@@ -134,7 +134,6 @@
                                     <thead class="table-light text-muted">
                                         <tr>
                                             <th scope="col">Services</th>
-                                            <th scope="col">Prix</th>
                                             <th scope="col">categories</th>
                                             <th scope="col">actions</th>
                                         </tr>
@@ -150,9 +149,9 @@
                                                     <p class="fs-12 mb-0 text-muted">Actif </p>
                                                 </div>
                                             </td>
-                                            <td>
+                                            {{-- <td>
                                                 {{ number_format($service->frais_service, 0, ',','.') }} fcfa
-                                            </td>
+                                            </td> --}}
 
                                             <td>
                                                 {{ $service->categorieService ?  $service->categorieService->libelle : 'Aucune' }}
@@ -235,7 +234,7 @@
                                     </div>
                                 </div><!--end col-->
 
-                                <div class="col-lg-6 col-12">
+                                {{-- <div class="col-lg-6 col-12">
                                     <div class="mb-3">
                                         <label class="form-label text-start">Frais de service <span class="text-muted">( FACULTATIF)</span></label>
                                         <input type="number" class="form-control" wire:model='price' placeholder="Veuillez renseigner le montant ">
@@ -245,11 +244,11 @@
                                         </span>
                                     @enderror
                                     </div>
-                                </div><!--end col-->
+                                </div><!--end col--> --}}
 
 
 
-                                <div class="col-12" wire:ignore>
+                                {{-- <div class="col-12" wire:ignore>
                                     <div class="mb-3" >
                                         <label for="compnayNameinput" class="form-label">Description</label>
                                         <textarea class="form-control" id="description"  wire:model.lazy='description' name="description" rows="5"></textarea>
@@ -259,7 +258,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                </div><!--end col-->
+                                </div><!--end col--> --}}
 
 
 
@@ -373,7 +372,7 @@
                                 </div><!--end col-->
 
 
-                                <div class="col-lg-6 col-12">
+                                {{-- <div class="col-lg-6 col-12">
                                     <div class="mb-3">
                                         <label class="form-label text-start">Frais de service <span class="text-muted">( FACULTATIF)</span></label>
                                         <input type="number" class="form-control" wire:model='price' placeholder="Veuillez renseigner le montant ">
@@ -383,10 +382,10 @@
                                         </span>
                                     @enderror
                                     </div>
-                                </div><!--end col-->
+                                </div><!--end col--> --}}
 
 
-                                <div class="col-12" wire:ignore>
+                                {{-- <div class="col-12" wire:ignore>
                                     <div class="mb-3" >
                                         <label for="compnayNameinput" class="form-label">Description</label>
                                         <textarea class="form-control" id="description2"  wire:model.lazy='description' name="description" rows="5"></textarea>
@@ -396,7 +395,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                </div><!--end col-->
+                                </div><!--end col--> --}}
 
 
                             </div><!--end row-->

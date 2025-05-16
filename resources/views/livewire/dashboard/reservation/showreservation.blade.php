@@ -45,7 +45,7 @@
                                                     <tr>
                                                         <th scope="row" style="width: 200px;">
                                                             Services</th>
-                                                        <td>{{$show_reservation->snapshot_services ? $show_reservation->snapshot_services['libelle'] : 'Entretien'}}</td>
+                                                        <td>{{$show_reservation->category ?? 'Entretien'}}</td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Commune / Adresse</th>

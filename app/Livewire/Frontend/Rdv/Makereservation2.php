@@ -252,15 +252,17 @@ class Makereservation2 extends Component
         // dd($reservation);
         $reservation->save();
 
-        User::where('role_id','!=',Role::where('libelle','Utilisateur')->first()->id)->get()->each(function ($user) use ($reservation) {
-            $message = "Un rendez-vous viens d'être pris par le numero ".auth()->user()->phone_number." pour le : ".$this->date_rdv." a ". $this->time_rdv." et elle est en attente de paiement";
-            NotificationAdmin::create([
-                'user_id' => $user->id,
-                'title' => 'Nouvelle réservation en attente',
-                'subtitle' => $message,
-                'type' => 'reservation',
-                'meta_data_id' => $reservation->slug,
-            ]);
+
+        $message = "Un rendez-vous viens d'être pris par le numero ".auth()->user()->phone_number." pour le : ".$this->date_rdv." a ". $this->time_rdv." et elle est en attente de paiement";
+        NotificationAdmin::create([
+            'title' => 'Nouvelle réservation en attente',
+            'subtitle' => $message,
+            'type' => 'reservation',
+            'meta_data_id' => $reservation->slug,
+        ]);
+
+        User::where('role_id','!=',Role::where('libelle','Utilisateur')->first()->id)->get()->each(function ($user) use ($reservation,$message) {
+
             broadcast(new MessageSend($user->id,$message,$reservation->slug));
         });
 

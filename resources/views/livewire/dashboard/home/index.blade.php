@@ -154,7 +154,7 @@
                         </div> <!-- end row-->
 
                         <div class="row">
-                            <div class="col-xl-8">
+                            <div class="col-xl-12">
                                 <div class="card">
                                     <div class="card-header border-0 align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">Statistiques</h4>
@@ -169,88 +169,83 @@
                                     </div><!-- end card body -->
                                 </div><!-- end card -->
                             </div><!-- end col -->
-
-
-                            <div class="col-xl-4">
-                                <div class="card card-height-100">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Services Vendus</h4>
-                                        <div class="flex-shrink-0">
-                                            <div class="dropdown card-header-dropdown">
-                                                <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <span class="text-muted">Report<i class="mdi mdi-chevron-down ms-1"></i></span>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Download Report</a>
-                                                    <a class="dropdown-item" href="#">Export</a>
-                                                    <a class="dropdown-item" href="#">Import</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- end card header -->
-
-                                    <div class="card-body">
-                                        <div id="store-visits-source" data-colors='["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"]' class="apex-charts" dir="ltr"></div>
-                                    </div>
-                                </div> <!-- .card-->
-                            </div> <!-- .col-->
-
                         </div>
 
+
                         <div class="row">
-                            <div class="col-xl-6">
+
+                            <div class="col-xl-12">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Services récents                                   </h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">reservations récentes </h4>
+                                        <div class="flex-shrink-0">
+                                            <button type="button" class="btn btn-soft-info btn-sm">
+                                                <i class="ri-file-list-3-line align-middle"></i>  Report
+                                            </button>
+                                        </div>
                                     </div><!-- end card header -->
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table class="table table-hover table-centered align-middle table-nowrap mb-0">
+                                            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                                                <thead class="text-muted table-light">
+                                                    <tr>
+                                                        <th scope="col">références</th>
+                                                        <th scope="col">utilisateurs</th>
+                                                        <th scope="col">Services</th>
+                                                        <th scope="col">Adresses</th>
+                                                        <th scope="col">Montant</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col">Actions</th>
+                                                    </tr>
+                                                </thead>
                                                 <tbody>
-                                                    @if($list_Services && count($list_Services) > 0)
-                                                        @foreach($list_Services as $produit)
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar-sm bg-light rounded p-1 me-2">
-                                                                        <img src="" alt="" class="img-fluid d-block" />
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5 class="fs-14 my-1"><a href="" class="text-reset">{{ Illuminate\Support\Str::limit($produit->libelle, 25,'...') }}</a></h5>
-                                                                        <span class="text-muted">dsjfsgj</span>
-                                                                    </div>
+                                                    @if($list_Reservations && count($list_Reservations) > 0)
+                                                    @foreach($list_Reservations as $key => $order)
+                                                    <tr>
+                                                        <td>
+                                                            <a href="{{ route('dashboard.reservations.show', $order->slug) }}" class="fw-medium link-primary">#{{ $key + 1  }}</a>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="flex-shrink-0 me-2">
+                                                                    <img src="{{$order->user->photo_url ?? "https://api.dicebear.com/7.x/initials/svg?seed=$order->user->username"}}" alt="" class="avatar-xs rounded-circle" />
                                                                 </div>
-                                                            </td>
-                                                            <td>
-                                                                @if($produit->prix_fixe)
-                                                                <h5 class="fs-14 my-1 fw-normal">{{ number_format($produit->prix_fixe, 0, ',','.') }} FCFA</h5>
-                                                                @else
-                                                                <h5 class="fs-14 my-1 fw-normal">{{ number_format($produit->variante_produit?->min('prix'), 0, ',', '.')  }} - {{ number_format($produit->variante_produit?->max('prix'), 0, ',', '.')  }} FCFA</h5>
-                                                                @endif
-                                                                <span class="text-muted">Prix</span>
-                                                            </td>
-                                                            <td>
-                                                                <h5 class="fs-14 my-1 fw-normal">62</h5>
-                                                                <span class="text-muted">reservations</span>
-                                                            </td>
-                                                            <td>
-                                                                <h5 class="fs-14 my-1 fw-normal">{{ $produit->stock }}</h5>
-                                                                <span class="text-muted">Stock</span>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                    @endif
-
-                                                </tbody>
-                                            </table>
+                                                                <div class="flex-grow-1">{{$order->user->username}}</div>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{$order->category ?? ' - '}}</td>
+                                                        <td>{{ Illuminate\Support\Str::limit($order->adresse_name, 20)}}</td>
+                                                        <td>
+                                                            <span class="text-success">{{number_format($order->montant, 0, ',', '.')}} fcfa</span>
+                                                        </td>
+                                                        <td>
+                                                            @if($order->status == "PENDING")
+                                                            <span class="badge badge-soft-warning">{{$order->status}}</span>
+                                                            @elseif($order->status == "TERMINEE")
+                                                            <span class="badge badge-soft-success">{{$order->status}}</span>
+                                                            @elseif($order->status == "ANNULER")
+                                                            <span class="badge badge-soft-danger">{{$order->status}}</span>
+                                                            @elseif($order->status == "VALIDEE")
+                                                            <span class="badge badge-soft-info">{{$order->status}}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ route('dashboard.reservations.show', $order->slug) }}" class="btn btn-sm btn-soft-primary"><i class="ri-eye-line align-middle me-1"></i>voir plus</a>
+                                                        </td>
+                                                    </tr><!-- end tr -->
+                                                   @endforeach
+                                                   @endif
+                                                </tbody><!-- end tbody -->
+                                            </table><!-- end table -->
                                         </div>
-
                                     </div>
-                                </div>
-                            </div>
+                                </div> <!-- .card-->
+                            </div> <!-- .col-->
+                        </div> <!-- end row-->
 
-                            <div class="col-xl-6">
+                        <div class="row">
+                            <div class="col-xl-9 mx-auto">
                                 <div class="card card-height-100">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1">Inscrits Récements</h4>
@@ -313,75 +308,7 @@
                             </div> <!-- .col-->
                         </div> <!-- end row-->
 
-                        <div class="row">
 
-                            <div class="col-xl-12">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">reservations récentes </h4>
-                                        <div class="flex-shrink-0">
-                                            <button type="button" class="btn btn-soft-info btn-sm">
-                                                <i class="ri-file-list-3-line align-middle"></i>  Report
-                                            </button>
-                                        </div>
-                                    </div><!-- end card header -->
-
-                                    <div class="card-body">
-                                        <div class="table-responsive table-card">
-                                            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
-                                                <thead class="text-muted table-light">
-                                                    <tr>
-                                                        <th scope="col">références</th>
-                                                        <th scope="col">utilisateurs</th>
-                                                        <th scope="col">Services</th>
-                                                        <th scope="col">Montant</th>
-                                                        <th scope="col">Status</th>
-                                                        <th scope="col">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @if($list_Reservations && count($list_Reservations) > 0)
-                                                    @foreach($list_Reservations as $key => $order)
-                                                    <tr>
-                                                        <td>
-                                                            <a href="{{ route('dashboard.reservations.show', $order->slug) }}" class="fw-medium link-primary">#{{ $key + 1  }}</a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="flex-shrink-0 me-2">
-                                                                    <img src="{{$order->user->photo_url ?? "https://api.dicebear.com/7.x/initials/svg?seed=$order->user->username"}}" alt="" class="avatar-xs rounded-circle" />
-                                                                </div>
-                                                                <div class="flex-grow-1">{{$order->user->username}}</div>
-                                                            </div>
-                                                        </td>
-                                                        <td>iwhssd</td>
-                                                        <td>
-                                                            <span class="text-success">{{number_format($order->montant, 0, ',', '.')}} fcfa</span>
-                                                        </td>
-                                                        <td>
-                                                            @if($order->status == "PENDING")
-                                                            <span class="badge badge-soft-warning">{{$order->status}}</span>
-                                                            @elseif($order->status == "TERMINEE")
-                                                            <span class="badge badge-soft-success">{{$order->status}}</span>
-                                                            @elseif($order->status == "ANNULER")
-                                                            <span class="badge badge-soft-danger">{{$order->status}}</span>
-                                                            @elseif($order->status == "VALIDEE")
-                                                            <span class="badge badge-soft-info">{{$order->status}}</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            <a href="{{ route('dashboard.reservations.show', $order->slug) }}" class="btn btn-sm btn-soft-primary"><i class="ri-eye-line align-middle me-1"></i>voir plus</a>
-                                                        </td>
-                                                    </tr><!-- end tr -->
-                                                   @endforeach
-                                                   @endif
-                                                </tbody><!-- end tbody -->
-                                            </table><!-- end table -->
-                                        </div>
-                                    </div>
-                                </div> <!-- .card-->
-                            </div> <!-- .col-->
-                        </div> <!-- end row-->
 
                     </div> <!-- end .h-100-->
 

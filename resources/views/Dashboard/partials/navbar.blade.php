@@ -119,6 +119,12 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ request()->routeIs('dashboard.notifications') ? 'active' : ''}}" href="{{ route('dashboard.notifications') }}">
+                        <i class="ri-notification-4-fill"></i> <span data-key="t-widgets">Notifications</span>
+                    </a>
+                </li>
+
                 {{-- <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarDashboards" role="button">
                         <i class="ri-clipboard-line"></i> <span data-key="t-dashboards">Slide</span>

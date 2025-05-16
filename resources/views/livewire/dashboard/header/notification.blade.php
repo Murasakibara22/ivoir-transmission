@@ -3,8 +3,8 @@
         <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
             <div data-simplebar style="max-height: 300px;" class="pe-2">
 
-                @if(auth()->user()->NotificationAdmin()->get() && auth()->user()->NotificationAdmin()->where('is_read', false)->count() > 0)
-                @foreach (auth()->user()->NotificationAdmin()->where('is_read', false)->OrderBy('created_at', 'desc')->take(5)->get() as $item)
+                @if($list_notification && $list_notification->count() > 0)
+                @foreach ($list_notification as $item)
                     <div
                         class="text-reset notification-item d-block dropdown-item position-relative" wire:click="ShowNotif({{ $item->id }})">
                         <div class="d-flex">
@@ -38,7 +38,7 @@
                 @endif
 
                 <div class="my-3 text-center view-all">
-                    <button type="button" onclick="window.location.href='#'"
+                    <button type="button" onclick="window.location.href='{{ route('dashboard.notifications') }}'"
                         class="btn btn-soft-success waves-effect waves-light">Toutes les notifications <i
                             class="ri-arrow-right-line align-middle"></i></button>
                 </div>

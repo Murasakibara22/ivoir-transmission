@@ -32,7 +32,7 @@ class TestNotification implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel('notification'),
+            new PresenceChannel('notification'),
         ];
     }
 

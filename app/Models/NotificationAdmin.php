@@ -12,6 +12,8 @@ class NotificationAdmin extends Model
     ];
 
     public $fillable = [
+        'view_by',
+        'view_at',
         'user_id',
         'title',
         'subtitle',
@@ -21,7 +23,8 @@ class NotificationAdmin extends Model
         'type'
     ];
 
-    public function user()  {
-        return $this->belongsTo(User::class);
+
+    public function VuePar()  {
+        return $this->belongsTo(User::class, 'view_by');
     }
 }

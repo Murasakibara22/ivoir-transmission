@@ -86,6 +86,8 @@ Route::group(['middleware' => 'auth'], function () {
                 return view('Dashboard.pages.reservation.invoice', compact('show_reservation'));
             })->name('reservations.invoice');
 
+
+            Route::view('notifications','Dashboard.pages.notification.index')->name('notifications');
         });
     });
 });
@@ -100,10 +102,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('account')->as('account.')->group(function () {
         Route::view('reservations','Frontend.pages.dashboard.index')->name('reservations');
 
-        Route::get('broadcast/{id}', function ($id) {
-            $userId = $id;
+        Route::get('broadcast', function () {
             $message = 'Hello joackim';
-            broadcast(new MessageSend($userId,$message));
+            broadcast(new TestNotification($message));
             return 'Message envoyé 2';
         });
     });

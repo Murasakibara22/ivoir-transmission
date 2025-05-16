@@ -176,7 +176,7 @@
                         @auth
                         <span
                             class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger" id="js_count_admin">
-                            {{ auth()->user()->NotificationAdmin() ? auth()->user()->NotificationAdmin()->where('is_read', false)->count() : 0 }}
+                            {{ App\Models\NotificationAdmin::where('is_read', false)->OrderByDesc('created_at')->count() ?? 0 }}
                             <span class="visually-hidden">unread messages</span></span>
                         @endauth
                     </button>

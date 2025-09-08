@@ -15,11 +15,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <!-- Theme Style -->
-    <link rel="stylesheet" type="text/css" href="{{secure_asset('frontend/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ secure_asset('frontend/style.css')}}">
 
     <!-- Favicon and Touch Icons  -->
-    <link rel="shortcut icon" href="{{secure_asset('frontend/assets/icon/favicon.png')}}">
-    <link rel="apple-touch-icon-precomposed" href="{{secure_asset('frontend/assets/icon/apple-touch-icon-158-precomposed.png')}}">
+    <link rel="shortcut icon" href="{{ secure_asset('frontend/assets/icon/favicon.png')}}">
+    <link rel="apple-touch-icon-precomposed" href="{{ secure_asset('frontend/assets/icon/apple-touch-icon-158-precomposed.png')}}">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -51,32 +51,32 @@
 <a id="scroll-top"></a>
 
 <!-- Javascript -->
-<script src="{{secure_asset('frontend/assets/js/jquery.min.js')}}"></script>
-<script src="{{secure_asset('frontend/assets/js/plugins.js')}}"></script>
-<script src="{{secure_asset('frontend/assets/js/bootstrap.min.js')}}"></script>
-<script src="{{secure_asset('frontend/assets/js/animsition.js')}}"></script>
-<script src="{{secure_asset('frontend/assets/js/countto.js')}}"></script>
-<script src="{{secure_asset('frontend/assets/js/cubeportfolio.js')}}"></script>
-<script src="{{secure_asset('frontend/assets/js/owl.carousel.min.js')}}"></script>
-<script src="{{secure_asset('frontend/assets/js/magnific.popup.min.js')}}"></script>
-<script src="{{secure_asset('frontend/assets/js/equalize.min.js')}}"></script>
-<script src="{{secure_asset('frontend/assets/js/shortcodes.js')}}"></script>
-<script src="{{secure_asset('frontend/assets/js/main.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/jquery.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/plugins.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/bootstrap.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/animsition.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/countto.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/cubeportfolio.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/owl.carousel.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/magnific.popup.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/equalize.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/shortcodes.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/main.js')}}"></script>
 
 <!-- Revolution Slider -->
-<script src="{{secure_asset('frontend/includes/rev-slider/js/jquery.themepunch.tools.min.js')}}"></script>
-<script src="{{secure_asset('frontend/includes/rev-slider/js/jquery.themepunch.revolution.min.js')}}"></script>
-<script src="{{secure_asset('frontend/assets/js/rev-slider.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/jquery.themepunch.tools.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/jquery.themepunch.revolution.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/rev-slider.js')}}"></script>
 <!-- Load Extensions only on Local File Systems ! The following part can be removed on Server for On Demand Loading -->
-<script src="{{secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.actions.min.js')}}"></script>
-<script src="{{secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.carousel.min.js')}}"></script>
-<script src="{{secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.kenburn.min.js')}}"></script>
-<script src="{{secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.layeranimation.min.js')}}"></script>
-<script src="{{secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.migration.min.js')}}"></script>
-<script src="{{secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.navigation.min.js')}}"></script>
-<script src="{{secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.parallax.min.js')}}"></script>
-<script src="{{secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.slideanims.min.js')}}"></script>
-<script src="{{secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.video.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.actions.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.carousel.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.kenburn.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.layeranimation.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.migration.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.navigation.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.parallax.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.slideanims.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.video.min.js')}}"></script>
 
 </body>
 </html>

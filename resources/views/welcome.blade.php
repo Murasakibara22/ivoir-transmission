@@ -16,7 +16,7 @@
                                 <!-- Slide 1 -->
                                 <li data-transition="random">
                                     <!-- Main Image -->
-                                    <img src="{{secure_asset('frontend/assets/img/slider/slider-bg-1.jpg') }}" alt="" data-bgposition="center center" data-no-retina>
+                                    <img src="{{ secure_asset('frontend/assets/img/slider/slider-bg-1.jpg') }}" alt="" data-bgposition="center center" data-no-retina>
 
                                     <!-- Layers -->
                                     <div class="tp-caption tp-resizeme text-white font-heading font-weight-400"
@@ -104,7 +104,7 @@
                                 <!-- Slide 3 -->
                                 <li data-transition="random">
                                     <!-- Main Image -->
-                                    <img src="{{secure_asset('frontend/assets/img/slider/slider-bg-3.jpg') }}" alt="" data-bgposition="center center" data-no-retina>
+                                    <img src="{{ secure_asset('frontend/assets/img/slider/slider-bg-3.jpg') }}" alt="" data-bgposition="center center" data-no-retina>
 
                                     <!-- Layers -->
                                     <div class="tp-caption tp-resizeme text-white font-heading font-weight-400 text-right"
@@ -543,7 +543,7 @@
                                 <div class="col-md-5">
                                     <div class="wprt-spacer clearfix margin-top-10" data-desktop="20" data-mobi="10" data-smobi="10"></div>
 
-                                    <img src="{{secure_asset('frontend/assets/img/technicial.png')}}" alt="Image" />
+                                    <img src="{{ secure_asset('frontend/assets/img/technicial.png')}}" alt="Image" />
                                 </div><!-- /.col-md-5 -->
                             </div><!-- /.row -->
                         </div><!-- /.container -->
@@ -682,7 +682,7 @@
                                     <div class="wprt-image-box style-1 clearfix text-center">
                                         <div class="item">
                                             <div class="inner">
-                                                <div class="thumb"><img src="{{secure_asset('frontend/assets/img/services/service-4-600-394.jpg') }}" alt="Image"></div>
+                                                <div class="thumb"><img src="{{ secure_asset('frontend/assets/img/services/service-4-600-394.jpg') }}" alt="Image"></div>
 
                                                 <div class="text-wrap">
                                                     <h3 class="title"><a target="_blank" href="">DIAGNOSTIC ÉLECTRIQUE</a></h3>
@@ -704,7 +704,7 @@
                                     <div class="wprt-image-box style-1 clearfix text-center">
                                         <div class="item">
                                             <div class="inner">
-                                                <div class="thumb"><img src="{{secure_asset('frontend/assets/img/services/service-5-600-394.jpg') }}" alt="Image"></div>
+                                                <div class="thumb"><img src="{{ secure_asset('frontend/assets/img/services/service-5-600-394.jpg') }}" alt="Image"></div>
 
                                                 <div class="text-wrap">
                                                     <h3 class="title"><a target="_blank" href="">SYSTÈME ÉLECTRIQUE</a></h3>
@@ -726,7 +726,7 @@
                                     <div class="wprt-image-box style-1 clearfix text-center">
                                         <div class="item">
                                             <div class="inner">
-                                                <div class="thumb"><img src="{{secure_asset('frontend/assets/img/services/service-6-600-394.jpg') }}" alt="Image"></div>
+                                                <div class="thumb"><img src="{{ secure_asset('frontend/assets/img/services/service-6-600-394.jpg') }}" alt="Image"></div>
 
                                                 <div class="text-wrap">
                                                     <h3 class="title"><a target="_blank" href="">VIDANGE MOTEUR</a></h3>
@@ -766,7 +766,7 @@
                                     <div class="wprt-animation-block" data-animate="fadeInUpSmall" data-duration="1s" data-delay="0s" data-position="90%">
                                         <div class="wprt-icon-box style-2 clearfix icon-left">
                                             <div class="image-wrap">
-                                                <img src="{{secure_asset('frontend/assets/img/ase.png') }}" alt="Image">
+                                                <img src="{{ secure_asset('frontend/assets/img/ase.png') }}" alt="Image">
                                             </div>
 
                                             <h3 class="heading">ASE CERTIFIED</h3>
@@ -879,7 +879,7 @@
                                             <div class="inner">
                                                 <div class="hover-effect">
                                                     <div class="gallery-image">
-                                                           <img src="{{secure_asset('frontend/assets/img/works/work-1-640x640.jpg') }}" alt="Image">
+                                                           <img src="{{ secure_asset('frontend/assets/img/works/work-1-640x640.jpg') }}" alt="Image">
                                                     </div>
 
                                                     <div class="text">
@@ -896,7 +896,7 @@
                                             <div class="inner">
                                                 <div class="hover-effect">
                                                     <div class="gallery-image">
-                                                        <img src="{{secure_asset('frontend/assets/img/works/work-2-640x640.jpg') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/works/work-2-640x640.jpg') }}" alt="Image">
                                                     </div>
 
                                                     <div class="text">
@@ -913,7 +913,7 @@
                                             <div class="inner">
                                                 <div class="hover-effect">
                                                     <div class="gallery-image">
-                                                        <img src="{{secure_asset('frontend/assets/img/works/work-3-640x640.jpg') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/works/work-3-640x640.jpg') }}" alt="Image">
                                                     </div>
 
                                                     <div class="text">
@@ -930,7 +930,7 @@
                                             <div class="inner">
                                                 <div class="hover-effect">
                                                     <div class="gallery-image">
-                                                        <img src="{{secure_asset('frontend/assets/img/works/work-4-640x640.jpg') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/works/work-4-640x640.jpg') }}" alt="Image">
                                                     </div>
 
                                                     <div class="text">
@@ -947,7 +947,7 @@
                                             <div class="inner">
                                                 <div class="hover-effect">
                                                     <div class="gallery-image">
-                                                        <img src="{{secure_asset('frontend/assets/img/works/work-5-640x640.jpg') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/works/work-5-640x640.jpg') }}" alt="Image">
                                                     </div>
 
                                                     <div class="text">
@@ -964,7 +964,7 @@
                                             <div class="inner">
                                                 <div class="hover-effect">
                                                     <div class="gallery-image">
-                                                        <img src="{{secure_asset('frontend/assets/img/works/work-6-640x640.jpg') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/works/work-6-640x640.jpg') }}" alt="Image">
                                                     </div>
 
                                                     <div class="text">
@@ -1013,7 +1013,7 @@
                                             <div class="item">
                                                 <div class="inner">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/testimonials/customer-1.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/testimonials/customer-1.png') }}" alt="Image">
                                                     </div>
 
                                                     <blockquote class="text">
@@ -1031,7 +1031,7 @@
                                             <div class="item">
                                                 <div class="inner">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/testimonials/customer-2.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/testimonials/customer-2.png') }}" alt="Image">
                                                     </div>
 
                                                     <blockquote class="text">
@@ -1049,7 +1049,7 @@
                                             <div class="item">
                                                 <div class="inner">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/testimonials/customer-3.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/testimonials/customer-3.png') }}" alt="Image">
                                                     </div>
 
                                                     <blockquote class="text">
@@ -1067,7 +1067,7 @@
                                             <div class="item">
                                                 <div class="inner">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/testimonials/customer-2.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/testimonials/customer-2.png') }}" alt="Image">
                                                     </div>
 
                                                     <blockquote class="text">
@@ -1085,7 +1085,7 @@
                                             <div class="item">
                                                 <div class="inner">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/testimonials/customer-1.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/testimonials/customer-1.png') }}" alt="Image">
                                                     </div>
 
                                                     <blockquote class="text">
@@ -1103,7 +1103,7 @@
                                             <div class="item">
                                                 <div class="inner">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/testimonials/customer-2.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/testimonials/customer-2.png') }}" alt="Image">
                                                     </div>
 
                                                     <blockquote class="text">
@@ -1121,7 +1121,7 @@
                                             <div class="item">
                                                 <div class="inner">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/testimonials/customer-3.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/testimonials/customer-3.png') }}" alt="Image">
                                                     </div>
 
                                                     <blockquote class="text">
@@ -1155,7 +1155,7 @@
                                             <div class="inner">
                                                 <a target="_blank" href="#">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/partners/logo-1.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/partners/logo-1.png') }}" alt="Image">
                                                     </div>
                                                 </a>
                                             </div>
@@ -1165,7 +1165,7 @@
                                             <div class="inner">
                                                 <a target="_blank" href="#">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/partners/logo-2.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/partners/logo-2.png') }}" alt="Image">
                                                     </div>
                                                 </a>
                                             </div>
@@ -1175,7 +1175,7 @@
                                             <div class="inner">
                                                 <a target="_blank" href="#">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/partners/logo-3.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/partners/logo-3.png') }}" alt="Image">
                                                     </div>
                                                 </a>
                                             </div>
@@ -1185,7 +1185,7 @@
                                             <div class="inner">
                                                 <a target="_blank" href="#">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/partners/logo-4.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/partners/logo-4.png') }}" alt="Image">
                                                     </div>
                                                 </a>
                                             </div>
@@ -1195,7 +1195,7 @@
                                             <div class="inner">
                                                 <a target="_blank" href="#">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/partners/logo-5.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/partners/logo-5.png') }}" alt="Image">
                                                     </div>
                                                 </a>
                                             </div>
@@ -1205,7 +1205,7 @@
                                             <div class="inner">
                                                 <a target="_blank" href="#">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/partners/logo-6.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/partners/logo-6.png') }}" alt="Image">
                                                     </div>
                                                 </a>
                                             </div>
@@ -1215,7 +1215,7 @@
                                             <div class="inner">
                                                 <a target="_blank" href="#">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/partners/logo-7.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/partners/logo-7.png') }}" alt="Image">
                                                     </div>
                                                 </a>
                                             </div>
@@ -1225,7 +1225,7 @@
                                             <div class="inner">
                                                 <a target="_blank" href="#">
                                                     <div class="thumb">
-                                                        <img src="{{secure_asset('frontend/assets/img/partners/logo-8.png') }}" alt="Image">
+                                                        <img src="{{ secure_asset('frontend/assets/img/partners/logo-8.png') }}" alt="Image">
                                                     </div>
                                                 </a>
                                             </div>

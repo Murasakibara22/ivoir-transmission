@@ -2,6 +2,14 @@
 # Dockerfile Laravel PHP 8.4 + MySQL
 # ------------------------------
 
+# Étape Node.js pour builder les assets
+FROM node:18 as frontend
+WORKDIR /app
+COPY package*.json vite.config.* ./
+RUN npm install
+COPY . .
+RUN npm run build
+
 FROM php:8.4-apache
 
 # Installer les dépendances nécessaires à Laravel + MySQL

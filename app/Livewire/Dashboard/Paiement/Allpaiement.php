@@ -16,6 +16,12 @@ class Allpaiement extends Component
 
     public $all_payment, $paid_payment, $pending_payment, $canceled_payment ;
 
+    public $search = '';
+    public $status = '';
+    public $methode = '';
+    public $date_from;
+    public $date_to;
+
 
     public function getMontantPaymentByStatus()  {
         $this->all_payment = Paiement::sum('montant');
@@ -31,11 +37,40 @@ class Allpaiement extends Component
         return $paiements->orderBy('created_at', 'desc');
     }
 
+    public function applyFilters()
+{
+    $query = Paiement::query();
+
+    if($this->search) {
+        $query->where(function($q){
+            $q->where('reference', 'like', '%'.$this->search.'%')
+              ->orWhereHas('user', function($q){
+                  $q->where('username', 'like', '%'.$this->search.'%')
+                    ->orWhere('phone', 'like', '%'.$this->search.'%');
+              });
+        });
+    }
+
+    if($this->status && $this->status != 'all'){
+        $query->where('status', $this->status);
+    }
+
+    if($this->methode){
+        $query->where('methode', $this->methode);
+    }
+
+    if($this->date_from && $this->date_to){
+        $query->whereBetween('created_at', [$this->date_from, $this->date_to]);
+    }
+
+    return $query->orderBy('created_at', 'desc');
+}
+
     public function render()
     {
         $this->getMontantPaymentByStatus();
         return view('livewire.dashboard.paiement.allpaiement',[
-            'list_paiements' => $this->getPaiementsEtCommandes()->paginate(10)
+            'list_paiements' => $this->applyFilters()->paginate(10)
         ]);
     }
 }

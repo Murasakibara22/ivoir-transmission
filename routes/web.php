@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/princing', function () {
+    return view('Dashboard.pages.princing');
+});
 
 
 Route::get('connexion', function() {

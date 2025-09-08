@@ -58,7 +58,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.categorie' ? 'active' : '' }}" href="{{route('dashboard.categorie') }}" role="button">
-                        <i class="ri-list-settings-line"></i> <span data-key="t-dashboards">Catégorie</span>
+                        <i class="ri-list-settings-line"></i> <span data-key="t-dashboards">Services</span>
                     </a>
                 </li> <!-- end Dashboard Menu -->
 
@@ -70,7 +70,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ request()->routeIs('dashboard.services') ? 'active' : ''}}" href="{{ route('dashboard.services') }}" role="button">
-                        <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-dashboards">Services</span>
+                        <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-dashboards">Besoins</span>
                     </a>
                 </li> <!-- end Dashboard Menu -->
 

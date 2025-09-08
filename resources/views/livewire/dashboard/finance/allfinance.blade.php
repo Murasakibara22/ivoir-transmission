@@ -44,132 +44,132 @@
                         </div>
                         @endif
 
-                <div class="col-xxl-8">
-                    <div class="row">
-                        <div class="col-xl-4">
-                            <div class="card card-animate bg-primary">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm flex-shrink-0">
-                                            <span class="avatar-title bg-light text-primary rounded-2 fs-2">
-                                                <i data-feather="dollar-sign" class="text-primary"></i>
-                                            </span>
-                                        </div>
-                                        <div class="flex-grow-1 overflow-hidden ms-3">
-                                            <p class="text-uppercase fw-medium text-white text-truncate mb-3">Gains Total</p>
-                                            <div class="d-flex align-items-center mb-3">
-                                                <h4 class="fs-4 flex-grow-1 text-white mb-0"><span class="counter-value" data-target="{{$gains_total}}">{{ number_format($gains_total, 0, ',', '.') }}</span> fcfa</h4>
+                        <div class="col-xxl-12">
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <div class="card card-animate bg-primary">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-light text-primary rounded-2 fs-2">
+                                                        <i data-feather="dollar-sign" class="text-primary"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="flex-grow-1 overflow-hidden ms-3">
+                                                    <p class="text-uppercase fw-medium text-white text-truncate mb-3">Gains Total</p>
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <h4 class="fs-4 flex-grow-1 text-white mb-0"><span class="counter-value" data-target="{{$gains_total}}">{{ number_format($gains_total, 0, ',', '.') }}</span> fcfa</h4>
+                                                    </div>
+                                                    <p class="text-white text-truncate mb-0">Commande terminer</p>
+                                                </div>
                                             </div>
-                                            <p class="text-white text-truncate mb-0">Commande terminer</p>
-                                        </div>
+                                        </div><!-- end card body -->
                                     </div>
-                                </div><!-- end card body -->
-                            </div>
-                        </div><!-- end col -->
+                                </div><!-- end col -->
 
-                        <div class="col-xl-4">
-                            <div class="card card-animate bg-success">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm flex-shrink-0">
-                                            <span class="avatar-title bg-light text-warning rounded-2 fs-2">
-                                                <i class="text-success ri-wallet-fill"></i>
-                                            </span>
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <p class="text-uppercase fw-medium text-white mb-3">Gains obtenue</p>
-                                            <div class="d-flex align-items-center mb-3">
-                                                <h4 class="fs-4 flex-grow-1 text-white mb-0"><span class="counter-value" data-target="{{$gains_obtenu}}">{{ number_format($gains_obtenu, 0, ',', '.') }}</span> fcfa</h4>
+                                <div class="col-xl-4">
+                                    <div class="card card-animate bg-success">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-light text-warning rounded-2 fs-2">
+                                                        <i class="text-success ri-wallet-fill"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <p class="text-uppercase fw-medium text-white mb-3">Gains obtenue</p>
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <h4 class="fs-4 flex-grow-1 text-white mb-0"><span class="counter-value" data-target="{{$gains_obtenu}}">{{ number_format($gains_obtenu, 0, ',', '.') }}</span> fcfa</h4>
+                                                    </div>
+                                                    <p class="text-white mb-0">Commande Terminer</p>
+                                                </div>
                                             </div>
-                                            <p class="text-white mb-0">Commande Terminer</p>
-                                        </div>
+                                        </div><!-- end card body -->
                                     </div>
-                                </div><!-- end card body -->
-                            </div>
-                        </div><!-- end col -->
+                                </div><!-- end col -->
 
-                        <div class="col-xl-4">
-                            <div class="card card-animate bg-info">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm flex-shrink-0">
-                                            <span class="avatar-title bg-light text-warning rounded-2 fs-2">
-                                                <i class="text-info ri-wallet-fill"></i>
-                                            </span>
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <p class="text-uppercase fw-medium text-white mb-3">Gains à avoir</p>
-                                            <div class="d-flex align-items-center mb-3">
-                                                <h4 class="fs-4 flex-grow-1 text-white mb-0"><span class="counter-value" data-target="{{$gains_a_avoir}}">{{number_format($gains_a_avoir, 0, ',', '.')}}</span> fcfa</h4>
+                                <div class="col-xl-4">
+                                    <div class="card card-animate bg-info">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-light text-warning rounded-2 fs-2">
+                                                        <i class="text-info ri-wallet-fill"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <p class="text-uppercase fw-medium text-white mb-3">Gains à avoir</p>
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <h4 class="fs-4 flex-grow-1 text-white mb-0"><span class="counter-value" data-target="{{$gains_a_avoir}}">{{number_format($gains_a_avoir, 0, ',', '.')}}</span> fcfa</h4>
+                                                    </div>
+                                                    <p class="text-white mb-0">Commande valider</p>
+                                                </div>
                                             </div>
-                                            <p class="text-white mb-0">Commande valider</p>
-                                        </div>
+                                        </div><!-- end card body -->
                                     </div>
-                                </div><!-- end card body -->
-                            </div>
-                        </div><!-- end col -->
+                                </div><!-- end col -->
 
-                        <div class="col-xl-4">
-                            <div class="card card-animate bg-danger">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm flex-shrink-0">
-                                            <span class="avatar-title bg-light text-info rounded-2 fs-2">
-                                                <i  class="text-info ri-wallet-fill"></i>
-                                            </span>
-                                        </div>
-                                        <div class="flex-grow-1 overflow-hidden ms-3">
-                                            <p class="text-uppercase fw-medium text-white text-truncate mb-3">Gains Perdu</p>
-                                            <div class="d-flex align-items-center mb-3">
-                                                <h4 class="fs-4 flex-grow-1 mb-0 text-white">{{ number_format($gains_perdu, 0, ',', '.')}} fcfa</h4>
+                                <div class="col-xl-4">
+                                    <div class="card card-animate bg-danger">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-light text-info rounded-2 fs-2">
+                                                        <i  class="text-info ri-wallet-fill"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="flex-grow-1 overflow-hidden ms-3">
+                                                    <p class="text-uppercase fw-medium text-white text-truncate mb-3">Gains Perdu</p>
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <h4 class="fs-4 flex-grow-1 mb-0 text-white">{{ number_format($gains_perdu, 0, ',', '.')}} fcfa</h4>
+                                                    </div>
+                                                    <p class="text-white text-truncate mb-0">Commande Annuler</p>
+                                                </div>
                                             </div>
-                                            <p class="text-white text-truncate mb-0">Commande Annuler</p>
-                                        </div>
+                                        </div><!-- end card body -->
                                     </div>
-                                </div><!-- end card body -->
-                            </div>
-                        </div><!-- end col -->
+                                </div><!-- end col -->
 
-                        <div class="col-xl-4">
-                            <div class="card card-animate bg-warning">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm flex-shrink-0">
-                                            <span class="avatar-title bg-light text-warning rounded-2 fs-2">
-                                                <i class="text-warning ri-wallet-fill"></i>
-                                            </span>
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <p class="text-uppercase fw-medium text-white mb-3">Gains en attente</p>
-                                            <div class="d-flex align-items-center mb-3">
-                                                <h4 class="fs-4 flex-grow-1 text-white mb-0"><span class="counter-value" data-target="{{$gains_en_attente}}">{{ number_format($gains_en_attente, 0, ',', '.') }}</span> fcfa</h4>
+                                <div class="col-xl-4">
+                                    <div class="card card-animate bg-warning">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-light text-warning rounded-2 fs-2">
+                                                        <i class="text-warning ri-wallet-fill"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <p class="text-uppercase fw-medium text-white mb-3">Gains en attente</p>
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <h4 class="fs-4 flex-grow-1 text-white mb-0"><span class="counter-value" data-target="{{$gains_en_attente}}">{{ number_format($gains_en_attente, 0, ',', '.') }}</span> fcfa</h4>
+                                                    </div>
+                                                    <p class="text-white mb-0">Commande en attente</p>
+                                                </div>
                                             </div>
-                                            <p class="text-white mb-0">Commande en attente</p>
-                                        </div>
+                                        </div><!-- end card body -->
                                     </div>
-                                </div><!-- end card body -->
-                            </div>
+                                </div><!-- end col -->
+
+                            </div><!-- end row -->
+
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-header border-0 align-items-center d-flex">
+                                            <h4 class="card-title mb-0 flex-grow-1">Statistiques de Gains</h4>
+                                        </div><!-- end card header -->
+
+
+                                        <div class="card-body p-0 pb-2">
+                                            <div>
+                                                <div id="projects-overview-chart2" data-colors='["--vz-primary", "--vz-warning", "--vz-success"]' dir="ltr" class="apex-charts"></div>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+                                </div><!-- end col -->
+                            </div><!-- end row -->
                         </div><!-- end col -->
-
-                    </div><!-- end row -->
-
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="card">
-                                <div class="card-header border-0 align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1">Statistiques de Gains</h4>
-                                </div><!-- end card header -->
-
-
-                                <div class="card-body p-0 pb-2">
-                                    <div>
-                                        <div id="projects-overview-chart2" data-colors='["--vz-primary", "--vz-warning", "--vz-success"]' dir="ltr" class="apex-charts"></div>
-                                    </div>
-                                </div><!-- end card body -->
-                            </div><!-- end card -->
-                        </div><!-- end col -->
-                    </div><!-- end row -->
-                </div><!-- end col -->
 
 
             </div><!-- end row -->

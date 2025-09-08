@@ -114,53 +114,66 @@
                         <div class="card-body border border-dashed border-end-0 border-start-0">
                             <form wire:submit.prevent='filterreservation'>
                                 <div class="row g-3">
-                                    <div class="col-xxl-5 col-sm-6">
+
+                                    <!-- Recherche texte : reference, client, chassis -->
+                                    <div class="col-xxl-4 col-sm-6">
                                         <div class="search-box">
-                                            <input type="text" wire:model="search_filter"  class="form-control search" placeholder="rechercher une reservation....">
+                                            <input type="text" wire:model="search_filter" class="form-control search"
+                                                placeholder="Rechercher par référence, client ou chassis...">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
-                                    <!--end col-->
+
+                                    <!-- Date de début -->
                                     <div class="col-xxl-2 col-sm-6">
-                                        <div>
-                                            <input type="date" class="form-control" wire:model="date_before_filter" placeholder="Select date">
-                                        </div>
+                                        <input type="date" class="form-control" wire:model="date_before_filter" placeholder="Date avant">
                                     </div>
-                                    <!--end col-->
+
+                                    <!-- Status de la réservation -->
                                     <div class="col-xxl-2 col-sm-4">
-                                        <div>
-                                            <select class="form-control" wire:model="status_filter">
-                                                <option value="">Status</option>
-                                                <option value="PENDING">En attente</option>
-                                                <option value="ANNULER">Annuler</option>
-                                                <option value="TERMINEE">Terminer</option>
-                                                <option value="STARTED">Débuter</option>
-                                            </select>
-                                        </div>
+                                        <select class="form-control" wire:model="status_filter">
+                                            <option value="">Status</option>
+                                            <option value="{{ \App\Models\Reservation::PENDING }}">En attente</option>
+                                            <option value="{{ \App\Models\Reservation::CANCELED }}">Annuler</option>
+                                            <option value="{{ \App\Models\Reservation::COMPLETED }}">Terminer</option>
+                                            <option value="{{ \App\Models\Reservation::STARTED }}">Débuter</option>
+                                        </select>
                                     </div>
-                                    <!--end col-->
-                                    {{-- <div class="col-xxl-2 col-sm-4">
-                                        <div>
-                                            <select class="form-control" wire:model="methode_payment_filter">
-                                                <option value="">Select Payment</option>
-                                                <option value="cash">cash</option>
-                                                <option value="Mobile Money">Mobile Money</option>
-                                            </select>
-                                        </div>
-                                    </div> --}}
-                                    <!--end col-->
+
+                                    <!-- Status paiement -->
+                                    <div class="col-xxl-2 col-sm-4">
+                                        <select class="form-control" wire:model="status_paiement_filter">
+                                            <option value="">Status paiement</option>
+                                            <option value="{{ \App\Models\Reservation::NOT_PAID }}">Non payé</option>
+                                            <option value="{{ \App\Models\Reservation::SUCCESSFUL }}">Régler</option>
+                                            <option value="{{ \App\Models\Reservation::INITIATED }}">Initié</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Bouton filtrer -->
                                     <div class="col-xxl-1 col-sm-4">
-                                        <div>
-                                            <button type="submit" class="btn btn-primary w-100" > <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                                Filters
-                                            </button>
-                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="ri-equalizer-fill me-1 align-bottom"></i> Filters
+                                        </button>
                                     </div>
-                                    <!--end col-->
+
                                 </div>
                                 <!--end row-->
                             </form>
                         </div>
+
+
+                        <div class="card-body">
+                            <div class="d-flex float-end gap-2 mb-3">
+                                <button wire:click="exportExcelReservations" class="btn btn-success">
+                                    <i class="ri-file-excel-2-fill"></i> Export Excel
+                                </button>
+                                <button wire:click="exportPdfReservations" class="btn btn-danger">
+                                    <i class="ri-file-pdf-fill"></i> Export PDF
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="card-body pt-0">
                             <div>
                                 <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
@@ -260,7 +273,7 @@
                                                                     </a>
                                                                 </li>
                                                                 <li class="list-inline-item" title="Télécharger">
-                                                                    <a class="text-warning d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteOrder">
+                                                                    <a class="text-warning d-inline-block remove-item-btn" wire:click="exportPdfReservationUnique({{ $order->id }})">
                                                                         <i class="ri-download-fill fs-16"></i>
                                                                     </a>
                                                                 </li>
@@ -331,7 +344,7 @@
                                                                         </a>
                                                                     </li>
                                                                     <li class="list-inline-item" title="Télécharger">
-                                                                        <a class="text-warning d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteOrder">
+                                                                        <a class="text-warning d-inline-block remove-item-btn" wire:click="exportPdfReservationUnique({{ $order->id }})">
                                                                             <i class="ri-download-fill fs-16"></i>
                                                                         </a>
                                                                     </li>
@@ -355,116 +368,9 @@
                                    {{$list_order->links()}}
                                 </div>
                             </div>
-                            <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header bg-light p-3">
-                                            <h5 class="modal-title" id="exampleModalLabel">&nbsp;</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
-                                        </div>
-                                        <form class="tablelist-form" autocomplete="off">
-                                            <div class="modal-body">
-                                                <input type="hidden" id="id-field" />
 
-                                                <div class="mb-3" id="modal-id">
-                                                    <label for="orderId" class="form-label">ID</label>
-                                                    <input type="text" id="orderId" class="form-control" placeholder="ID" readonly />
-                                                </div>
 
-                                                <div class="mb-3">
-                                                    <label for="customername-field" class="form-label">Customer Name</label>
-                                                    <input type="text" id="customername-field" class="form-control" placeholder="Enter name" required />
-                                                </div>
 
-                                                <div class="mb-3">
-                                                    <label for="productname-field" class="form-label">Product</label>
-                                                    <select class="form-control" data-trigger name="productname-field" id="productname-field" required />
-                                                        <option value="">Product</option>
-                                                        <option value="Puma Tshirt">Puma Tshirt</option>
-                                                        <option value="Adidas Sneakers">Adidas Sneakers</option>
-                                                        <option value="350 ml Glass Grocery Container">350 ml Glass Grocery Container</option>
-                                                        <option value="American egale outfitters Shirt">American egale outfitters Shirt</option>
-                                                        <option value="Galaxy Watch4">Galaxy Watch4</option>
-                                                        <option value="Apple iPhone 12">Apple iPhone 12</option>
-                                                        <option value="Funky Prints T-shirt">Funky Prints T-shirt</option>
-                                                        <option value="USB Flash Drive Personalized with 3D Print">USB Flash Drive Personalized with 3D Print</option>
-                                                        <option value="Oxford Button-Down Shirt">Oxford Button-Down Shirt</option>
-                                                        <option value="Classic Short Sleeve Shirt">Classic Short Sleeve Shirt</option>
-                                                        <option value="Half Sleeve T-Shirts (Blue)">Half Sleeve T-Shirts (Blue)</option>
-                                                        <option value="Noise Evolve Smartwatch">Noise Evolve Smartwatch</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="date-field" class="form-label">Order Date</label>
-                                                    <input type="date" id="date-field" class="form-control" data-provider="flatpickr" required data-date-format="d M, Y" data-enable-time required placeholder="Select date" />
-                                                </div>
-
-                                                <div class="row gy-4 mb-3">
-                                                    <div class="col-md-6">
-                                                        <div>
-                                                            <label for="amount-field" class="form-label">Amount</label>
-                                                            <input type="text" id="amount-field" class="form-control" placeholder="Total amount" required />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div>
-                                                            <label for="payment-field" class="form-label">Payment Method</label>
-                                                            <select class="form-control" data-trigger name="payment-method" required id="payment-field">
-                                                                <option value="">Payment Method</option>
-                                                                <option value="Mastercard">Mastercard</option>
-                                                                <option value="Visa">Visa</option>
-                                                                <option value="COD">COD</option>
-                                                                <option value="Paypal">Paypal</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div>
-                                                    <label for="delivered-status" class="form-label">Delivery Status</label>
-                                                    <select class="form-control" data-trigger name="delivered-status" required id="delivered-status">
-                                                        <option value="">Delivery Status</option>
-                                                        <option value="Pending">Pending</option>
-                                                        <option value="Inprogress">Inprogress</option>
-                                                        <option value="Cancelled">Cancelled</option>
-                                                        <option value="Pickups">Pickups</option>
-                                                        <option value="Delivered">Delivered</option>
-                                                        <option value="Returns">Returns</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <div class="hstack gap-2 justify-content-end">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-success" id="add-btn">Add Order</button>
-                                                    <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Modal -->
-                            <div class="modal fade flip" id="deleteOrder" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-body p-5 text-center">
-                                            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
-                                            <div class="mt-4 text-center">
-                                                <h4>You are about to delete a order ?</h4>
-                                                <p class="text-muted fs-15 mb-4">Deleting your order will remove all of your information from our database.</p>
-                                                <div class="hstack gap-2 justify-content-center remove">
-                                                    <button class="btn btn-link link-success fw-medium text-decoration-none" id="deleteRecord-close" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
-                                                    <button class="btn btn-danger" id="delete-record">Yes, Delete It</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end modal -->
                         </div>
                     </div>
 

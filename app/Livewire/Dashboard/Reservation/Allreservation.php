@@ -11,6 +11,9 @@ use App\Mail\ConfirmationDevis;
 use App\Services\PaymentService;
 use App\Livewire\UtilsSweetAlert;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\ReservationsExport;
 
 
 class Allreservation extends Component
@@ -31,6 +34,7 @@ class Allreservation extends Component
 
     //Montant change
     public $montant_change;
+    public $status_paiement_filter;
 
     //show products
     public $currentPage = "all";
@@ -114,22 +118,28 @@ class Allreservation extends Component
         $this->launch_modal('show_products');
     }
 
-    public function filterreservation()  {
-        $order = Reservation::when($this->search_filter, function ($query) {
-            //ou le username du user
-            $query->whereHas('user', function ($query) {
-                $query->where('username', 'like', '%' . $this->search_filter . '%');
-            });
+    public function filterreservation()
+    {
+        $orders = Reservation::when($this->search_filter, function ($query) {
+            $query->where('reference', 'like', '%'.$this->search_filter.'%')
+                ->orWhere('chassis', 'like', '%'.$this->search_filter.'%')
+                ->orWhereHas('user', function($q) {
+                    $q->where('username', 'like', '%'.$this->search_filter.'%')
+                        ->orWhere('phone', 'like', '%'.$this->search_filter.'%');
+                });
         })->when($this->date_before_filter, function ($query) {
-             $query->where('created_at', '<=', $this->date_before_filter);
+            $query->where('created_at', '<=', $this->date_before_filter);
         })->when($this->status_filter, function ($query) {
-             $query->where('status', $this->status_filter);
-        })->when($this->methode_payment_filter, function ($query) {
-             $query->where('methode_payment', $this->methode_payment_filter);
-        })->get();
+            $query->where('status', $this->status_filter);
+        })->when($this->status_paiement_filter, function ($query) {
+            $query->where('status_paiement', $this->status_paiement_filter);
+        })->orderBy('created_at', 'desc')
+        ->get();
 
-        $this->list_order_filter = $order;
+        $this->list_order_filter = $orders;
     }
+
+
 
     public function selectPage($name)  {
         $this->currentPage = $name;
@@ -186,6 +196,88 @@ class Allreservation extends Component
                                 ->get();
                 break;
         }
+    }
+
+
+    public function exportExcelReservations()
+    {
+
+        $reservations = $this->list_order_filter ?? Reservation::orderBy('created_at', 'desc')->get();
+        $export = Excel::download(new ReservationsExport($reservations), 'reservations.xlsx');
+        $this->send_event_at_toast("Fichier Excel exporter avec success","success","top-right");
+        return $export;
+    }
+
+    public function exportPdfReservations()
+    {
+         $reservations = $this->list_order_filter ?? Reservation::orderBy('created_at', 'desc')->get();
+
+        $data = $reservations->map(function($r){
+            return [
+                'REF' => $r->reference ?? '',
+                'Client' => $r->user->username ?? $r->user->phone ?? '',
+                'Chassis' => $r->chassis ?? '',
+                'A_faire_le' => optional($r->date_debut)->format('d/m/Y H:i'),
+                'Montant' => $r->montant ?? 0,
+                'Status_paiement' => $r->status_paiement ?? '',
+                'Status' => $r->status ?? '',
+                'Adresse' => $r->adresse_name ?? '',
+                'Commune' => $r->commune ?? '',
+                'Date_creation' => optional($r->created_at)->format('d/m/Y H:i'),
+                'Service' => $r->snapshot_services['name'] ?? '',
+                'Prestataire' => $r->name_prestataire ?? '',
+            ];
+        })->toArray();
+
+        $pdf = Pdf::loadView('exports.reservations_pdf', ['reservations' => $data])
+                ->setPaper('a4', 'landscape')
+                ->setOptions([
+                    'isHtml5ParserEnabled' => true,
+                    'isRemoteEnabled' => true,
+                    'defaultFont' => 'DejaVu Sans'
+                ]);
+
+        $export =  response()->streamDownload(function() use ($pdf) {
+            echo $pdf->stream();
+        }, 'reservations.pdf');
+
+        $this->send_event_at_toast("Export effectuée avec success","success","top-right");
+        return $export;
+    }
+
+    public function exportPdfReservationUnique($reservation_id)
+    {
+        $r = Reservation::with('user')->findOrFail($reservation_id);
+
+        $data = [
+            'REF' => $r->reference ?? '',
+            'Client' => $r->user->username ?? $r->user->phone ?? '',
+            'Chassis' => $r->chassis ?? '',
+            'A_faire_le' => optional($r->date_debut)->format('d/m/Y H:i'),
+            'Montant' => $r->montant ?? 0,
+            'Status_paiement' => $r->status_paiement ?? '',
+            'Status' => $r->status ?? '',
+            'Adresse' => $r->adresse_name ?? '',
+            'Commune' => $r->commune ?? '',
+            'Date_creation' => optional($r->created_at)->format('d/m/Y H:i'),
+            'Service' => $r->snapshot_services['name'] ?? '',
+            'Prestataire' => $r->name_prestataire ?? '',
+        ];
+
+        $pdf = Pdf::loadView('exports.reservation_unique_pdf', ['reservation' => $data])
+                ->setPaper('a4')
+                ->setOptions([
+                    'isHtml5ParserEnabled' => true,
+                    'isRemoteEnabled' => true,
+                    'defaultFont' => 'DejaVu Sans'
+                ]);
+
+        $export = response()->streamDownload(function() use ($pdf) {
+            echo $pdf->stream();
+        }, 'reservation_'.$r->reference.'.pdf');
+
+        $this->send_event_at_toast("Export pdf de la reservation effectuée avec success","success","top-right");
+        return $export;
     }
 
     public function render()

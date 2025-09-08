@@ -30,7 +30,7 @@
                                     </span>
                                 </div>
                                 <div class="flex-grow-1 overflow-hidden ms-3">
-                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Total service</p>
+                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Total des besoins</p>
                                     <div class="d-flex align-items-center mb-3">
                                         <h4 class="fs-4 flex-grow-1 mb-0"><span>{{ $all_stats_service }}</span></h4>
                                     </div>
@@ -51,7 +51,7 @@
                                     </span>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <p class="text-uppercase fw-medium text-muted mb-3">Meilleurs services</p>
+                                    <p class="text-uppercase fw-medium text-muted mb-3">Meilleurs besoins</p>
                                     <div class="d-flex align-items-center mb-3">
                                         <h4 class="fs-4 flex-grow-1 mb-0"><span>0</span></h4>
                                     </div>
@@ -87,7 +87,7 @@
             <div class="row g-4 mb-3">
                 <div class="col-sm-auto">
                     <div>
-                        <a href="javascript:void(0)" wire:click='addService' class="btn btn-success"><i class="ri-add-line align-bottom me-1"></i> Ajouter un service</a>
+                        <a href="javascript:void(0)" wire:click='addService' class="btn btn-success"><i class="ri-add-line align-bottom me-1"></i> Ajouter un besoin</a>
                     </div>
                 </div>
                 {{-- <div class="col-sm-auto">
@@ -198,7 +198,7 @@
         <div class="modal-dialog modal-lg ">
             <div class="modal-content">
                 <div class="modal-header p-3 bg-light">
-                    <h4 class="card-title mb-0">Enregistrer un service</h4>
+                    <h4 class="card-title mb-0">Enregistrer un besoin</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form wire:submit.prevent='store'>
@@ -332,7 +332,7 @@
         <div class="modal-dialog modal-lg ">
             <div class="modal-content">
                 <div class="modal-header p-3 bg-light">
-                    <h4 class="card-title mb-0">Modifier un service : {{ $libelle }}</h4>
+                    <h4 class="card-title mb-0">Modifier un besoin : {{ $libelle }}</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form wire:submit.prevent='update_service'>

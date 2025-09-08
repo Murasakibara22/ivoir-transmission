@@ -73,7 +73,11 @@ class Allpaiement extends Component
     public function exportExcel()
     {
         $paiements = $this->applyFilters()->get();
-        return Excel::download(new PaiementsExport($paiements), 'paiements.xlsx');
+        $export = Excel::download(new PaiementsExport($paiements), 'paiements.xlsx');
+
+        $this->send_event_at_toast("Fichier Excel exporter avec success","success","top-right");
+
+        return $export;
     }
 
     public function exportPdf()
@@ -118,9 +122,13 @@ class Allpaiement extends Component
                 ]);
 
         // Stream PDF pour éviter les erreurs UTF-8
-        return response()->streamDownload(function () use ($pdf) {
+        $export = response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream(); // envoie le PDF directement au navigateur
         }, 'paiements.pdf');
+
+
+        $this->send_event_at_toast("Fichier PDF exporter avec success","success","top-right");
+        return $export;
 
     }
 
@@ -149,9 +157,12 @@ class Allpaiement extends Component
         ];
 
         $pdf = Pdf::loadView('exports.paiement_unique_pdf', ['paiement' => $data]);
-        return response()->streamDownload(function () use ($pdf) {
+        $export = response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
         }, 'paiement.'.$paiement->reference.'.pdf');
+
+        $this->send_event_at_toast("Fichier PDF du paiement exporter avec success","success","top-right");
+        return $export;
     }
 
 

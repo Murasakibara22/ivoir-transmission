@@ -47,6 +47,8 @@ class Makereservation2 extends Component
 
     public $dialCode = "225";
 
+    public $required_service = [];
+
 
 
 
@@ -102,21 +104,45 @@ class Makereservation2 extends Component
         }
     }
 
-    public function updatedCategorie()  {
-        $categorie = CategorieService::where('libelle', $this->categorie)->first();
-        if($categorie->services->count() == 0){
-            $this->send_event_at_sweetAlerte("Aucun service","Cette categorie ne contient aucun service","warning");
-            return;
-        }
+   public function updatedCategorie()
+{
+    $categorie = CategorieService::where('libelle', $this->categorie)->first();
 
-        $this->list_service_select = $categorie->services;
-        if($categorie->libelle == "VIDANGE MOTEUR"){
-            array_push($this->select_service, 'Huile de moteur');
-            array_push($this->select_service, 'Filtre à huile');
-        }elseif($categorie->libelle == "DIAGNOSTIC ÉLECTRIQUE"){
-
-        }
+    if(!$categorie || $categorie->services->count() == 0){
+        $this->list_service_select = [];
+        $this->select_service = [];
+        $this->required_service = [];
+        $this->send_event_at_sweetAlerte("Aucun service","Cette catégorie ne contient aucun service","warning");
+        return;
     }
+
+    $this->list_service_select = $categorie->services;
+
+    // reset avant d'appliquer les nouveaux
+    $this->select_service = [];
+    $this->required_service = [];
+
+    switch ($categorie->libelle) {
+        case "VIDANGE MOTEUR":
+            $this->required_service = ['Huile de moteur', 'Filtre à huile'];
+            break;
+
+        case "DIAGNOSTIC ÉLECTRIQUE":
+            $this->required_service = ['Diagnostic batterie'];
+            break;
+
+        case "VIDANGE DE BOÎTE":
+            $this->required_service = ['Filtre de boîte'];
+            break;
+
+        default:
+            $this->required_service = [];
+            break;
+    }
+
+    // Ajouter automatiquement les required dans la sélection
+    $this->select_service = $this->required_service;
+}
 
 
     public function updatedChassis()  {

@@ -23,6 +23,9 @@
             <div class="row">
                 <div class="col-xl-8">
                     <div class="card">
+                        <div class="spinner-border text-light" role="status">
+                            <span class="visually-hidden">Chargement...</span>
+                        </div>
                         <div class="card-body checkout-tab">
 
                             <form wire:submit.prevent='SubmitRendezVous'>
@@ -106,25 +109,49 @@
 
 
                                                 @if($list_service_select && count($list_service_select) > 0)
-                                                <div class="col-lg-7">
-                                                    <label for="genderInput" class="form-label">Besoins</label>
-                                                    <div>
-                                                        @foreach($list_service_select as $service)
-                                                        <div class="form-check form-check-inline mb-2">
-                                                            <input class="form-check-input" @if(in_array($service->libelle, $select_service)) @checked(true) @disabled(true) @endif class="form-check-input" type="checkbox" id="formCheck{{ $service->id }}" value="{{ $service->libelle }}" wire:model='select_service'>
-                                                            <label class="form-check-label" for="inlineRadio1">{{ $service->libelle }}</label>
+                                                    <div class="col-lg-7">
+                                                        <label for="genderInput" class="form-label">Besoins</label>
+                                                        <div>
+                                                            @foreach($list_service_select as $service)
+                                                                @php
+                                                                    $isRequired = in_array($service->libelle, $required_service);
+                                                                @endphp
+
+                                                                <div class="form-check form-check-inline mb-2">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        class="form-check-input"
+                                                                        id="formCheck{{ $service->id }}"
+                                                                        value="{{ $service->libelle }}"
+                                                                        wire:model="select_service"
+                                                                        @if($isRequired) checked disabled @endif
+                                                                    >
+                                                                    <label
+                                                                        class="form-check-label @if($isRequired) text-muted @endif"
+                                                                        for="formCheck{{ $service->id }}"
+                                                                    >
+                                                                        {{ $service->libelle }}
+                                                                        @if($isRequired)
+                                                                            <small class="text-muted">(obligatoire)</small>
+                                                                        @endif
+                                                                    </label>
+                                                                </div>
+                                                            @endforeach
                                                         </div>
-                                                        @endforeach
+                                                        @error('select_service')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
-                                                    @error('select_service') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div><!--end col-->
-                                                @endif
+                                                    @endif
+
 
 
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="billinginfo-phone" class="form-label">Date du rendez-vous <span class="text-danger">*</span> </label>
-                                                        <select  class="form-select" id="country"  wire:model.live="date_rdv">
+                                                       <select class="form-select"
+                                                                wire:model="date_rdv"
+                                                                @if(!$adresse_livraison) disabled @endif>
                                                             <option value="">Sélectionnez...</option>
                                                             @if($joursAutorises && count($joursAutorises) > 0)
                                                                 @foreach($joursAutorises as $date => $label)
@@ -132,6 +159,11 @@
                                                                 @endforeach
                                                             @endif
                                                         </select>
+                                                        @if(!$adresse_livraison)
+                                                            <div class="text-danger mt-2 small">
+                                                                Veuillez renseigner une adresse avant de sélectionner une date.
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                     @error('date_rdv') <span class="text-danger">{{ $message }}</span> @enderror
                                                 </div>
@@ -304,8 +336,10 @@
 
 
                                             <div class="d-flex align-items-start gap-3 mt-3">
-                                                <button type="submit" class="btn btn-primary btn-label right ms-auto nexttab">
-                                                    <i class="ri-truck-line label-icon align-middle fs-16 ms-2"></i>Confirmez votre rendez-vous
+                                                <button type="submit" class="btn btn-primary btn-label right ms-auto nexttab" wire:loading.attr="disabled">
+                                                    <i class="ri-truck-line label-icon align-middle fs-16 ms-2"></i>
+                                                    <span wire:loading.remove>Confirmez votre rendez-vous</span>
+                                                    <span wire:loading>Traitement en cours...</span>
                                                 </button>
                                             </div>
                                         </div>

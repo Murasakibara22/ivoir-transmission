@@ -121,6 +121,7 @@
                                         <tr>
                                             <th scope="col">N'</th>
                                             <th scope="col">Nom de la commune</th>
+                                            <th scope="col">Mains d'œuvres</th>
                                             <th scope="col">Ville</th>
                                             <th scope="col">Jours Disponible </th>
                                             <th scope="col" style="width: 150px;">Action</th>
@@ -135,6 +136,10 @@
                                             </td>
                                             <td>
                                                 <h6 class="mb-0">{{ $commune->nom }}</h6>
+                                            </td>
+
+                                            <td>
+                                                {{ $commune->frais_service ? number_format($commune->frais_service, 0, ',', ' ').' FCFA': 'Aucune main d\'oeuvre' }}
                                             </td>
 
                                             <td>
@@ -261,7 +266,7 @@
 
 
     <div wire:ignore.self class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="add_commune" aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header p-3 bg-light">
                     <h4 class="card-title mb-0">Ajouter une commune </h4>
@@ -272,11 +277,23 @@
                     <div class="modal-body text-center p-4">
                             <div class="row">
 
-                                <div class="col-12">
+                                <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label class="form-label text-start">Nom de la commune <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" wire:model='nom_commune' min="1" placeholder="Entrer le nom de la ville" id="firstNameinput">
+                                        <input type="text" class="form-control" wire:model='nom_commune' min="1" placeholder="Entrer le nom de la commune" id="firstNameinput">
                                         @error('nom_commune')
+                                            <span class="feedback-text">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="form-label text-start">Main d'œuvre<span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" wire:model='frais_service' min="1" placeholder="Entrer un montnant (EX: 50000)" id="firstNameinput">
+                                        @error('frais_service')
                                             <span class="feedback-text">
                                                 {{ $message }}
                                             </span>
@@ -342,7 +359,7 @@
     </div><!-- /.modal -->
 
     <div wire:ignore.self class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="edit_commune" aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header p-3 bg-warning">
                     <h4 class="card-title mb-0">modifier la commune </h4>
@@ -353,11 +370,23 @@
                     <div class="modal-body text-center p-4">
                             <div class="row">
 
-                                <div class="col-12">
+                                <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label class="form-label text-start">nom <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" wire:model='nom_commune' min="1" placeholder="Entrer le nom de la ville" id="firstNameinput">
+                                        <input type="text" class="form-control" wire:model='nom_commune' min="1" placeholder="Entrer le nom de la commune" id="firstNameinput">
                                         @error('nom_commune')
+                                            <span class="feedback-text">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label class="form-label text-start">Main d'œuvre<span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" wire:model='frais_service' min="1" placeholder="Entrer un montnant (EX: 50000)" id="firstNameinput">
+                                        @error('frais_service')
                                             <span class="feedback-text">
                                                 {{ $message }}
                                             </span>

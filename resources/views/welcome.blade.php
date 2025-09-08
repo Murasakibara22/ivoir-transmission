@@ -36,7 +36,7 @@
                                         data-splitin="none"
                                         data-splitout="none"
                                         data-responsive_offset="on">
-                                        TRAVAIL HONNÊTE ET DE QUALITÉ
+                                        L'entretien auto arrive chez vous.
                                     </div>
 
                                     <div class="tp-caption tp-resizeme text-white font-heading font-weight-700"
@@ -56,7 +56,7 @@
                                         data-splitin="none"
                                         data-splitout="none"
                                         data-responsive_offset="on">
-                                        À DES PRIX ABORDABLES
+                                        Simple, rapide, sans stress
                                     </div>
 
                                     <div class="tp-caption tp-resizeme text-white"
@@ -77,7 +77,7 @@
                                         data-splitout="none"
                                         data-responsive_offset="on">
 
-                                        Nous offrons un service haut de gamme pour la réparation de véhicules importés et nationaux : entretien des freins, <br> de l'échappement, mises au point, réparations du moteur, des systèmes électriques et de climatisation.
+                                        Réservez votre vidange ou entretien mécanique depuis chez vous. Notre équipe se déplace avec tout l'équipement nécessaire.
 
                                     </div>
 
@@ -96,102 +96,10 @@
                                         data-splitin="none"
                                         data-splitout="none"
                                         data-responsive_offset="on">
-                                        <a href="page-contact.html" class="wprt-button accent big">OBTENEZ DES DEVIS GRATUITS</a>
+                                        <a href="/rendez-vous" class="wprt-button accent big">RÉSERVER MAINTENANT</a>
                                     </div>
                                 </li>
                                 <!-- /End Slide 1 -->
-
-                                <!-- Slide 2 -->
-                                <li data-transition="random">
-                                    <!-- Main Image -->
-                                    <img src="{{ asset('frontend/assets/img/slider/slider-bg-2.jpg') }}" alt="" data-bgposition="center center" data-no-retina>
-
-                                    <!-- Layers -->
-                                    <div class="tp-caption tp-resizeme text-white font-heading font-weight-400 text-center"
-                                        data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                                        data-y="['middle','middle','middle','middle']" data-voffset="['-130','-130','-125','-165']"
-                                        data-fontsize="['54','54','50','38']"
-                                        data-lineheight="['64','64','60','48']"
-                                        data-width="full"
-                                        data-height="none"
-                                        data-whitespace="normal"
-                                        data-transform_idle="o:1;"
-                                        data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
-                                        data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
-                                        data-mask_in="x:0px;y:[100%];"
-                                        data-mask_out="x:inherit;y:inherit;"
-                                        data-start="700"
-                                        data-splitin="none"
-                                        data-splitout="none"
-                                        data-responsive_offset="on">
-
-                                        PRIX COMPÉTITIFS
-
-                                    </div>
-
-                                    <div class="tp-caption tp-resizeme text-white font-heading font-weight-700 text-center"
-                                        data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                                        data-y="['middle','middle','middle','middle']" data-voffset="['-62','-62','-62','-67']"
-                                        data-fontsize="['54','54','50','38']"
-                                        data-lineheight="['64','64','60','48']"
-                                        data-width="full"
-                                        data-height="none"
-                                        data-whitespace="normal"
-                                        data-transform_idle="o:1;"
-                                        data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
-                                        data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
-                                        data-mask_in="x:0px;y:[100%];"
-                                        data-mask_out="x:inherit;y:inherit;"
-                                        data-start="1000"
-                                        data-splitin="none"
-                                        data-splitout="none"
-                                        data-responsive_offset="on">
-
-                                        GARANTIES À LONG TERME
-
-                                    </div>
-
-                                    <div class="tp-caption tp-resizeme text-white text-center"
-                                        data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                                        data-y="['middle','middle','middle','middle']" data-voffset="['26','26','26','56']"
-                                        data-fontsize="['16','16','16','15']"
-                                        data-lineheight="['34','34','34','30']"
-                                        data-width="full"
-                                        data-height="none"
-                                        data-whitespace="normal"
-                                        data-transform_idle="o:1;"
-                                        data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
-                                        data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
-                                        data-mask_in="x:0px;y:[100%];"
-                                        data-mask_out="x:inherit;y:inherit;"
-                                        data-start="1000"
-                                        data-splitin="none"
-                                        data-splitout="none"
-                                        data-responsive_offset="on">
-
-                                        Nous offrons un service haut de gamme pour la réparation de véhicules importés et nationaux : entretien des freins,<br> de l'échappement, mises au point, réparations du moteur, des systèmes électriques et de climatisation.
-
-                                    </div>
-
-                                    <div class="tp-caption text-center"
-                                        data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                                        data-y="['middle','middle','middle','middle']" data-voffset="['115','115','110','167']"
-                                        data-width="full"
-                                        data-height="none"
-                                        data-whitespace="normal"
-                                        data-transform_idle="o:1;"
-                                        data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
-                                        data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
-                                        data-mask_in="x:0px;y:[100%];"
-                                        data-mask_out="x:inherit;y:inherit;"
-                                        data-start="1000"
-                                        data-splitin="none"
-                                        data-splitout="none"
-                                        data-responsive_offset="on">
-                                        <a href="page-contact.html" class="wprt-button accent big">RÉSERVEZ MAINTENANT</a>
-                                    </div>
-                                </li>
-                                <!-- /End Slide 2 -->
 
                                 <!-- Slide 3 -->
                                 <li data-transition="random">
@@ -275,7 +183,7 @@
                                         data-splitin="none"
                                         data-splitout="none"
                                         data-responsive_offset="on">
-                                        <a href="page-contact.html" class="wprt-button accent big">RÉSERVEZ VOTRE CONTRÔLE TECHNQUE</a>
+                                        <a href="/rendez-vous" class="wprt-button accent big">PRENDRE RENDEZ-VOUS</a>
                                     </div>
                                 </li>
                                 <!-- /End Slide 3 -->
@@ -297,11 +205,10 @@
                                 <div class="col-md-12">
                                     <div class="wprt-spacer clearfix" data-desktop="33" data-mobi="40" data-smobi="40"></div>
 
-                                    {{-- <div class="wprt-headings style-1 clearfix text-center">
-                                        <h2 class="heading clearfix">NOS SERVICES</h2>
+                                    <div class="wprt-headings style-1 clearfix text-start">
+                                        <h2 class="heading style-3 clearfix">COMMENT ÇA MARCHE?</h2>
                                         <div class="sep clearfix"></div>
-                                        <p class="sub-heading clearfix">Nos professionnels effectueront des tests de diagnostic, des vidanges et des remplissages de liquides, des remplacements de moteur, des changements d'huile et des révisions complètes du véhicule.</p>
-                                    </div><!-- /.wprt-headings --> --}}
+                                    </div><!-- /.wprt-headings -->
 
                                     <div class="wprt-spacer clearfix" data-desktop="30" data-mobi="30" data-smobi="30"></div>
                                 </div><!-- /.col-md-12 -->
@@ -309,14 +216,14 @@
                                 <div class="col-md-3">
                                     <div class="wprt-icon-box style-1 clearfix icon-top outline-type grey-outline align-center rounded-100 has-width w100">
                                         <div class="icon-wrap">
-                                            <i class="as-icon-air-conditioning"></i>
+                                            <i class="as-icon-electrical-service"></i>
                                         </div>
 
                                         <h3 class="heading">
-                                            <a target="_blank" href="#">CLIMATISATION</a>
+                                            <a target="_blank" href="#">1- Vous reservez en ligne</a>
                                         </h3>
 
-                                        <p class="desc">Nous offrons un service haut de gamme pour la réparation de véhicules importés et nationaux. Entretien des freins, mises au point et réparations moteur.</p>
+                                        <p class="desc">Choisissez votre service et sélectionnez la date et l'heure qui vous conviennent. Un processus simple et rapide.</p>
 
                                         {{-- <div class="elm-btn">
                                             <a target="_blank" class=" simple-link font-heading" href="#"></a>
@@ -329,14 +236,14 @@
                                 <div class="col-md-3">
                                     <div class="wprt-icon-box style-1 clearfix icon-top outline-type grey-outline align-center rounded-100 has-width w100">
                                         <div class="icon-wrap">
-                                            <i class="as-icon-electrical-service"></i>
+                                            <i class="as-icon-air-conditioning"></i>
                                         </div>
 
                                         <h3 class="heading">
-                                            <a target="_blank" href="#">BOÎTE DE VITESSE</a>
+                                            <a target="_blank" href="#">2- Nous venons chez vous</a>
                                         </h3>
 
-                                        <p class="desc">Nous offrons un service haut de gamme pour la réparation de véhicules importés et nationaux. Entretien des freins, mises au point et réparations moteur.</p>
+                                        <p class="desc">Des mécaniciens expérimentés se déplace à votre domicile ou sur votre lieu de travail avec tout l’équipement nécessaire.</p>
 
                                         {{-- <div class="elm-btn">
                                             <a target="_blank" class=" simple-link font-heading" href="#">READ MORE</a>
@@ -353,10 +260,10 @@
                                         </div>
 
                                         <h3 class="heading">
-                                            <a target="_blank" href="#">RÉPARATION DE FREINS</a>
+                                            <a target="_blank" href="#">3- On s'occupe de tout</a>
                                         </h3>
 
-                                        <p class="desc">Nous offrons un service haut de gamme pour la réparation de véhicules importés et nationaux. Entretien des freins, mises au point et réparations moteur.</p>
+                                        <p class="desc">Diagnostic, réparation ou entretien, nous nous occupons de tout pendant que vous continuez vos activités.</p>
 
                                         {{-- <div class="elm-btn">
                                             <a target="_blank" class=" simple-link font-heading" href="#">READ MORE</a>
@@ -373,10 +280,10 @@
                                         </div>
 
                                         <h3 class="heading">
-                                            <a target="_blank" href="#">FILTRES AUTOMOBILES</a>
+                                            <a target="_blank" href="#">4- Vous reprenez la route l'esprit tranquille</a>
                                         </h3>
 
-                                        <p class="desc">Nous offrons un service haut de gamme pour la réparation de véhicules importés et nationaux. Entretien des freins, mises au point et réparations moteur.</p>
+                                        <p class="desc">Votre véhicule est prêt, parfaitement entretenu. Vous repartez en toute sécurité.</p>
 
                                         {{-- <div class="elm-btn">
                                             <a target="_blank" class=" simple-link font-heading" href="#">READ MORE</a>
@@ -385,10 +292,36 @@
 
                                 </div><!-- /.col-md-3 -->
 
+
+
+                                {{-- <div class="col-md-10 align-center text-center margin-top-10 margin-right-auto margin-left-auto">
+                                    <div class="tp-caption text-center"
+                                    data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
+                                    data-y="['middle','middle','middle','middle']" data-voffset="['115','115','110','167']"
+                                    data-width="full"
+                                    data-height="none"
+                                    data-whitespace="normal"
+                                    data-transform_idle="o:1;"
+                                    data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
+                                    data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                                    data-mask_in="x:0px;y:[100%];"
+                                    data-mask_out="x:inherit;y:inherit;"
+                                    data-start="1000"
+                                    data-splitin="none"
+                                    data-splitout="none"
+                                    data-responsive_offset="on">
+                                    <a href="/rendez-vous" class="wprt-button accent big">PRENDRE RENDEZ-VOUS</a>
+                                </div> --}}
+                                </div>
+
+
                                 <div class="col-md-12">
                                     <div class="wprt-spacer clearfix" data-desktop="104" data-mobi="60" data-smobi="60"></div>
                                 </div><!-- /.col-md-12 -->
+
                             </div><!-- /.row -->
+
+
                         </div><!-- /.container -->
                     </div>
                     <!-- END 1 -->
@@ -404,7 +337,7 @@
                                     <div class="wprt-spacer clearfix" data-desktop="104" data-mobi="60" data-smobi="60"></div>
 
                                     <div class="wprt-headings style-1 clearfix">
-                                        <h2 class="heading clearfix">TRUST OUR GARAGE</h2>
+                                        <h2 class="heading clearfix">FAITES CONFIANCE À NOTRE GARAGE </h2>
                                         <div class="sep clearfix"></div>
                                     </div><!-- /.wprt-headings -->
 
@@ -416,13 +349,13 @@
                                         <div class="tab-content-wrap">
                                             <div class="tab-content">
                                                 <div class="item-content">
-                                                    <p>At our AutoService garage, we fully appreciate how difficult it is for people to find reliable and trustworthy garages where they can service and repair their cars. We are always keen to prove to our customers that we are different!</p>
+                                                    <p>Chez Ivoire Transmission, nous comprenons parfaitement qu'il est difficile de trouver un garage fiable et digne de confiance pour entretenir et réparer sa voiture. Nous tenons toujours à prouver à nos clients que nous sommes différents !</p>
 
                                                     <div class="wprt-list clearfix icon-left icon-top style-1">
                                                         <div class="inner">
                                                             <span class="icon-wrap">
                                                                 <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">We handle all makes and models and specialise in more than 40 car brands</span>
+                                                                <span class="text font-size-15">Nous traitons toutes les marques et tous les modèles et nous nous spécialisons dans plus de 40 marques de voitures</span>
                                                             </span>
                                                         </div>
                                                     </div><!-- /.wprt-list -->
@@ -431,7 +364,7 @@
                                                         <div class="inner">
                                                             <span class="icon-wrap">
                                                                 <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">We are endorsed by the local trading standards office</span>
+                                                                <span class="text font-size-15">Nous sommes approuvés par le bureau local des normes commerciales</span>
                                                             </span>
                                                         </div>
                                                     </div><!-- /.wprt-list -->
@@ -440,7 +373,7 @@
                                                         <div class="inner">
                                                             <span class="icon-wrap">
                                                                 <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">All our mechanics and technicians are equipped with the latest portable technology</span>
+                                                                <span class="text font-size-15">Tous nos mécaniciens et techniciens sont équipés des dernières technologies portables</span>
                                                             </span>
                                                         </div>
                                                     </div><!-- /.wprt-list -->
@@ -449,49 +382,7 @@
                                                         <div class="inner">
                                                             <span class="icon-wrap">
                                                                 <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">All our work has a minimum 12-month guarantee all services</span>
-                                                            </span>
-                                                        </div>
-                                                    </div><!-- /.wprt-list -->
-                                                </div>
-                                            </div><!-- /.tab-content -->
-
-                                            <div class="tab-content">
-                                                <div class="item-content">
-                                                    <p>At our AutoService garage, we fully appreciate how difficult it is for people to find reliable and trustworthy garages where they can service and repair their cars. We are always keen to prove to our customers that we are different!</p>
-
-                                                    <div class="wprt-list clearfix icon-left icon-top style-1">
-                                                        <div class="inner">
-                                                            <span class="icon-wrap">
-                                                                <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">We handle all makes and models and specialise in more than 40 car brands</span>
-                                                            </span>
-                                                        </div>
-                                                    </div><!-- /.wprt-list -->
-
-                                                    <div class="wprt-list clearfix icon-left icon-top style-1">
-                                                        <div class="inner">
-                                                            <span class="icon-wrap">
-                                                                <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">We are endorsed by the local trading standards office</span>
-                                                            </span>
-                                                        </div>
-                                                    </div><!-- /.wprt-list -->
-
-                                                    <div class="wprt-list clearfix icon-left icon-top style-1">
-                                                        <div class="inner">
-                                                            <span class="icon-wrap">
-                                                                <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">All our mechanics and technicians are equipped with the latest portable technology</span>
-                                                            </span>
-                                                        </div>
-                                                    </div><!-- /.wprt-list -->
-
-                                                    <div class="wprt-list clearfix icon-left icon-top style-1">
-                                                        <div class="inner">
-                                                            <span class="icon-wrap">
-                                                                <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">All our work has a minimum 12-month guarantee all services</span>
+                                                                <span class="text font-size-15">Tous nos travaux bénéficient d'une garantie minimum de 12 mois sur tous les services</span>
                                                             </span>
                                                         </div>
                                                     </div><!-- /.wprt-list -->
@@ -500,13 +391,13 @@
 
                                             <div class="tab-content">
                                                 <div class="item-content">
-                                                    <p>At our AutoService garage, we fully appreciate how difficult it is for people to find reliable and trustworthy garages where they can service and repair their cars. We are always keen to prove to our customers that we are different!</p>
+                                                    <p>Chez Ivoire Transmission, nous comprenons parfaitement qu'il est difficile de trouver un garage fiable et digne de confiance pour entretenir et réparer sa voiture. Nous tenons toujours à prouver à nos clients que nous sommes différents !</p>
 
                                                     <div class="wprt-list clearfix icon-left icon-top style-1">
                                                         <div class="inner">
                                                             <span class="icon-wrap">
                                                                 <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">We handle all makes and models and specialise in more than 40 car brands</span>
+                                                                <span class="text font-size-15">Nous traitons toutes les marques et tous les modèles et nous nous spécialisons dans plus de 40 marques de voitures</span>
                                                             </span>
                                                         </div>
                                                     </div><!-- /.wprt-list -->
@@ -515,7 +406,7 @@
                                                         <div class="inner">
                                                             <span class="icon-wrap">
                                                                 <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">We are endorsed by the local trading standards office</span>
+                                                                <span class="text font-size-15">Nous sommes approuvés par le bureau local des normes commerciales</span>
                                                             </span>
                                                         </div>
                                                     </div><!-- /.wprt-list -->
@@ -524,7 +415,7 @@
                                                         <div class="inner">
                                                             <span class="icon-wrap">
                                                                 <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">All our mechanics and technicians are equipped with the latest portable technology</span>
+                                                                <span class="text font-size-15">Tous nos mécaniciens et techniciens sont équipés des dernières technologies portables</span>
                                                             </span>
                                                         </div>
                                                     </div><!-- /.wprt-list -->
@@ -533,7 +424,49 @@
                                                         <div class="inner">
                                                             <span class="icon-wrap">
                                                                 <span class="icon"><i class="fa fa-check"></i></span>
-                                                                <span class="text font-size-15">All our work has a minimum 12-month guarantee all services</span>
+                                                                <span class="text font-size-15">Tous nos travaux bénéficient d'une garantie minimum de 12 mois sur tous les services</span>
+                                                            </span>
+                                                        </div>
+                                                    </div><!-- /.wprt-list -->
+                                                </div>
+                                            </div><!-- /.tab-content -->
+
+                                            <div class="tab-content">
+                                                <div class="item-content">
+                                                    <p>Chez Ivoire Transmission, nous comprenons parfaitement qu'il est difficile de trouver un garage fiable et digne de confiance pour entretenir et réparer sa voiture. Nous tenons toujours à prouver à nos clients que nous sommes différents !</p>
+
+                                                    <div class="wprt-list clearfix icon-left icon-top style-1">
+                                                        <div class="inner">
+                                                            <span class="icon-wrap">
+                                                                <span class="icon"><i class="fa fa-check"></i></span>
+                                                                <span class="text font-size-15">Nous traitons toutes les marques et tous les modèles et nous nous spécialisons dans plus de 40 marques de voitures</span>
+                                                            </span>
+                                                        </div>
+                                                    </div><!-- /.wprt-list -->
+
+                                                    <div class="wprt-list clearfix icon-left icon-top style-1">
+                                                        <div class="inner">
+                                                            <span class="icon-wrap">
+                                                                <span class="icon"><i class="fa fa-check"></i></span>
+                                                                <span class="text font-size-15">Nous sommes approuvés par le bureau local des normes commerciales</span>
+                                                            </span>
+                                                        </div>
+                                                    </div><!-- /.wprt-list -->
+
+                                                    <div class="wprt-list clearfix icon-left icon-top style-1">
+                                                        <div class="inner">
+                                                            <span class="icon-wrap">
+                                                                <span class="icon"><i class="fa fa-check"></i></span>
+                                                                <span class="text font-size-15">Tous nos mécaniciens et techniciens sont équipés des dernières technologies portables</span>
+                                                            </span>
+                                                        </div>
+                                                    </div><!-- /.wprt-list -->
+
+                                                    <div class="wprt-list clearfix icon-left icon-top style-1">
+                                                        <div class="inner">
+                                                            <span class="icon-wrap">
+                                                                <span class="icon"><i class="fa fa-check"></i></span>
+                                                                <span class="text font-size-15">Tous nos travaux bénéficient d'une garantie minimum de 12 mois sur tous les services</span>
                                                             </span>
                                                         </div>
                                                     </div><!-- /.wprt-list -->
@@ -544,7 +477,7 @@
                                                 <div class="item-content">
                                                     <h5>Trust Our Garage</h5>
 
-                                                    <p>At our AutoService garage, we fully appreciate how difficult it is for people to find reliable and trustworthy garages where they can service and repair their cars. We are always keen to prove to our customers that we are different!</p>
+                                                    <p>At our Ivoire Transmission garage, we fully appreciate how difficult it is for people to find reliable and trustworthy garages where they can service and repair their cars. We are always keen to prove to our customers that we are different!</p>
 
                                                     <div class="wprt-list clearfix icon-left icon-top style-1">
                                                         <div class="inner">
@@ -584,13 +517,31 @@
                                                 </div>
                                             </div><!-- /.tab-content -->
                                         </div><!-- /.tab-content-wrap -->
+
+                                        <div class="tp-caption text-right margin-top-10"
+                                            data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
+                                            data-y="['middle','middle','middle','middle']" data-voffset="['115','115','110','167']"
+                                            data-width="full"
+                                            data-height="none"
+                                            data-whitespace="normal"
+                                            data-transform_idle="o:1;"
+                                            data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
+                                            data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                                            data-mask_in="x:0px;y:[100%];"
+                                            data-mask_out="x:inherit;y:inherit;"
+                                            data-start="1000"
+                                            data-splitin="none"
+                                            data-splitout="none"
+                                            data-responsive_offset="on">
+                                            <a href="/rendez-vous" class="wprt-button accent big">PRENDRE RENDEZ-VOUS</a>
+                                        </div>
                                     </div><!-- /.wprt-tabs -->
 
                                     <div class="wprt-spacer clearfix" data-desktop="0" data-mobi="35" data-smobi="35"></div>
                                 </div><!-- /.col-md-7 -->
 
                                 <div class="col-md-5">
-                                    <div class="wprt-spacer clearfix" data-desktop="20" data-mobi="10" data-smobi="10"></div>
+                                    <div class="wprt-spacer clearfix margin-top-10" data-desktop="20" data-mobi="10" data-smobi="10"></div>
 
                                     <img src="{{ asset('frontend/assets/img/technicial.png')}}" alt="Image" />
                                 </div><!-- /.col-md-5 -->
@@ -604,7 +555,7 @@
 
 
                     <!-- FACTS -->
-                    <div class="row-facts bg-light-grey">
+                    {{-- <div class="row-facts bg-light-grey">
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
@@ -706,7 +657,7 @@
                                 </div><!-- /.col-md-12 -->
                             </div><!-- /.row -->
                         </div><!-- /.container -->
-                    </div>
+                    </div> --}}
                     <!-- END FACTS 1 -->
 
 
@@ -719,28 +670,28 @@
                                     <div class="wprt-spacer clearfix" data-desktop="83" data-mobi="60" data-smobi="60"></div>
 
                                     <div class="wprt-headings style-1 clearfix text-center">
-                                        <h2 class="heading clearfix">CE QUE NOUS OFFRONS</h2>
+                                        <h2 class="heading clearfix">Services Proposés </h2>
                                         <div class="sep clearfix"></div>
-                                        <p class="sub-heading clearfix">Our professionals will perform diagnostic tests, fluid flush and fills, engine replacement, oil changes, and total vehicle overhauls.</p>
+                                        <p class="sub-heading clearfix">Nos professionnels effectueront des tests de diagnostic, des vidanges et des remplissages de liquides, des remplacements de moteur, des changements d'huile et des révisions complètes du véhicule.</p>
                                     </div><!-- /.wprt-headings -->
 
                                     <div class="wprt-spacer clearfix" data-desktop="45" data-mobi="30" data-smobi="30"></div>
                                 </div><!-- /.col-md-12 -->
 
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="wprt-image-box style-1 clearfix text-center">
                                         <div class="item">
                                             <div class="inner">
                                                 <div class="thumb"><img src="{{ asset('frontend/assets/img/services/service-4-600-394.jpg') }}" alt="Image"></div>
 
                                                 <div class="text-wrap">
-                                                    <h3 class="title"><a target="_blank" href="">CHECK ENGINE LIGHT</a></h3>
+                                                    <h3 class="title"><a target="_blank" href="">DIAGNOSTIC ÉLECTRIQUE</a></h3>
 
-                                                    <div class="desc">We provide top-notch service for import and domestic car repairs. Servicing Brakes, Tune Ups</div>
+                                                    <div class="desc">🔧 Diagnostic complet pour détecter rapidement les pannes de votre véhicule. Une expertise rapide pour une solution efficace.</div>
 
-                                                    {{-- <div class="elm-btn">
-                                                        <a class="small wprt-button accent" href="#">READ MORE</a>
-                                                    </div> --}}
+                                                    <div class="elm-btn">
+                                                        <a class="small wprt-button accent" href="/rendez-vous">RÉSERVEZ MAINTENANT</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -749,42 +700,42 @@
                                     <div class="wprt-spacer clearfix" data-desktop="0" data-mobi="35" data-smobi="35"></div>
                                 </div><!-- /.col-md-4 -->
 
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-4">
                                     <div class="wprt-image-box style-1 clearfix text-center">
                                         <div class="item">
                                             <div class="inner">
                                                 <div class="thumb"><img src="{{ asset('frontend/assets/img/services/service-5-600-394.jpg') }}" alt="Image"></div>
 
                                                 <div class="text-wrap">
-                                                    <h3 class="title"><a target="_blank" href="">ELECTRICAL SYSTEM</a></h3>
+                                                    <h3 class="title"><a target="_blank" href="">SYSTÈME ÉLECTRIQUE</a></h3>
 
-                                                    <div class="desc">We provide top-notch service for import and domestic car repairs. Servicing Brakes, Tune Ups</div>
+                                                    <div class="desc">⚡ Réparation et entretien des systèmes électriques de votre véhicule. Problèmes de batterie, alternateur et plus.</div>
 
-                                                    {{-- <div class="elm-btn">
-                                                        <a class="small wprt-button accent" href="#">READ MORE</a>
-                                                    </div> --}}
+                                                    <div class="elm-btn">
+                                                        <a class="small wprt-button accent" href="/rendez-vous">RÉSERVEZ MAINTENANT</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div><!-- /.wprt-image-box -->
 
                                     <div class="wprt-spacer clearfix" data-desktop="0" data-mobi="35" data-smobi="35"></div>
-                                </div><!-- /.col-md-4 -->
+                                </div><!-- /.col-md-4 --> --}}
 
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="wprt-image-box style-1 clearfix text-center">
                                         <div class="item">
                                             <div class="inner">
                                                 <div class="thumb"><img src="{{ asset('frontend/assets/img/services/service-6-600-394.jpg') }}" alt="Image"></div>
 
                                                 <div class="text-wrap">
-                                                    <h3 class="title"><a target="_blank" href="">OIL CHANGE & FILTER</a></h3>
+                                                    <h3 class="title"><a target="_blank" href="">VIDANGE MOTEUR</a></h3>
 
-                                                    <div class="desc">We provide top-notch service for import and domestic car repairs. Servicing Brakes, Tune Ups</div>
+                                                    <div class="desc">🛢️ Vidange rapide, simple , efficace avec des huiles de qualité. Prolongez la durée de vie de votre moteur.</div>
 
-                                                    {{-- <div class="elm-btn">
-                                                        <a class="small wprt-button accent" href="#">READ MORE</a>
-                                                    </div> --}}
+                                                    <div class="elm-btn">
+                                                        <a class="small wprt-button accent" href="/rendez-vous">RÉSERVEZ MAINTENANT</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -820,10 +771,10 @@
 
                                             <h3 class="heading">ASE CERTIFIED</h3>
 
-                                            <p class="desc">Get in touch with our quality AutoService Shop, let our team of highly trained technicians provide you with the best car garage services, including MOT testing, car servicing and car repairs and diagnostics.</p>
+                                            <p class="desc">Contactez notre atelier de transmission de qualité Ivoire, laissez notre équipe de techniciens hautement qualifiés vous fournir les meilleurs services de garage automobile, y compris les tests MOT, l'entretien automobile et les réparations et diagnostics automobiles.</p>
 
                                             <div class="elm-btn">
-                                                <a class=" wprt-button small outline white" href="#">SCHEDULE AN APPOINTMENT</a>
+                                                <a class=" wprt-button small outline white" href="/rendez-vous">prendre rendez-vous</a>
                                             </div>
                                         </div><!-- /.wprt-icon-box -->
                                     </div><!-- /.wprt-animation-block -->
@@ -844,7 +795,7 @@
 
 
                        <!-- WHY US -->
-                    <div class="row-why-us">
+                    {{-- <div class="row-why-us">
                         <div class="container-fluid" style="margin-top: 50px !important;">
                             <div class="row equalize sm-equalize-auto">
                                 <div class="col-md-6 half-background style-1">
@@ -904,12 +855,12 @@
                                 </div><!-- /.col-md-6 -->
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <!-- END WHY US -->
 
 
                       <!-- GALLERY -->
-                    <div class="row-gallery">
+                    {{-- <div class="row-gallery">
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
@@ -1039,7 +990,7 @@
                                 </div><!-- /.col-md-12 -->
                             </div><!-- /.row -->
                         </div><!-- /.container -->
-                    </div>
+                    </div> --}}
                     <!-- END GALLERY -->
 
 
@@ -1051,9 +1002,8 @@
                                     <div class="wprt-spacer clearfix" data-desktop="83" data-mobi="60" data-smobi="60"></div>
 
                                     <div class="wprt-headings style-1 clearfix text-center">
-                                        <h2 class="heading clearfix">CLIENT TESTIMONIALS</h2>
+                                        <h2 class="heading clearfix">Avis clients</h2>
                                         <div class="sep clearfix"></div>
-                                        <p class="sub-heading clearfix">Our professionals will perform diagnostic tests, fluid flush and fills, engine replacement, oil changes, and total vehicle overhauls.</p>
                                     </div><!-- /.wprt-headings -->
 
                                     <div class="wprt-spacer clearfix" data-desktop="50" data-mobi="40" data-smobi="40"></div>
@@ -1067,10 +1017,10 @@
                                                     </div>
 
                                                     <blockquote class="text">
-                                                        <p>Took the car in to have a noisy engine checked. They did a thorough check, found nothing untoward and, for good measure, updated all the engine management softwares. End result no cost. Brilliant!</p>
+                                                        <p>Service exceptionnel ! Le mécanicien est arrivé à l'heure, a résolu le problème rapidement et m'a même donné des conseils d'entretien. Je recommande sans hésiter !</p>
                                                         <div class="name-pos">
-                                                            <h6 class="name">JONATHAN AUERBACH</h6>
-                                                            <span class="position">STRATEGY OFFICER</span>
+                                                            <h6 class="name">Olivia Kouassi</h6>
+                                                            <span class="position">Consultante Marketing</span>
                                                         </div>
                                                     </blockquote>
                                                 </div>
@@ -1085,10 +1035,10 @@
                                                     </div>
 
                                                     <blockquote class="text">
-                                                        <p>I’ve been using this garage for a number of years to service both our cars. They are really good, they always have a slot available, work fast and have good prices. Would recommend them without reservations.</p>
+                                                        <p>Un service de garage à domicile pratique et fiable. J'ai économisé du temps et de l'argent. Je suis ravi de cette solution.</p>
                                                         <div class="name-pos">
-                                                            <h6 class="name">ALEXANDER BANFIELD</h6>
-                                                            <span class="position">GROWTH OFFICER</span>
+                                                            <h6 class="name">Eric N'Guessan</h6>
+                                                            <span class="position">Chef d'Entreprise</span>
                                                         </div>
                                                     </blockquote>
                                                 </div>
@@ -1103,10 +1053,10 @@
                                                     </div>
 
                                                     <blockquote class="text">
-                                                        <p>This is the second time I have used Quality Car Service and their service is great. Very polite staff who genuinely seem to care about your experience. Competitive pricing matched with this level of customer service!</p>
+                                                        <p>Ma voiture a été réparée en quelques heures, sans que je quitte mon domicile. Le service client est très réactif et professionnel. Une excellente expérience !</p>
                                                         <div class="name-pos">
-                                                            <h6 class="name">AARON KACZMER</h6>
-                                                            <span class="position">FINANCIAL OFFICER</span>
+                                                            <h6 class="name">Awa Traoré</h6>
+                                                            <span class="position">Responsable RH</span>
                                                         </div>
                                                     </blockquote>
                                                 </div>
@@ -1121,10 +1071,10 @@
                                                     </div>
 
                                                     <blockquote class="text">
-                                                        <p>I’ve been using this garage for a number of years to service both our cars. They are really good, they always have a slot available, work fast and have good prices. Would recommend them without reservations.</p>
+                                                        <p>J'ai fait appel à ce service pour une vidange et un diagnostic. L'équipe est professionnelle et les tarifs sont transparents. Je recommande à 100%.</p>
                                                         <div class="name-pos">
-                                                            <h6 class="name">ALEXANDER BANFIELD</h6>
-                                                            <span class="position">GROWTH OFFICER</span>
+                                                            <h6 class="name">Mamadou Bamba</h6>
+                                                            <span class="position">Ingénieur Logiciel</span>
                                                         </div>
                                                     </blockquote>
                                                 </div>

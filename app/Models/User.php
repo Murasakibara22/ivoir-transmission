@@ -7,6 +7,7 @@ use App\Models\Note;
 use App\Models\Role;
 use App\Models\Paiement;
 use App\Models\Reservation;
+use App\Models\NotificationAdmin;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -74,6 +75,10 @@ class User extends Authenticatable
 
     public function paiements() {
         return $this->hasMany(Paiement::class);
+    }
+
+    public function NotificationAdmin()  {
+        return $this->hasMany(NotificationAdmin::class);
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Service;
+use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -25,4 +26,8 @@ class CategorieService extends Model
     public function services()  {
         return $this->hasMany(Service::class, 'categorie_service_id');
     }
+
+    // public function reservations()  {
+    //     return $this->hasMany(Reservation::class, 'category_id');
+    // }
 }

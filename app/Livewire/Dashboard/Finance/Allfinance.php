@@ -36,13 +36,14 @@ class Allfinance extends Component
 
         $this->gains_total = Reservation::whereYear('created_at', $year)->sum('montant');
         $this->gains_a_avoir = Reservation::whereYear('created_at', $year)
-            ->where('status', Reservation::VALIDATE)
+            ->where('status', Reservation::STARTED)
             ->sum('montant');
         $this->gains_perdu = Reservation::whereYear('created_at', $year)
             ->where('status', Reservation::CANCELED)
             ->sum('montant');
         $this->gains_en_attente = Reservation::whereYear('created_at', $year)
-            ->where('status', Reservation::PENDING)
+            ->where('status', 'PENDING')
+            ->Orwhere('status', Reservation::INITIATED)
             ->sum('montant');
         $this->gains_obtenu = Reservation::whereYear('created_at', $year)
             ->where('status', Reservation::COMPLETED)

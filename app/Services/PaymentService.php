@@ -78,7 +78,7 @@ class PaymentService {
             "payment_type"=>"gateway",
             "designation"=> "Paiement de reservation ".$paiement->reservation->reference,
             "webhook_url"=> "http://127.0.0.1:9000/api/webhook/adjeminpay",
-            "return_url"=> "http://127.0.0.1:9000/",
+            "return_url"=> "http://127.0.0.1:9000/success-transaction",
             "cancel_url"=> "http://127.0.0.1:9000/",
             "customer_recipient_number"=> $contact,
             "customer_email"=> auth()->user()->email ?? "",

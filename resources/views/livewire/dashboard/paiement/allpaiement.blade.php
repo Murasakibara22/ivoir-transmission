@@ -35,7 +35,7 @@
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$all_payment}}">0</span> fcfa</h4>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$all_payment}}">{{ number_format($all_payment, 0, ',', ' ') }}</span> fcfa</h4>
                                      <span class="text-muted">Paiements </span>
                                 </div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -59,7 +59,7 @@
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $paid_payment }}">0</span>fcfa</h4>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $paid_payment }}">{{ number_format($paid_payment,0, ',', ' ') }}</span>fcfa</h4>
                                    <span class="text-muted">Payé par les clients</span>
                                 </div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -84,7 +84,7 @@
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$pending_payment}}">0</span>fcfa</h4>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$pending_payment}}">{{ number_format($pending_payment,0, ',', ' ') }}</span>fcfa</h4>
                                     <span class="badge bg-warning me-1">338</span> <span class="text-muted">paiements en attente</span>
                                 </div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -108,7 +108,7 @@
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$canceled_payment}}">0</span>fcfa</h4>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$canceled_payment}}">{{ number_format($canceled_payment,0, ',', ' ')}}</span>fcfa</h4>
                                     <span class="badge bg-warning me-1">502</span> <span class="text-muted">Annulé par les clients</span>
                                 </div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -139,34 +139,57 @@
                         <div class="card-body bg-soft-light border border-dashed border-start-0 border-end-0">
                             <form>
                                 <div class="row g-3">
-                                    <div class="col-xxl-5 col-sm-12">
+                                    <!-- Recherche par référence ou client -->
+                                    <div class="col-xxl-3 col-sm-12">
                                         <div class="search-box">
-                                            <input type="text" class="form-control search bg-light border-light" placeholder="recherche par references, client, statut ou quelque chose...">
+                                            <input type="text" class="form-control search bg-light border-light"
+                                                placeholder="Recherche par référence, client ou contact..."
+                                                wire:model="search">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
                                     <!--end col-->
-                                    <div class="col-xxl-3 col-sm-4">
-                                        <input type="text" class="form-control bg-light border-light" id="datepicker-range" placeholder="Select date">
+
+                                    <!-- Date de paiement : de / à -->
+                                    <div class="col-xxl-2 col-sm-4">
+                                        <input type="date" class="form-control bg-light border-light" wire:model="date_from" placeholder="Date début">
                                     </div>
-                                    <!--end col-->
-                                    <div class="col-xxl-3 col-sm-4">
-                                        <div class="input-light">
-                                            <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                <option value="">Status</option>
-                                                <option value="all" selected>All</option>
-                                                <option value="Unpaid">Unpaid</option>
-                                                <option value="Paid">Paid</option>
-                                                <option value="Cancel">Cancel</option>
-                                                <option value="Refund">Refund</option>
-                                            </select>
-                                        </div>
+                                    <div class="col-xxl-2 col-sm-4">
+                                        <input type="date" class="form-control bg-light border-light" wire:model="date_to" placeholder="Date fin">
                                     </div>
                                     <!--end col-->
 
+                                    <!-- Statut du paiement -->
+                                    <div class="col-xxl-2 col-sm-4">
+                                        <select class="form-control" wire:model="status">
+                                            <option value="">Tous les statuts</option>
+                                            <option value="{{ \App\Models\Paiement::PAID }}">Payé</option>
+                                            <option value="{{ \App\Models\Paiement::PENDING }}">En attente</option>
+                                            <option value="{{ \App\Models\Paiement::CANCELED }}">Annulé</option>
+                                            <option value="{{ \App\Models\Paiement::FAILED }}">Échoué</option>
+                                            <option value="{{ \App\Models\Paiement::INITIATED }}">Initié</option>
+                                            <option value="{{ \App\Models\Paiement::EXPIRED }}">Expiré</option>
+                                        </select>
+                                    </div>
+                                    <!--end col-->
+
+                                    <!-- Méthode de paiement -->
+                                    <div class="col-xxl-2 col-sm-4">
+                                        <select class="form-control" wire:model="methode">
+                                            <option value="">Toutes les méthodes</option>
+                                            <option value="Orange Money">Orange Money</option>
+                                            <option value="MTN Mobile Money">MTN Mobile Money</option>
+                                            <option value="Paypal">Paypal</option>
+                                            <option value="Carte bancaire">Carte bancaire</option>
+                                            <!-- ajoute ici toutes les méthodes disponibles -->
+                                        </select>
+                                    </div>
+                                    <!--end col-->
+
+                                    <!-- Bouton filtrer -->
                                     <div class="col-xxl-1 col-sm-4">
-                                        <button type="button" class="btn btn-primary w-100" onclick="SearchData();">
-                                            <i class="ri-equalizer-fill me-1 align-bottom"></i> Filters
+                                        <button type="button" class="btn btn-primary w-100" wire:click.prevent="$refresh">
+                                            <i class="ri-equalizer-fill me-1 align-bottom"></i> Filtrer
                                         </button>
                                     </div>
                                     <!--end col-->
@@ -174,6 +197,18 @@
                                 <!--end row-->
                             </form>
                         </div>
+
+                        <div class="card-body">
+                            <div class="d-flex float-end gap-2 mb-3">
+                                <button wire:click="exportExcel" class="btn btn-success">
+                                    <i class="ri-file-excel-2-fill"></i> Export Excel
+                                </button>
+                                <button wire:click="exportPdf" class="btn btn-danger">
+                                    <i class="ri-file-pdf-fill"></i> Export PDF
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="card-body">
                             <div>
                                 <div class="table-responsive table-card">
@@ -203,13 +238,13 @@
                                                     <td class="email">{{ $paiement->user()->first()->phone }}</td>
                                                     <td class="date">{{ date('d M, Y', strtotime($paiement->created_at)) }}</td>
                                                     <td class="invoice_amount">{{ number_format($paiement->montant, 0, ',', '.') }} fcfa</td>
-                                                    <td class="payment">{{ $paiement->methode_payment }}</td>
+                                                    <td class="payment">{{ $paiement->methode }}</td>
                                                     <td class="status">
-                                                        @if($paiement->status == "en attente")
+                                                        @if($paiement->status == "en attente" || $paiement->status == "INITIATED")
                                                             <span class="badge badge-soft-warning text-uppercase">En attente</span>
                                                         @elseif($paiement->status == "TERMINEE" || $paiement->status == "PAYE")
                                                             <span class="badge badge-soft-success text-uppercase">Valider</span>
-                                                        @elseif($paiement->status == "ANNULER")
+                                                        @elseif($paiement->status == "ANNULER" || $paiement->status == "EXPIRED")
                                                             <span class="badge badge-soft-danger text-uppercase">Annuler</span>
                                                         @endif
                                                     </td>
@@ -220,7 +255,7 @@
                                                             </button>
                                                             <ul class="dropdown-menu dropdown-menu-end" style="">
 
-                                                                <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-line align-bottom me-2 text-muted"></i>
+                                                                <li><a class="dropdown-item" href="javascript:void(0);" wire:click="exportPaiementUniquePdf({{ $paiement->id }})"><i class="ri-download-2-line align-bottom me-2 text-muted"></i>
                                                                         Télécharger</a></li>
                                                                 <li class="dropdown-divider"></li>
                                                             </ul>

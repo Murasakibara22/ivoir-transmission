@@ -78,7 +78,7 @@
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-header align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Catégories </h4>
+                                <h4 class="card-title mb-0 flex-grow-1">Catégories de services</h4>
 
                                 <div class="flex-shrink-0">
 
@@ -209,7 +209,7 @@
                                     <input type="file" class="form-control" accept=".png, .jpg, .jpeg" wire:model='Aslogo' placeholder="Enter your lastname" >
                                 </div>
                             </div><!--end col-->
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="mb-3" wire:ignore>
                                     <label for="compnayNameinput" class="form-label">Description</label>
                                     <textarea class="form-control" id="description" wire:model='description' rows="5"></textarea>
@@ -220,7 +220,7 @@
                                     </span>
                                 @enderror
                             </div><!--end col-->
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="mb-3">
                                     <label class="form-label text-start">Frais de service <span class="text-muted">( FACULTATIF )</span> </label>
                                     <input type="number" class="form-control" wire:model='frais_service' placeholder="Entrer les frais de service" >
@@ -284,13 +284,13 @@
                                     <input type="file" class="form-control" accept=".png, .jpg, .jpeg" wire:model='Aslogo' placeholder="Enter your lastname" >
                                 </div>
                             </div><!--end col-->
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="mb-3">
                                     <label class="form-label text-start">Frais de service <span class="text-muted">( FACULTATIF )</span> </label>
                                     <input type="number" class="form-control" wire:model='frais_service' placeholder="Entrer les frais de service" >
                                 </div>
                             </div><!--end col-->
-                            <div class="col-6" wire:ignore>
+                            <div class="col-12" wire:ignore>
                                 <div class="mb-3" >
                                     <label for="compnayNameinput" class="form-label">Description</label>
                                     <textarea class="form-control" id="description2"  wire:model.lazy='description' name="description" rows="5"></textarea>

@@ -3,11 +3,16 @@
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Paiement;
+use App\Events\MessageSend;
 use App\Models\Reservation;
+use App\Events\TestNotification;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/princing', function () {
+    return view('Dashboard.pages.princing');
 });
 
 
@@ -84,12 +89,35 @@ Route::group(['middleware' => 'auth'], function () {
                 return view('Dashboard.pages.reservation.invoice', compact('show_reservation'));
             })->name('reservations.invoice');
 
+
+            Route::view('notifications','Dashboard.pages.notification.index')->name('notifications');
         });
     });
 });
 
 Route::view('rendez-vous','Frontend.pages.rdv.index2')->name('rendez-vous');
 Route::view('rendez-vous2','Frontend.pages.rdv.index')->name('rendez-vous2');
+
+Route::view('success-transaction','Frontend.pages.transaction-success')->name('success-transaction');
+
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::prefix('account')->as('account.')->group(function () {
+        Route::view('reservations','Frontend.pages.dashboard.index')->name('reservations');
+
+        Route::get('broadcast', function () {
+            $message = 'Hello joackim';
+            broadcast(new TestNotification($message));
+            return 'Message envoyé 2';
+        });
+    });
+});
+
+Route::get('/broadcast', function () {
+    $message = 'Hello joackim';
+    broadcast(new TestNotification($message));
+    return 'Message envoyé';
+});
 
 
 Route::get('/deconnexion', function () {

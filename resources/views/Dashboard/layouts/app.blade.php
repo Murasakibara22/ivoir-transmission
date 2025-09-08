@@ -11,6 +11,7 @@
     <meta http-equiv="Content-Language" content="fr-FR">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="user-id" content="{{auth()->id()}}">
 
     <!-- SEO Général -->
     <meta name="description" content="Tableau de bord de gestion de IVOIRE TRANSMISSION. Suivez les ventes, les commandes, les stocks et optimisez la gestion de votre boutique de mèches en Côte d'Ivoire.">
@@ -67,6 +68,7 @@
 
     @stack('styles')
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 
     <style>

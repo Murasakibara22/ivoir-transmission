@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Dashboard\Home;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Service;
 use Livewire\Component;
-use App\Models\Reservation;
 use App\Models\Paiement;
+use App\Models\Reservation;
 use App\Livewire\UtilsSweetAlert;
 
 class Index extends Component
@@ -148,7 +149,7 @@ class Index extends Component
             //List des Services qui apparaitront beaucoup dans les Reservations
             'list_Services' => Service::orderBy('created_at', 'desc')->limit(8)->get(),
             'list_Reservations' => Reservation::orderBy('created_at', 'desc')->limit(8)->get(),
-            'list_users' => User::orderBy('created_at', 'desc')->limit(8)->get()
+            'list_users' => User::where('role_id', Role::where('libelle','Utilisateur')->first()->id)->orderBy('created_at', 'desc')->limit(8)->get()
         ]);
     }
 }

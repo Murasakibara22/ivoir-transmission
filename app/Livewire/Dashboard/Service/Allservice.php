@@ -44,7 +44,7 @@ class Allservice extends Component
 
     protected $rules = [
         'libelle' => 'required|string|max:255|unique:services,libelle|min:3',
-        // 'category_id' => 'required|exists:categorie_services,id',
+        'category_id' => 'required|exists:categorie_services,id',
     ];
 
     protected $messages = [

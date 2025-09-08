@@ -6,24 +6,25 @@
                 <div class="navbar-brand-box horizontal-logo">
                     <a href="index.html" class="logo logo-dark">
                         <span class="logo-sm">
-                            <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
+                            <img src="assets/images/logo-sm.png" alt="" height="22">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ asset('assets/images/logo-dark.png') }}" alt="" height="17">
+                            <img src="assets/images/logo-dark.png" alt="" height="17">
                         </span>
                     </a>
 
                     <a href="index.html" class="logo logo-light">
                         <span class="logo-sm">
-                            <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
+                            <img src="assets/images/logo-sm.png" alt="" height="22">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="17">
+                            <img src="assets/images/logo-light.png" alt="" height="17">
                         </span>
                     </a>
                 </div>
 
-                <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
+                <button type="button"
+                    class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
                     id="topnav-hamburger-icon">
                     <span class="hamburger-icon">
                         <span></span>
@@ -35,7 +36,7 @@
                 <!-- App Search-->
                 <form class="app-search d-none d-md-block">
                     <div class="position-relative">
-                        <input type="text" class="form-control" placeholder="Search..." autocomplete="off"
+                        <input type="text" class="form-control" placeholder="Recherche..." autocomplete="off"
                             id="search-options" value="">
                         <span class="mdi mdi-magnify search-widget-icon"></span>
                         <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"
@@ -49,10 +50,10 @@
                             </div>
 
                             <div class="dropdown-item bg-transparent text-wrap">
-                                <a href="index.html" class="btn btn-soft-secondary btn-sm btn-rounded">how to setup <i
-                                        class="mdi mdi-magnify ms-1"></i></a>
-                                <a href="index.html" class="btn btn-soft-secondary btn-sm btn-rounded">buttons <i
-                                        class="mdi mdi-magnify ms-1"></i></a>
+                                <a href="index.html" class="btn btn-soft-secondary btn-sm btn-rounded">how to
+                                    setup <i class="mdi mdi-magnify ms-1"></i></a>
+                                <a href="index.html" class="btn btn-soft-secondary btn-sm btn-rounded">buttons
+                                    <i class="mdi mdi-magnify ms-1"></i></a>
                             </div>
                             <!-- item-->
                             <div class="dropdown-header mt-2">
@@ -86,10 +87,10 @@
                                 <!-- item -->
                                 <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
                                     <div class="d-flex">
-                                        <img src="{{ asset('assets/images/users/avatar-2.jpg') }}"
+                                        <img src="assets/images/users/avatar-2.jpg"
                                             class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                         <div class="flex-1">
-                                            <h6 class="m-0">ooorrrro</h6>
+                                            <h6 class="m-0">Angela Bernier</h6>
                                             <span class="fs-11 mb-0 text-muted">Manager</span>
                                         </div>
                                     </div>
@@ -97,7 +98,7 @@
                                 <!-- item -->
                                 <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
                                     <div class="d-flex">
-                                        <img src="{{ asset('assets/images/users/avatar-3.jpg') }}"
+                                        <img src="assets/images/users/avatar-3.jpg"
                                             class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                         <div class="flex-1">
                                             <h6 class="m-0">David Grasso</h6>
@@ -108,7 +109,7 @@
                                 <!-- item -->
                                 <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
                                     <div class="d-flex">
-                                        <img src="{{ asset('assets/images/users/avatar-5.jpg') }}"
+                                        <img src="assets/images/users/avatar-5.jpg"
                                             class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                         <div class="flex-1">
                                             <h6 class="m-0">Mike Bunch</h6>
@@ -120,8 +121,8 @@
                         </div>
 
                         <div class="text-center pt-3 pb-1">
-                            <a href="pages-search-results.html" class="btn btn-primary btn-sm">View All Results <i
-                                    class="ri-arrow-right-line ms-1"></i></a>
+                            <a href="pages-search-results.html" class="btn btn-primary btn-sm">View All Results
+                                <i class="ri-arrow-right-line ms-1"></i></a>
                         </div>
                     </div>
                 </form>
@@ -153,9 +154,6 @@
 
 
 
-
-
-
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
                         data-toggle="fullscreen">
@@ -175,7 +173,12 @@
                         id="page-header-notifications-dropdown" data-bs-toggle="dropdown"
                         data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                         <i class='bx bx-bell fs-22'></i>
-
+                        @auth
+                        <span
+                            class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger" id="js_count_admin">
+                            {{ App\Models\NotificationAdmin::where('is_read', false)->OrderByDesc('created_at')->count() ?? 0 }}
+                            <span class="visually-hidden">unread messages</span></span>
+                        @endauth
                     </button>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                         aria-labelledby="page-header-notifications-dropdown">
@@ -186,6 +189,9 @@
                                     <div class="col">
                                         <h6 class="m-0 fs-16 fw-semibold text-white"> Notifications </h6>
                                     </div>
+                                    <div class="col-auto dropdown-tabs">
+                                     @auth   <span class="badge badge-soft-light fs-13"> {{ auth()->user()->NotificationAdmin()->where('is_read', 0)->count() }} Nouvelles</span> @endauth
+                                    </div>
                                 </div>
                             </div>
 
@@ -195,43 +201,17 @@
                                     <li class="nav-item waves-effect waves-light">
                                         <a class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab"
                                             role="tab" aria-selected="true">
-                                            Tous (0)
+                                           Tous
                                         </a>
                                     </li>
-
-
                                 </ul>
                             </div>
 
                         </div>
-
                         @auth
-                        <div class="tab-content position-relative" id="notificationItemsTabContent">
-                            <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
-                                <div data-simplebar style="max-height: 300px;" class="pe-2">
-
-
-                                        <div class="timeline-continue">
-                                            <div class="row timeline-right">
-                                                <div class="col-12">
-                                                    <p class="timeline-date">
-                                                        Aucune Notification !
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    <div class="my-3 text-center view-all">
-                                        <button type="button"
-                                            class="btn btn-soft-success waves-effect waves-light">Toutes les notifications <i
-                                                class="ri-arrow-right-line align-middle"></i></button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                            <livewire:dashboard.header.notification />
                         @endauth
+
                     </div>
                 </div>
 
@@ -240,21 +220,19 @@
                         aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
                             @auth
-                                <img class="rounded-circle header-profile-user"
-                                    src="@if (
-                                        !is_null(Auth::user()->photo_url) &&
-                                            Auth::user()->photo_url != 'default.jpg' &&
-                                            strpos(Auth::user()->photo_url, 'https') === false) {{ url('../images/Admin/' . Auth::user()->photo_url) }}
-                                @elseif(strpos(Auth::user()->photo_url, 'https') !== false)
-                                    {{ Auth::user()->photo_url }}
+                            <img class="rounded-circle header-profile-user"
+                                src="@if(!is_null(Auth::user()->photo) && Auth::user()->photo != "default.jpg" && strpos(Auth::user()->photo, "https") === false )
+                                    {{ url('../images/User/'.Auth::user()->photo) }}
+                                @elseif(strpos(Auth::user()->photo, "https") !==false )
+                                    {{ Auth::user()->photo }}
                                 @else
-                                https://api.dicebear.com/7.x/initials/svg?seed={{ auth()->user()->username }} @endif"
-                                    alt="Header Avatar">
-                            @endauth
+                                https://api.dicebear.com/7.x/initials/svg?seed={{ auth()->user()->name }}
+                                @endif"
+                         alt="Header Avatar">
+                         @endauth
+
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">@auth
-                                    {{ Auth::user()->username }} @endauth
-                                </span>
+                                 @auth  <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ auth()->user()->name}}</span> @endauth
                                 <span
                                     class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">Administrateur</span>
                             </span>
@@ -262,15 +240,16 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        <h6 class="dropdown-header">Bienvenue
-                            {{ Illuminate\Support\Str::limit(Auth::user()->username, 10) }} !</h6>
+                        @auth
+                            <h6 class="dropdown-header">{{ auth()->user()->name }}  !</h6>
+                        @endauth
                         <a class="dropdown-item" href="{{ route('dashboard.profile') }}"><i
                                 class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle">Profile</span></a>
-                        <a class="dropdown-item" href="pages-faqs.html"><i
-                                class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span
-                                class="align-middle">Help</span></a>
                         <div class="dropdown-divider"></div>
+                        <!-- <a class="dropdown-item" href="auth-lockscreen-basic.html"><i
+                                class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span
+                                class="align-middle">Lock screen</span></a> -->
                         <a class="dropdown-item" href="/deconnexion"><i
                                 class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle" data-key="t-logout">Logout</span></a>
@@ -280,3 +259,5 @@
         </div>
     </div>
 </header>
+
+<livewire:dashboard.header.modal-notification />

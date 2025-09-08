@@ -140,7 +140,7 @@
                             <form>
                                 <div class="row g-3">
                                     <!-- Recherche par référence ou client -->
-                                    <div class="col-xxl-4 col-sm-12">
+                                    <div class="col-xxl-3 col-sm-12">
                                         <div class="search-box">
                                             <input type="text" class="form-control search bg-light border-light"
                                                 placeholder="Recherche par référence, client ou contact..."
@@ -199,6 +199,17 @@
                         </div>
 
                         <div class="card-body">
+                            <div class="d-flex float-end gap-2 mb-3">
+                                <button wire:click="exportExcel" class="btn btn-success">
+                                    <i class="ri-file-excel-2-fill"></i> Export Excel
+                                </button>
+                                <button wire:click="exportPdf" class="btn btn-danger">
+                                    <i class="ri-file-pdf-fill"></i> Export PDF
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
                             <div>
                                 <div class="table-responsive table-card">
                                     <table class="table align-middle table-nowrap" id="invoiceTable">
@@ -244,7 +255,7 @@
                                                             </button>
                                                             <ul class="dropdown-menu dropdown-menu-end" style="">
 
-                                                                <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-download-2-line align-bottom me-2 text-muted"></i>
+                                                                <li><a class="dropdown-item" href="javascript:void(0);" wire:click="exportPaiementUniquePdf({{ $paiement->id }})"><i class="ri-download-2-line align-bottom me-2 text-muted"></i>
                                                                         Télécharger</a></li>
                                                                 <li class="dropdown-divider"></li>
                                                             </ul>

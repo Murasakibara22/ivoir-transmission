@@ -6,7 +6,11 @@ use Livewire\Component;
 use App\Models\Commande;
 use App\Models\Paiement;
 use Livewire\WithPagination;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\PaiementsExport;
 use App\Livewire\UtilsSweetAlert;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class Allpaiement extends Component
 {
@@ -38,33 +42,118 @@ class Allpaiement extends Component
     }
 
     public function applyFilters()
-{
-    $query = Paiement::query();
+    {
+        $query = Paiement::query();
 
-    if($this->search) {
-        $query->where(function($q){
-            $q->where('reference', 'like', '%'.$this->search.'%')
-              ->orWhereHas('user', function($q){
-                  $q->where('username', 'like', '%'.$this->search.'%')
-                    ->orWhere('phone', 'like', '%'.$this->search.'%');
-              });
+        if($this->search) {
+            $query->where(function($q){
+                $q->where('reference', 'like', '%'.$this->search.'%')
+                ->orWhereHas('user', function($q){
+                    $q->where('username', 'like', '%'.$this->search.'%')
+                        ->orWhere('phone', 'like', '%'.$this->search.'%');
+                });
+            });
+        }
+
+        if($this->status && $this->status != 'all'){
+            $query->where('status', $this->status);
+        }
+
+        if($this->methode){
+            $query->where('methode', $this->methode);
+        }
+
+        if($this->date_from && $this->date_to){
+            $query->whereBetween('created_at', [$this->date_from, $this->date_to]);
+        }
+
+        return $query->orderBy('created_at', 'desc');
+    }
+
+    public function exportExcel()
+    {
+        $paiements = $this->applyFilters()->get();
+        return Excel::download(new PaiementsExport($paiements), 'paiements.xlsx');
+    }
+
+    public function exportPdf()
+    {
+        $paiements = $this->applyFilters()->get();
+        return $this->exportPaiementsPdf($paiements);
+    }
+
+    public function exportPaiementsPdf($paiements)
+    {
+
+         $paiements = $this->applyFilters()->get();
+
+        $data = $paiements->map(function($paiement){
+            $reservation = $paiement->reservation;
+
+            return [
+                'Reference' => $paiement->reference,
+                'Client' => $paiement->user->username ?? '',
+                'Contact' => $paiement->user->phone ?? '',
+                'Montant' => $paiement->montant,
+                'Status paiement' => $paiement->status,
+                'Methode' => $paiement->methode,
+                'Date paiement' => $paiement->created_at->format('d/m/Y H:i'),
+                'Montant reservation' => $reservation->montant ?? '',
+                'Adresse' => $reservation->adresse_name ?? '',
+                'Date début' => optional($reservation->date_debut)->format('d/m/Y'),
+                'Date fin' => optional($reservation->date_fin)->format('d/m/Y'),
+                'Chassis' => $reservation->chassis ?? '',
+                'Service' => $reservation->snapshot_services['name'] ?? '',
+                'Prestataire' => $reservation->name_prestataire ?? '',
+            ];
         });
+
+
+        $pdf = Pdf::loadView('exports.paiements_pdf', ['paiements' => $data])
+                ->setPaper('a4', 'landscape')
+                ->setOptions([
+                    'isHtml5ParserEnabled' => true,
+                    'isRemoteEnabled' => true,
+                    'defaultFont' => 'DejaVu Sans'
+                ]);
+
+        // Stream PDF pour éviter les erreurs UTF-8
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream(); // envoie le PDF directement au navigateur
+        }, 'paiements.pdf');
+
     }
 
-    if($this->status && $this->status != 'all'){
-        $query->where('status', $this->status);
+    public function exportPaiementUniquePdf($paiement_id)
+    {
+        $paiement = Paiement::with('reservation', 'user')->findOrFail($paiement_id);
+
+        $reservation = $paiement->reservation;
+        $data = [
+            'Reference' => $paiement->reference,
+            'Client' => $paiement->user->username ?? '',
+            'Contact' => $paiement->user->phone ?? '',
+            'Montant' => $paiement->montant,
+            'Status paiement' => $paiement->status,
+            'Methode' => $paiement->methode,
+            'Date paiement' => $paiement->created_at->format('d/m/Y H:i'),
+
+            // Champs Reservation
+            'Montant reservation' => $reservation->montant ?? '',
+            'Adresse' => $reservation->adresse_name ?? '',
+            'Date début' => optional($reservation->date_debut)->format('d/m/Y'),
+            'Date fin' => optional($reservation->date_fin)->format('d/m/Y'),
+            'Chassis' => $reservation->chassis ?? '',
+            'Service' => $reservation->snapshot_services['name'] ?? '',
+            'Prestataire' => $reservation->name_prestataire ?? '',
+        ];
+
+        $pdf = Pdf::loadView('exports.paiement_unique_pdf', ['paiement' => $data]);
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'paiement.'.$paiement->reference.'.pdf');
     }
 
-    if($this->methode){
-        $query->where('methode', $this->methode);
-    }
-
-    if($this->date_from && $this->date_to){
-        $query->whereBetween('created_at', [$this->date_from, $this->date_to]);
-    }
-
-    return $query->orderBy('created_at', 'desc');
-}
 
     public function render()
     {

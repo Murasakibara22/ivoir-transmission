@@ -1,11 +1,11 @@
 # ------------------------------
-# Dockerfile Laravel complet - PHP 8.3 + MySQL
+# Dockerfile Laravel complet pour PHP 8.3 + MySQL
 # ------------------------------
 
 # Utiliser PHP 8.3 avec Apache
-FROM php:8.3-apache
+FROM php:8.4-apache
 
-# Installer extensions nécessaires à Laravel + MySQL + outils
+# Installer extensions PHP nécessaires + outils pour Laravel
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -18,8 +18,9 @@ RUN apt-get update && apt-get install -y \
     curl \
     libzip-dev \
     default-mysql-client \
+    libicu-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip \
+    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip intl \
     && a2enmod rewrite
 
 # Configurer Apache pour Laravel (DocumentRoot = public)
@@ -44,7 +45,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Définir le répertoire de travail
 WORKDIR /var/www/html
 
-# Copier uniquement composer.json et composer.lock pour profiter du cache Docker
+# Copier uniquement les fichiers de dépendances d'abord pour profiter du cache Docker
 COPY composer.json composer.lock ./
 
 # Installer les dépendances Laravel
@@ -62,8 +63,8 @@ RUN php artisan config:clear \
     && php artisan cache:clear \
     && php artisan view:clear
 
-# Définir l'URL de l'application
-ENV APP_URL=https://doma-0e2j.onrender.com
+# Définir l'URL de l'application (optionnel)
+ENV APP_URL=https://votre-domaine.onrender.com
 
 # Exposer le port 80
 EXPOSE 80

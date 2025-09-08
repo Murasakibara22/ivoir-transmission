@@ -1,10 +1,10 @@
 # ------------------------------
-# Dockerfile Laravel complet pour PHP 8.4 + MySQL
+# Dockerfile Laravel PHP 8.4 + MySQL
 # ------------------------------
 
 FROM php:8.4-apache
 
-# Installer les dépendances nécessaires
+# Installer les dépendances nécessaires à Laravel + MySQL
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
     && a2enmod rewrite \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Configurer Apache pour Laravel
+# Configurer Apache pour pointer vers /public
 RUN cat <<'EOF' > /etc/apache2/sites-available/000-default.conf
 <VirtualHost *:80>
     DocumentRoot /var/www/html/public
@@ -40,27 +40,30 @@ EOF
 # Copier Composer depuis image officielle
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Définir le répertoire de travail
+# Répertoire de travail
 WORKDIR /var/www/html
 
-# Copier uniquement composer pour profiter du cache Docker
+# Copier uniquement composer.json et composer.lock d'abord (cache Docker)
 COPY composer.json composer.lock ./
 
-# Installer les dépendances Laravel
-RUN composer install --prefer-dist --optimize-autoloader --no-dev --no-interaction
+# Installer les dépendances Laravel sans scripts
+RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-# Copier le reste du projet
+# Copier tout le projet
 COPY . .
 
-# Donner les droits corrects à storage, bootstrap/cache et public
+# Donner les bons droits aux répertoires Laravel
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
 
-# Vider les caches Laravel
-RUN php artisan config:clear \
+# Exécuter les scripts artisan après copie complète
+RUN composer dump-autoload --optimize \
+    && php artisan config:clear \
     && php artisan cache:clear \
-    && php artisan view:clear
+    && php artisan view:clear || true
 
+# Définir l'URL de l'application (optionnel)
+ENV APP_URL=https://votre-domaine.onrender.com
 
 # Exposer le port 80
 EXPOSE 80

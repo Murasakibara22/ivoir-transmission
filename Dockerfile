@@ -2,7 +2,7 @@
 # Dockerfile Laravel PHP 8.4 + MySQL
 # ------------------------------
 
-# Étape Node.js pour builder les assets
+# Étape 1 : builder les assets avec Node.js
 FROM node:18 as frontend
 WORKDIR /app
 COPY package*.json vite.config.* ./
@@ -59,6 +59,9 @@ RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interacti
 
 # Copier tout le projet
 COPY . .
+
+# Copier build vite depuis frontend
+COPY --from=frontend /app/public/build ./public/build
 
 # Donner les bons droits aux répertoires Laravel
 RUN chown -R www-data:www-data /var/www/html \

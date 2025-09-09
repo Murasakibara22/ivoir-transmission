@@ -1,26 +1,11 @@
 # ------------------------------
-# Dockerfile Laravel PHP 8.4 + Apache + Vite
+# Dockerfile Laravel PHP 8.4 + MySQL
 # ------------------------------
 
-# Étape 1 : Builder les assets frontend avec Node
-FROM node:18 as frontend
-WORKDIR /app
 
-# Installer dépendances JS
-COPY package*.json vite.config.* ./
-RUN npm install
-
-# Copier sources frontend
-COPY resources ./resources
-COPY public ./public
-
-# Build Vite -> public/build
-RUN npm run build
-
-# Étape 2 : Image PHP 8.4 avec Apache
 FROM php:8.4-apache
 
-# Installer dépendances PHP + MySQL
+# Installer les dépendances nécessaires à Laravel + MySQL
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -59,27 +44,29 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Répertoire de travail
 WORKDIR /var/www/html
 
-# Copier uniquement composer.json et composer.lock (cache Docker)
+# Copier uniquement composer.json et composer.lock d'abord (cache Docker)
 COPY composer.json composer.lock ./
+
+# Installer les dépendances Laravel sans scripts
 RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Copier tout le projet
 COPY . .
 
-# Copier build Vite depuis l’étape frontend
-COPY --from=frontend /app/public/build ./public/build
-
-# Donner les bons droits
+# Donner les bons droits aux répertoires Laravel
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 storage bootstrap/cache public
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
 
-# Optimiser Laravel
+# Exécuter les scripts artisan après copie complète
 RUN composer dump-autoload --optimize \
     && php artisan config:clear \
     && php artisan cache:clear \
     && php artisan view:clear || true
 
-# Exposer port
+# Définir l'URL de l'application (optionnel)
+ENV APP_URL=https://votre-domaine.onrender.com
+
+# Exposer le port 80
 EXPOSE 80
 
 # Lancer Apache

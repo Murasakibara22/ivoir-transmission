@@ -1,37 +1,35 @@
 # ------------------------------
-# Dockerfile Laravel PHP 8.4 + MySQL
+# Dockerfile Laravel + Vite + PHP 8.4
 # ------------------------------
 
-# Étape 1 : builder les assets avec Node.js
-FROM node:18 as frontend
+# Étape 1 : Builder les assets frontend avec Node.js
+FROM node:20 AS frontend
 WORKDIR /app
+
+# Copier uniquement fichiers liés au frontend (cache optimisé)
 COPY package*.json vite.config.* ./
 RUN npm install
-COPY . .
-RUN npm run build
 
+# Copier tout le projet pour accéder aux sources frontend
+COPY . .
+
+# Construire les assets Vite (avec logs en cas d’échec)
+RUN npm run build || cat /app/npm-debug.log || true
+
+# Étape 2 : Backend Laravel avec PHP 8.4 et Apache
 FROM php:8.4-apache
 
-# Installer les dépendances nécessaires à Laravel + MySQL
+# Installer extensions et dépendances nécessaires
 RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    curl \
-    libzip-dev \
-    default-mysql-client \
-    libicu-dev \
+    git unzip curl libpng-dev libjpeg-dev libfreetype6-dev \
+    libonig-dev libxml2-dev libzip-dev default-mysql-client \
+    libicu-dev zip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip intl \
     && a2enmod rewrite \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Configurer Apache pour pointer vers /public
+# Config Apache pour Laravel
 RUN cat <<'EOF' > /etc/apache2/sites-available/000-default.conf
 <VirtualHost *:80>
     DocumentRoot /var/www/html/public
@@ -45,38 +43,38 @@ RUN cat <<'EOF' > /etc/apache2/sites-available/000-default.conf
 </VirtualHost>
 EOF
 
-# Copier Composer depuis image officielle
+# Copier Composer depuis l’image officielle
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Répertoire de travail
 WORKDIR /var/www/html
 
-# Copier uniquement composer.json et composer.lock d'abord (cache Docker)
+# Copier uniquement composer.json + lock d’abord (cache Docker)
 COPY composer.json composer.lock ./
 
-# Installer les dépendances Laravel sans scripts
+# Installer dépendances Laravel sans exécuter les scripts
 RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-# Copier tout le projet
+# Copier tout le projet Laravel
 COPY . .
 
-# Copier build vite depuis frontend
+# Copier les assets buildés par Vite
 COPY --from=frontend /app/public/build ./public/build
 
-# Donner les bons droits aux répertoires Laravel
+# Droits pour Laravel
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
+    && chmod -R 775 storage bootstrap/cache public
 
-# Exécuter les scripts artisan après copie complète
+# Optimiser Laravel
 RUN composer dump-autoload --optimize \
     && php artisan config:clear \
     && php artisan cache:clear \
     && php artisan view:clear || true
 
-# Définir l'URL de l'application (optionnel)
+# Variable d’environnement (ajuste selon ton Render)
 ENV APP_URL=https://votre-domaine.onrender.com
 
-# Exposer le port 80
+# Exposer port Apache
 EXPOSE 80
 
 # Lancer Apache

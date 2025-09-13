@@ -27,8 +27,8 @@
     <meta property="og:site_name" content="IVOIRE TRANSMISSION - Tableau de Bord">
     <meta property="og:title" content="IVOIRE TRANSMISSION - Tableau de Bord Administratif">
     <meta property="og:description" content="Gérez facilement les ventes, les commandes et les stocks de votre boutique IVOIRE TRANSMISSION. Interface intuitive pour optimiser la gestion de votre commerce.">
-    <meta property="og:url" content="https://twinshair-ci.com/dashboard/home">
-    <meta property="og:image" content="https://twinshair-ci.com/public/frontend/assets/logo.jpeg">
+    <meta property="og:url" content="https://ivoiretransmission.com/dashboard/home">
+    <meta property="og:image" content="https://ivoiretransmission.com/public/frontend/assets/logo.jpeg">
     <meta property="og:image:alt" content="IVOIRE TRANSMISSION - Interface de Gestion">
     <meta property="og:country-name" content="Côte d'Ivoire">
 
@@ -36,8 +36,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="IVOIRE TRANSMISSION - Tableau de Bord">
     <meta name="twitter:description" content="Accédez au tableau de bord de gestion de votre boutique IVOIRE TRANSMISSION et optimisez vos ventes en Côte d'Ivoire.">
-    <meta name="twitter:image" content="https://twinshair-ci.com/images/dashboard.jpg">
-    <meta name="twitter:site" content="@TwinsHairCI">
+    <meta name="twitter:image" content="https://ivoiretransmission.com/images/dashboard.jpg">
+    <meta name="twitter:site" content="IvoireTransmission">
 
     <!-- Géolocalisation -->
     <meta name="geo.country" content="CI">
@@ -45,7 +45,7 @@
 
     <meta content="Themesbrand" name="joackim_clby" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('frontend/assets/logo.jpeg') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico')}}">
 
     <!-- jsvectormap css -->
     <link href="{{ asset('assets/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />

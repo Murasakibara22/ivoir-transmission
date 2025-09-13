@@ -228,7 +228,7 @@ class AllCategorie extends Component
 
     public function render()
     {
-        return view('livewire.dashboard.Categorie.allCategorie', [
+        return view('livewire.dashboard.categorie.allcategorie', [
             'list_categories' => CategorieService::OrderBy('created_at', 'desc')->get()
         ]);
     }

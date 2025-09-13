@@ -70,7 +70,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="country" class="form-label">Communes <span class="text-danger">*</span> </label>
-                                                        <select  class="form-select" id="country"  wire:model.live="select_commune">
+                                                        <select  class="form-select" id="country"  wire:model="select_commune">
                                                             <option value="">Sélectionnez...</option>
                                                             @if($list_commune && $list_commune->count() > 0)
                                                                 @foreach($list_commune as $commune)
@@ -95,7 +95,7 @@
                                                 <div class="@if($list_service_select && count($list_service_select) > 0) col-lg-5 @else col-lg-12 @endif">
                                                     <div class="mb-3">
                                                         <label for="billinginfo-phone" class="form-label">J'ai besoin de<span class="text-danger">*</span> </label>
-                                                        <select  class="form-select" id="country"  wire:model.live="categorie">
+                                                        <select  class="form-select"  wire:model.live="categorie">
                                                             <option value="">Sélectionnez...</option>
                                                             @if($list_ctegorie && count($list_ctegorie) > 0)
                                                                 @foreach($list_ctegorie as $categorie)

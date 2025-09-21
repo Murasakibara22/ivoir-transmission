@@ -278,7 +278,11 @@ class Allville extends Component
 
         // Filtrer les jours encore disponibles
         $this->joursDisponibles = array_values(array_diff($tousLesJours, $joursOccupes));
-        // dd($this->joursDisponibles);
+
+        // si je veux qu'on puisse select tous les jours peu importe si ça deja été select :
+
+        // ✅ Plus besoin de filtrer selon les communes déjà enregistrées
+        // $this->joursDisponibles = $tousLesJours;
     }
 
 

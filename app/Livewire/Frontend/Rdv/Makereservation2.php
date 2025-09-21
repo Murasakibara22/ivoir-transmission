@@ -106,6 +106,7 @@ class Makereservation2 extends Component
 
    public function updatedCategorie()
 {
+
     $categorie = CategorieService::where('libelle', $this->categorie)->first();
 
     if(!$categorie || $categorie->services->count() == 0){

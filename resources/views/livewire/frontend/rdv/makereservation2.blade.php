@@ -92,7 +92,7 @@
                                                 <div class="@if($list_service_select && count($list_service_select) > 0) col-lg-5 @else col-lg-12 @endif">
                                                     <div class="mb-3">
                                                         <label for="billinginfo-phone" class="form-label">J'ai besoin de<span class="text-danger">*</span> </label>
-                                                        <select  class="form-select"  wire:model="categorie">
+                                                        <select  class="form-select"  wire:model.live="categorie">
                                                             <option value="">Sélectionnez...</option>
                                                             @if($list_ctegorie && count($list_ctegorie) > 0)
                                                                 @foreach($list_ctegorie as $categorie)
@@ -204,7 +204,7 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="country" class="form-label">Numéro de chassis<span class="text-danger">*</span> </label>
-                                                        <input type="text" wire:model="chassis" class="form-control" id="billinginfo-firstName" placeholder="Entrer le numéro de chassis" autocomplete="false">
+                                                        <input type="text" wire:model.live="chassis" class="form-control" id="billinginfo-firstName" placeholder="Entrer le numéro de chassis" autocomplete="false">
                                                     </div>
                                                     @error('chassis') <span class="text-danger">{{ $message }}</span> @enderror
                                                 </div>

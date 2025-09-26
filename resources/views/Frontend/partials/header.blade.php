@@ -8,7 +8,7 @@
             <div class="wrap-inner">
                 <div id="site-logo" class="clearfix">
                     <div id="site-logo-inner">
-                        <a href="/" title="CarBest" rel="home" class="main-logo"><img src="{{ asset('logo.jpg') }}" width="130"  alt="Ivoire transmission" data-retina="{{ asset('logo.jpg') }}" data-width="130" ></a>
+                        <a href="/" title="CarBest" rel="home" class="main-logo"><img src="{{ secure_asset('logo.jpg') }}" width="130"  alt="Ivoire transmission" data-retina="{{ secure_asset('logo.jpg') }}" data-width="130" ></a>
                     </div>
                 </div><!-- #site-logo -->
 
@@ -83,7 +83,7 @@
                                 <ul class="woocommerce-mini-cart cart_list product_list_widget ">
                                     <li class="woocommerce-mini-cart-item mini_cart_item">
                                         <a href="#" class="remove"><span class="fa fa-close"></span></a><a href="#">
-                                            <img width="150" height="150" src="{{ asset('frontend/assets/img/shop/shop-item-150x150.jpg') }}" alt="Image">Advance Blue Oil Cans
+                                            <img width="150" height="150" src="{{ secure_asset('frontend/assets/img/shop/shop-item-150x150.jpg') }}" alt="Image">Advance Blue Oil Cans
                                         </a>
 
                                         <span class="quantity">1 × <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>65.00</span></span>
@@ -91,7 +91,7 @@
 
                                     <li class="woocommerce-mini-cart-item mini_cart_item">
                                         <a href="#" class="remove"><span class="fa fa-close"></span></a><a href="#">
-                                            <img width="150" height="150" src="{{ asset('frontend/assets/img/shop/shop-item-150x150.jpg') }}" alt="Image">Simple Blue Oil Cans
+                                            <img width="150" height="150" src="{{ secure_asset('frontend/assets/img/shop/shop-item-150x150.jpg') }}" alt="Image">Simple Blue Oil Cans
                                         </a>
 
                                         <span class="quantity">3 × <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>35.00</span></span>
@@ -99,7 +99,7 @@
 
                                     <li class="woocommerce-mini-cart-item mini_cart_item">
                                         <a href="#" class="remove"><span class="fa fa-close"></span></a><a href="#">
-                                            <img width="150" height="150" src="{{ asset('frontend/assets/img/shop/shop-item-150x150.jpg') }}" alt="Image">Premium Blue Oil Cans
+                                            <img width="150" height="150" src="{{ secure_asset('frontend/assets/img/shop/shop-item-150x150.jpg') }}" alt="Image">Premium Blue Oil Cans
                                         </a>
 
                                         <span class="quantity">2 × <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>45.00</span></span>

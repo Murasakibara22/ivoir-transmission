@@ -25,7 +25,7 @@
     <meta property="og:locale" content="fr_FR">
     <meta property="og:title" content="Ivoire Transmission - Vidange moteur & boîte, diagnostic auto et réservation en ligne">
     <meta property="og:description" content="Simplifiez l’entretien de votre voiture en Côte d’Ivoire : diagnostic auto, garages partenaires, réservation de vidange moteur et boîte en ligne avec Ivoire Transmission.">
-    <meta property="og:image" content="{{ asset('logo.jpg') }}">
+    <meta property="og:image" content="{{ secure_asset('logo.jpg') }}">
     <meta property="og:image:alt" content="Ivoire Transmission - Logo officiel">
     <meta property="og:url" content="https://ivoire-transmission.ci/">
     <meta property="og:country-name" content="Côte d’Ivoire">
@@ -34,7 +34,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ivoire Transmission - Vidange moteur & boîte, diagnostic auto et garages en Côte d’Ivoire">
     <meta name="twitter:description" content="Réservez facilement vos services auto en ligne : vidange moteur et boîte, diagnostic auto, garages partenaires en Côte d’Ivoire avec Ivoire Transmission.">
-    <meta name="twitter:image" content="{{ asset('logo.jpg') }}">
+    <meta name="twitter:image" content="{{ secure_asset('logo.jpg') }}">
 
     <!-- Informations géographiques -->
     <meta name="geo.region" content="CI-AB">
@@ -49,11 +49,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <!-- Theme Style -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ secure_asset('frontend/style.css')}}">
 
     <!-- Favicon and Touch Icons  -->
-    <link rel="shortcut icon" href="{{ asset('favicon.ico')}}">
-    <link rel="apple-touch-icon-precomposed" href="{{ asset('apple-touch-icon.png')}}">
+    <link rel="shortcut icon" href="{{ secure_asset('favicon.ico')}}">
+    <link rel="apple-touch-icon-precomposed" href="{{ secure_asset('apple-touch-icon.png')}}">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -85,32 +85,32 @@
 <a id="scroll-top"></a>
 
 <!-- Javascript -->
-<script src="{{ asset('frontend/assets/js/jquery.min.js')}}"></script>
-<script src="{{ asset('frontend/assets/js/plugins.js')}}"></script>
-<script src="{{ asset('frontend/assets/js/bootstrap.min.js')}}"></script>
-<script src="{{ asset('frontend/assets/js/animsition.js')}}"></script>
-<script src="{{ asset('frontend/assets/js/countto.js')}}"></script>
-<script src="{{ asset('frontend/assets/js/cubeportfolio.js')}}"></script>
-<script src="{{ asset('frontend/assets/js/owl.carousel.min.js')}}"></script>
-<script src="{{ asset('frontend/assets/js/magnific.popup.min.js')}}"></script>
-<script src="{{ asset('frontend/assets/js/equalize.min.js')}}"></script>
-<script src="{{ asset('frontend/assets/js/shortcodes.js')}}"></script>
-<script src="{{ asset('frontend/assets/js/main.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/jquery.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/plugins.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/bootstrap.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/animsition.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/countto.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/cubeportfolio.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/owl.carousel.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/magnific.popup.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/equalize.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/shortcodes.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/main.js')}}"></script>
 
 <!-- Revolution Slider -->
-<script src="{{ asset('frontend/includes/rev-slider/js/jquery.themepunch.tools.min.js')}}"></script>
-<script src="{{ asset('frontend/includes/rev-slider/js/jquery.themepunch.revolution.min.js')}}"></script>
-<script src="{{ asset('frontend/assets/js/rev-slider.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/jquery.themepunch.tools.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/jquery.themepunch.revolution.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/assets/js/rev-slider.js')}}"></script>
 <!-- Load Extensions only on Local File Systems ! The following part can be removed on Server for On Demand Loading -->
-<script src="{{ asset('frontend/includes/rev-slider/js/extensions/revolution.extension.actions.min.js')}}"></script>
-<script src="{{ asset('frontend/includes/rev-slider/js/extensions/revolution.extension.carousel.min.js')}}"></script>
-<script src="{{ asset('frontend/includes/rev-slider/js/extensions/revolution.extension.kenburn.min.js')}}"></script>
-<script src="{{ asset('frontend/includes/rev-slider/js/extensions/revolution.extension.layeranimation.min.js')}}"></script>
-<script src="{{ asset('frontend/includes/rev-slider/js/extensions/revolution.extension.migration.min.js')}}"></script>
-<script src="{{ asset('frontend/includes/rev-slider/js/extensions/revolution.extension.navigation.min.js')}}"></script>
-<script src="{{ asset('frontend/includes/rev-slider/js/extensions/revolution.extension.parallax.min.js')}}"></script>
-<script src="{{ asset('frontend/includes/rev-slider/js/extensions/revolution.extension.slideanims.min.js')}}"></script>
-<script src="{{ asset('frontend/includes/rev-slider/js/extensions/revolution.extension.video.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.actions.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.carousel.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.kenburn.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.layeranimation.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.migration.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.navigation.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.parallax.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.slideanims.min.js')}}"></script>
+<script src="{{ secure_asset('frontend/includes/rev-slider/js/extensions/revolution.extension.video.min.js')}}"></script>
 
 </body>
 </html>

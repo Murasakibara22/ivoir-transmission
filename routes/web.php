@@ -22,8 +22,29 @@ Route::get('connexion', function() {
     return view('auth.login');
 })->name('login');
 
+Route::get('connexion/entreprise', function() {
+    if(auth()->guard('entreprise')->check())  return redirect('/entreprise/dashboard');
+
+    return view('Entreprise.auth.login');
+})->name('login.entreprise');
+
+
+
+    Route::group(['middleware' => 'verifyEntreprise'], function () {
+        Route::prefix('entreprise')->as('entreprise.')->group(function () {
+
+            Route::view('dashboard','Entreprise.dashboard.index')->name('dashboard.index');
+            Route::view('vehicules','Entreprise.dashboard.vehicules.index')->name('vehicules.index');
+            Route::view('reports','Entreprise.dashboard.reports.index')->name('reports.index');
+            Route::view('maintenance','Entreprise.dashboard.maintenance.index')->name('maintenance.index');
+            Route::view('team','Entreprise.dashboard.team.index')->name('team.index');
+
+        });
+    });
+
 
 Route::group(['middleware' => 'auth'], function () {
+
     Route::group(['middleware' => 'verifyAdmin'], function () {
         Route::prefix('dashboard')->as('dashboard.')->group(function () {
             //tableau de bord de l'admin
@@ -122,6 +143,12 @@ Route::get('/broadcast', function () {
 
 
 Route::get('/deconnexion', function () {
+
+    if(auth()->guard('entreprise')->check()){
+        auth()->guard('entreprise')->logout();
+        return redirect('/');
+    }
+
     auth()->logout();
     return redirect('/');
 })->name('deconnexion');

@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'verifyAdmin' => App\Http\Middleware\VerifyAdmin::class,
+            'verifyEntreprise' => App\Http\Middleware\verifyEntreprise::class,
             'verify.right' => \App\Http\Middleware\CheckRightAdmin::class,
         ]);
     })

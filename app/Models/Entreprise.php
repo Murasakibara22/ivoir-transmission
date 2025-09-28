@@ -7,10 +7,13 @@ use App\Models\Facture;
 use App\Models\Vehicule;
 use App\Models\HistoriqueEntretient;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 
 
-class Entreprise extends Model
+class Entreprise extends Model implements Authenticatable
 {
+    use AuthenticatableTrait;
     CONST SUSPENDED = "SUSPENDED";
     CONST INACTIVATED = "INACTIVATED";
     CONST ACTIVATED = "ACTIVATED";
@@ -29,7 +32,13 @@ class Entreprise extends Model
     ];
 
     protected $casts = [
-        'address' => 'array'
+        'address' => 'array',
+        'password' => 'hashed',
+    ];
+    
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
 

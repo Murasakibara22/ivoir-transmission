@@ -71,7 +71,7 @@ return [
 
         'entreprises' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Entreprise::class),
+            'model' => App\Models\Entreprise::class,
         ],
 
         // 'users' => [

@@ -74,7 +74,7 @@ class PaymentService {
             "amount"=> intval($reservation->montant), //$paiement->montant
             "currency_code"=>"XOF",
             "merchant_trans_id"=> $paiement->reference,
-            "seller_username"=>"Alphakb",
+            "seller_username"=>"tousuniscoeurjoyeux",
             "payment_type"=>"gateway",
             "designation"=> "Paiement de reservation ".$paiement->reservation->reference,
             "webhook_url"=> "http://127.0.0.1:9000/api/webhook/adjeminpay",

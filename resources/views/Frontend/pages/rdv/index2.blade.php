@@ -11,6 +11,7 @@
     <meta http-equiv="Content-Language" content="fr-FR">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- SEO Général -->
     <meta name="description" content="Tableau de bord de gestion de IVOIRE TRANSMISSION. Suivez les ventes, les commandes, les stocks et optimisez la gestion de votre boutique de mèches en Côte d'Ivoire.">
@@ -36,7 +37,7 @@
     <meta name="twitter:title" content="IVOIRE TRANSMISSION - Tableau de Bord">
     <meta name="twitter:description" content="Accédez au tableau de bord de gestion de votre boutique IVOIRE TRANSMISSION et optimisez vos ventes en Côte d'Ivoire.">
     <meta name="twitter:image" content="https://twinshair-ci.com/images/dashboard.jpg">
-    <meta name="twitter:site" content="@TwinsHairCI">
+    <meta name="twitter:site" content="@IVOIRETRANSMISSION">
 
     <!-- Géolocalisation -->
     <meta name="geo.country" content="CI">
@@ -44,24 +45,24 @@
 
     <meta content="Themesbrand" name="joackim_clby" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ secure_asset('frontend/assets/logo.jpeg') }}">
+    <link rel="shortcut icon" href="{{ asset('frontend/assets/logo.jpeg') }}">
 
     <!-- jsvectormap css -->
-    <link href="{{ secure_asset('assets/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!--Swiper slider css-->
-    <link href="{{ secure_asset('assets/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- Layout config Js -->
-    <script src="{{ secure_asset('assets/js/layout.js') }}"></script>
+    <script src="{{ asset('assets/js/layout.js') }}"></script>
     <!-- Bootstrap Css -->
-    <link href="{{ secure_asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="{{ secure_asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="{{ secure_asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
-    <link href="{{ secure_asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -122,8 +123,8 @@
         <nav class="navbar navbar-expand-lg navbar-landing fixed-top job-navbar is-sticky" id="navbar">
             <div class="container-fluid custom-container">
                 <a class="navbar-brand" href="/">
-                    <img src="{{ secure_asset('logo.jpg') }}" class="card-logo card-logo-dark" alt="logo dark" height="47">
-                    <img src="{{ secure_asset('logo.jpg') }}" class="card-logo card-logo-light" alt="logo light" height="47">
+                    <img src="{{ asset('logo.jpg') }}" class="card-logo card-logo-dark" alt="logo dark" height="47">
+                    <img src="{{ asset('logo.jpg') }}" class="card-logo card-logo-light" alt="logo light" height="47">
                 </a>
                 <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="mdi mdi-menu"></i>
@@ -190,12 +191,12 @@
 
 
 <!-- JAVASCRIPT -->
-<script src="{{ secure_asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ secure_asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
-<script src="{{ secure_asset('assets/libs/node-waves/waves.min.js') }}"></script>
-<script src="{{ secure_asset('assets/libs/feather-icons/feather.min.js') }}"></script>
-<script src="{{ secure_asset('assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
-<script src="{{ secure_asset('assets/js/plugins.js') }}"></script>
+<script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
+<script src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
+<script src="{{ asset('assets/libs/feather-icons/feather.min.js') }}"></script>
+<script src="{{ asset('assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
+<script src="{{ asset('assets/js/plugins.js') }}"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -239,30 +240,30 @@ doc.html(document.body, {
 
 
 <!-- apexcharts -->
-<script src="{{ secure_asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+<script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
 
 <!-- Vector map-->
-<script src="{{ secure_asset('assets/libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
-<script src="{{ secure_asset('assets/libs/jsvectormap/maps/world-merc.js') }}"></script>
+<script src="{{ asset('assets/libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
+<script src="{{ asset('assets/libs/jsvectormap/maps/world-merc.js') }}"></script>
 <!-- Swiper Js -->
-<script src="{{ secure_asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
+<script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
 
 <!-- Sweet Alerts js -->
-<script src="{{ secure_asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
 <!-- Sweet alert init js-->
-<script src="{{ secure_asset('assets/js/pages/sweetalerts.init.js') }}"></script>
-<script src="{{ secure_asset('assets/js/NotificationSweet.js') }}"></script>
+<script src="{{ asset('assets/js/pages/sweetalerts.init.js') }}"></script>
+<script src="{{ asset('assets/js/NotificationSweet.js') }}"></script>
 
 <!-- ecommerce product details init -->
-<script src="{{ secure_asset('assets/js/pages/ecommerce-product-details.init.js') }}"></script>
+<script src="{{ asset('assets/js/pages/ecommerce-product-details.init.js') }}"></script>
 
 <!-- CRM js -->
 <!-- Dashboard init -->
-<script src="{{ secure_asset('assets/js/pages/dashboard-ecommerce.init.js') }}"></script>
+<script src="{{ asset('assets/js/pages/dashboard-ecommerce.init.js') }}"></script>
 
 <!-- App js -->
-<script src="{{ secure_asset('assets/js/app.js') }}"></script>
+<script src="{{ asset('assets/js/app.js') }}"></script>
 
 @stack('scripts')
 </body>

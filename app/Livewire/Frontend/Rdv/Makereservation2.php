@@ -62,10 +62,8 @@ class Makereservation2 extends Component
             return;
         }
 
-        // dd($this->select_commune);
         $commune = Commune::where('nom',$this->select_commune)->first();
-        // $commune = Commune::find($this->select_commune);
-
+        
         if (!$commune || !$commune->jours) {
             $this->joursAutorises = [];
             return;
@@ -79,20 +77,36 @@ class Makereservation2 extends Component
             return;
         }
 
-        setlocale(LC_TIME, 'fr_FR.UTF-8');
+        // Mapping des jours français vers les jours anglais de Carbon
+        $joursMapping = [
+            'lundi' => 'Monday',
+            'mardi' => 'Tuesday', 
+            'mercredi' => 'Wednesday',
+            'jeudi' => 'Thursday',
+            'vendredi' => 'Friday',
+            'samedi' => 'Saturday',
+            'dimanche' => 'Sunday'
+        ];
 
-        $joursPermis = collect($joursBruts)->map(fn($jour) => strtolower($jour));
+        // Convertir les jours français en jours anglais pour Carbon
+        $joursPermisEnglish = collect($joursBruts)
+            ->map(fn($jour) => $joursMapping[strtolower($jour)] ?? null)
+            ->filter()
+            ->toArray();
+
         $dates = [];
-
         $today = Carbon::today();
-        $endOfMonth = Carbon::now()->endOfMonth();
+        // Étendre sur 60 jours pour avoir plus d'options
+        $endPeriod = Carbon::now()->addDays(60);
 
-        for ($date = $today->copy(); $date->lte($endOfMonth); $date->addDay()) {
-            $timestamp = $date->getTimestamp();
-            $jourEnCours = strtolower(strftime('%A', $timestamp));
+        // Définir la locale française pour l'affichage
+        Carbon::setLocale('fr');
 
-            if ($joursPermis->contains($jourEnCours)) {
-                $dates[$date->format('Y-m-d')] = utf8_encode(strftime('%A %d %B %Y', $timestamp));
+        for ($date = $today->copy(); $date->lte($endPeriod); $date->addDay()) {
+            $jourEnCours = $date->format('l'); // Jour en anglais (Monday, Tuesday, etc.)
+
+            if (in_array($jourEnCours, $joursPermisEnglish)) {
+                $dates[$date->format('Y-m-d')] = $date->isoFormat('dddd DD MMMM YYYY');
             }
         }
 

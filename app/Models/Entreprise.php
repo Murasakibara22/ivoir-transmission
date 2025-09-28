@@ -8,8 +8,13 @@ use App\Models\Vehicule;
 use App\Models\HistoriqueEntretient;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Entreprise extends Model
 {
+    CONST SUSPENDED = "SUSPENDED";
+    CONST INACTIVATED = "INACTIVATED";
+    CONST ACTIVATED = "ACTIVATED";
+
     protected $fillable = [
         'name',
         'address',
@@ -21,6 +26,10 @@ class Entreprise extends Model
         'type',
         'status',
         'cgu',
+    ];
+
+    protected $casts = [
+        'address' => 'array'
     ];
 
 

@@ -66,6 +66,7 @@ Route::group(['middleware' => 'auth'], function () {
                 return view('Dashboard.pages.paiement.show', compact('paiement'));
              })->name('paiements.show');
             Route::view('avis','Dashboard.pages.avis.index')->name('avis');
+            Route::view('entreprises/partenaires','Dashboard.pages.entreprise.index')->name('entreprise');
             Route::view('etat_financiers','Dashboard.pages.finance.index')->name('finance');
             Route::view('services','Dashboard.pages.service.index')->name('services');
             Route::view('ville-communes','Dashboard.pages.Ville.index')->name('villes');

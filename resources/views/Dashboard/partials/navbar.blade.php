@@ -49,6 +49,12 @@
                 </li> <!-- end Dashboard Menu -->
 
                 <li class="nav-item">
+                    <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.entreprise' ? 'active' : '' }}" href="{{ route('dashboard.entreprise') }}"  role="button">
+                        <i class="ri-xbox-line"></i> <span data-key="t-dashboards">Entreprises</span>
+                    </a>
+                </li> <!-- end Dashboard Menu -->
+
+                <li class="nav-item">
                     <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.finance' ? 'active' : '' }}" href="{{ route('dashboard.finance') }}"  role="button">
                         <i class="ri-bank-card-2-line"></i> <span data-key="t-dashboards">États financiers</span>
                     </a>

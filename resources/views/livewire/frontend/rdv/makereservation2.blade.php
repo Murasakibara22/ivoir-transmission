@@ -25,7 +25,7 @@
                     <div class="card">
                         <div class="card-body checkout-tab">
 
-                            <form wire:submit.prevent='SubmitRendezVous'>
+                            <form >
                                 <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
 
                                     <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
@@ -67,7 +67,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="country" class="form-label">Communes <span class="text-danger">*</span> </label>
-                                                        <select   class="form-select" id="country"  wire:model="select_commune">
+                                                        <select   class="form-select" id="country"  wire:model.live="select_commune">
                                                             <option value="">Sélectionnez...</option>
                                                             @if($list_commune && $list_commune->count() > 0)
                                                                 @foreach($list_commune as $commune)
@@ -201,7 +201,7 @@
                                         <div>
                                             <div class="row mt-4">
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-4" wire:ignore>
                                                     <div class="mb-3">
                                                         <label for="country" class="form-label">Numéro de chassis<span class="text-danger">*</span> </label>
                                                         <input type="text" wire:model.live="chassis" class="form-control" id="billinginfo-firstName" placeholder="Entrer le numéro de chassis" autocomplete="false">
@@ -333,7 +333,7 @@
 
 
                                             <div class="d-flex align-items-start gap-3 mt-3">
-                                                <button type="submit" class="btn btn-primary btn-label right ms-auto nexttab" wire:loading.attr="disabled">
+                                                <button type="button" wire:click="SubmitRendezVous" class="btn btn-primary btn-label right ms-auto nexttab" wire:loading.attr="disabled">
                                                     <i class="ri-truck-line label-icon align-middle fs-16 ms-2"></i>
                                                     <span wire:loading.remove>Confirmez votre rendez-vous</span>
                                                     <span wire:loading>Traitement en cours...</span>
@@ -598,6 +598,7 @@
             @this.set('adresse_livraison', adresse_name + ' ' + adresse_complete)
             @this.set('location', location)
             @this.set('select_commune', commune)
+
         });
     }
 </script>

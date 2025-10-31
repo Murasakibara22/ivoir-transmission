@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Contrat;
 use App\Models\Facture;
 use App\Models\Vehicule;
+use App\Models\Reservation;
 use App\Models\HistoriqueEntretient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -35,7 +36,7 @@ class Entreprise extends Model implements Authenticatable
         'address' => 'array',
         'password' => 'hashed',
     ];
-    
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -60,5 +61,9 @@ class Entreprise extends Model implements Authenticatable
 
     public function factures() {
         return $this->hasMany(Facture::class);
+    }
+
+    public function reservations()  {
+        return $this->hasMany(Reservation::class);
     }
 }

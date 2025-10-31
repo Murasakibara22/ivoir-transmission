@@ -21,6 +21,14 @@ class Vehicule extends Model
         'description',
         'slug',
         'entreprise_id',
+
+        //new champs
+        'date_prochaine_visite',
+        'cout_vidange_estime',
+        'kilometrage_actuel',
+        'carburant',
+        'couleur',
+        'date_mise_circulation'
     ];
 
     public function entreprise()

@@ -13,6 +13,15 @@ class Contrat extends Model
         'description',
         'status',
         'entreprise_id',
+
+        //new champs
+        'date_debut',
+        'date_fin',
+        'nombre_vehicules',
+        'montant_total',
+        'frequence_paiement',
+        'fichier_contrat_pdf',
+        'slug'
     ];
 
     public function entreprise()

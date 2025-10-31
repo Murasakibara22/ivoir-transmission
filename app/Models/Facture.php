@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Paiement;
+use App\Models\Vehicule;
 use App\Models\Entreprise;
+use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Model;
 
 class Facture extends Model
@@ -20,6 +23,14 @@ class Facture extends Model
             'entreprise_id',
             'fournisseur_id',
             'date',
+
+            //new champs
+            'vehicule_id',
+            'reservation_id',
+            'fichier_pdf',
+            'date_echeance',
+            'tva',
+            'montant_ttc',
     ];
 
 
@@ -27,4 +38,21 @@ class Facture extends Model
     {
         return $this->belongsTo(Entreprise::class);
     }
+
+    public function fournisseur()
+    {
+        return $this->belongsTo(Fournisseur::class);
+    }
+
+    public function vehicule()
+    {
+        return $this->belongsTo(Vehicule::class);
+    }
+
+    public function reservation()
+    {
+        return $this->belongsTo(Reservation::class);
+    }
+
+
 }

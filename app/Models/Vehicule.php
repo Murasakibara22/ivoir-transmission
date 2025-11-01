@@ -36,7 +36,7 @@ class Vehicule extends Model
         return $this->belongsTo(Entreprise::class);
     }
 
-    public function historiquesEntretients()
+    public function historique_entretiens()
     {
         return $this->hasMany(HistoriqueEntretient::class);
     }

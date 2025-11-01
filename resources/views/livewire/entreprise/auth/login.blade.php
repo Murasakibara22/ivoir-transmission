@@ -50,7 +50,7 @@ new class extends Component {
             ];
 
             if (Auth::guard('entreprise')->attempt($credentials, $this->remember)) {
-                session()->regenerate();
+                // session()->regenerate();
 
                 // Vérifier le rôle utilisateur (entreprise)
                 $user = Auth::guard('entreprise')->user();

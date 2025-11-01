@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Contrat;
 use App\Models\Vehicule;
+use App\Models\Entretien;
 use App\Models\Entreprise;
 use App\Models\Reservation;
 use App\Models\CategorieService;
@@ -10,6 +12,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class HistoriqueEntretient extends Model
 {
+    CONST PENDING = 'PENDING';
+    CONST IN_PROGRESS = 'IN_PROGRESS';
+    CONST DONE = 'DONE';
+    CONST CANCELLED = 'CANCELLED';
+
+
+
     protected $fillable = [
             'vehicule_id',
             'entreprise_id',
@@ -31,6 +40,16 @@ class HistoriqueEntretient extends Model
             'prochain_entretien_km',
             'prochain_entretien_date',
             'facture_pdf',
+            'entretien_id',
+            'contrat_id',
+
+
+            'pieces_changees',
+            'services_effectues',
+            'cout_pieces',
+            'cout_main_oeuvre',
+            'facture_pdf'
+
     ];
 
 
@@ -53,5 +72,15 @@ class HistoriqueEntretient extends Model
     public function reservation()
     {
         return $this->belongsTo(Reservation::class);
+    }
+
+    public function entretien()
+    {
+        return $this->belongsTo(Entretien::class);
+    }
+
+    public function contrat()
+    {
+        return $this->belongsTo(Contrat::class);
     }
 }

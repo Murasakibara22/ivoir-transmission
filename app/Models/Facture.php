@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Contrat;
 use App\Models\Paiement;
 use App\Models\Vehicule;
 use App\Models\Entreprise;
@@ -10,6 +11,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Facture extends Model
 {
+
+
+    CONST PENDING = 'PENDING';
+    CONST PAID = 'PAID';
+    CONST OVERDUE = 'OVERDUE';
+    CONST CANCELLED = 'CANCELLED';
+
+
+    CONST VIREMENT = 'VIREMENT';
+    CONST CHEQUE = 'CHEQUE';
+    CONST ESPECES = 'ESPECES';
+    CONST CARTE = 'CARTE';
+    CONST MOBILE_MONEY = 'MOBILE_MONEY';
+
     protected $fillable = [
             'ref',
             'libelle',
@@ -31,6 +46,15 @@ class Facture extends Model
             'date_echeance',
             'tva',
             'montant_ttc',
+
+
+            'entretien_id',
+            'contrat_id',
+            'date_emission',
+            'date_paiement'
+            'status_paiement',
+            'moyen_paiement',
+            'reference_paiement',
     ];
 
 
@@ -54,5 +78,12 @@ class Facture extends Model
         return $this->belongsTo(Reservation::class);
     }
 
+    public function entretien(){
+        return $this->belongsTo(Entretien::class);
+    }
+
+    public function contrat(){
+        return $this->belongsTo(Contrat::class);
+    }
 
 }

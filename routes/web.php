@@ -3,6 +3,7 @@
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Paiement;
+use App\Models\Entreprise;
 use App\Events\MessageSend;
 use App\Models\Reservation;
 use App\Events\TestNotification;
@@ -88,6 +89,14 @@ Route::group(['middleware' => 'auth'], function () {
              })->name('paiements.show');
             Route::view('avis','Dashboard.pages.avis.index')->name('avis');
             Route::view('entreprises/partenaires','Dashboard.pages.entreprise.index')->name('entreprise');
+            Route::get('entreprises/partenaires/show/{slug}', function ($slug) {
+                $entreprise = Entreprise::where('slug',$slug)->first();
+                if(!$entreprise){
+                    return redirect()->back();
+                }
+
+                return view('Dashboard.pages.entreprise.show', compact('entreprise'));
+            })->name('entreprise.show');
             Route::view('etat_financiers','Dashboard.pages.finance.index')->name('finance');
             Route::view('services','Dashboard.pages.service.index')->name('services');
             Route::view('ville-communes','Dashboard.pages.Ville.index')->name('villes');

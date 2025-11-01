@@ -51,7 +51,7 @@ class Facture extends Model
             'entretien_id',
             'contrat_id',
             'date_emission',
-            'date_paiement'
+            'date_paiement',
             'status_paiement',
             'moyen_paiement',
             'reference_paiement',

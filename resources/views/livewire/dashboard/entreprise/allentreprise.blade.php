@@ -341,7 +341,7 @@
                                                         <td>
                                                             <ul class="list-inline hstack gap-2 mb-0">
                                                                 <li class="list-inline-item edit" >
-                                                                    <a href="#" class="text-primary d-inline-block">
+                                                                    <a href="{{ route('dashboard.entreprise.show', $item->slug) }}" class="text-primary d-inline-block">
                                                                         <i class="ri-eye-fill fs-16 "></i>
                                                                     </a>
                                                                 </li>

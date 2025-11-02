@@ -535,7 +535,7 @@
                 </div>
                 @endif
 
-                <!-- ONGLET ENTRETIENS -->
+               <!-- ONGLET ENTRETIENS -->
                 @if($activeTab === 'entretiens')
                 <div class="row">
                     <div class="col-12">
@@ -577,7 +577,7 @@
                                                 <td>
                                                     <div class="progress" style="height: 20px;">
                                                         <div class="progress-bar" role="progressbar"
-                                                             style="width: {{ ($entretien->nombre_vehicules_fait / $entretien->nombre_vehicules_total) * 100 }}%">
+                                                            style="width: {{ ($entretien->nombre_vehicules_fait / $entretien->nombre_vehicules_total) * 100 }}%">
                                                             {{ round(($entretien->nombre_vehicules_fait / $entretien->nombre_vehicules_total) * 100) }}%
                                                         </div>
                                                     </div>
@@ -595,16 +595,35 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($entretien->status !== 'COMPLETED' && $entretien->nombre_vehicules_fait === $entretien->nombre_vehicules_total)
-                                                        <button wire:click="openClotureEntretienModal({{ $entretien->id }})"
-                                                                class="btn btn-sm btn-success">
-                                                            <i class="ri-check-line me-1"></i>Clôturer
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-sm btn-soft-secondary" type="button" data-bs-toggle="dropdown">
+                                                            <i class="ri-more-fill"></i>
                                                         </button>
-                                                    @else
-                                                        <a href="#" class="btn btn-sm btn-soft-secondary">
-                                                            <i class="ri-eye-line"></i>
-                                                        </a>
-                                                    @endif
+                                                        <ul class="dropdown-menu">
+                                                            @if($entretien->status !== 'COMPLETED')
+                                                            <li>
+                                                                <button wire:click="openGererVehiculesModal({{ $entretien->id }})" class="dropdown-item">
+                                                                    <i class="ri-list-check me-2"></i>Gérer les véhicules
+                                                                </button>
+                                                            </li>
+                                                            @if($entretien->nombre_vehicules_fait === $entretien->nombre_vehicules_total)
+                                                            <li><hr class="dropdown-divider"></li>
+                                                            <li>
+                                                                <button wire:click="openClotureEntretienModal({{ $entretien->id }})"
+                                                                        class="dropdown-item text-success">
+                                                                    <i class="ri-check-line me-2"></i>Clôturer l'entretien
+                                                                </button>
+                                                            </li>
+                                                            @endif
+                                                            @else
+                                                            <li>
+                                                                <button wire:click="voirDetailsEntretien({{ $entretien->id }})" class="dropdown-item">
+                                                                    <i class="ri-eye-line me-2"></i>Voir détails
+                                                                </button>
+                                                            </li>
+                                                            @endif
+                                                        </ul>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             @empty
@@ -723,5 +742,6 @@
     @include('livewire.dashboard.entreprise.modals.edit-vehicule')
    @include('livewire.dashboard.entreprise.modals.vehicule-details')
     @include('livewire.dashboard.entreprise.modals.add-contrat')
+    @include('livewire.dashboard.entreprise.modals.gerer-vehicules-entretien')
     @include('livewire.dashboard.entreprise.modals.cloture-entretien')
 </div>

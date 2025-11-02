@@ -34,6 +34,8 @@ class ManageEntreprise extends Component
     public $showEditContratModal = false;
     public $showClotureEntretienModal = false;
 
+    public $showGererVehiculesModal = false;
+
     // Informations entreprise
     public $name;
     public $email;
@@ -321,6 +323,7 @@ class ManageEntreprise extends Component
         ]);
 
         $dateDebut = \Carbon\Carbon::parse($this->contrat_date_debut);
+        $this->contrat_duree_contrat_mois = intval($this->contrat_duree_contrat_mois);
         $dateFin = $dateDebut->copy()->addMonths($this->contrat_duree_contrat_mois);
 
         $contrat = $this->entreprise->contrats()->create([
@@ -409,17 +412,17 @@ class ManageEntreprise extends Component
             ->paginate(10);
     }
 
-    public function marquerVehiculeTermine($historiqueId)
-    {
-        $historique = HistoriqueEntretient::findOrFail($historiqueId);
-        $historique->update(['status' => HistoriqueEntretient::DONE]);
+    // public function marquerVehiculeTermine($historiqueId)
+    // {
+    //     $historique = HistoriqueEntretient::findOrFail($historiqueId);
+    //     $historique->update(['status' => HistoriqueEntretient::DONE]);
 
-        $entretien = $historique->entretien;
-        $entretien->increment('nombre_vehicules_fait');
-        $entretien->decrement('nombre_vehicules_restant');
+    //     $entretien = $historique->entretien;
+    //     $entretien->increment('nombre_vehicules_fait');
+    //     $entretien->decrement('nombre_vehicules_restant');
 
-        $this->send_event_at_toast('Véhicule marqué comme fait!', 'success', 'top-right');
-    }
+    //     $this->send_event_at_toast('Véhicule marqué comme fait!', 'success', 'top-right');
+    // }
 
     public function openClotureEntretienModal($entretienId)
     {
@@ -455,6 +458,7 @@ class ManageEntreprise extends Component
     private function creerFacture($entretien)
     {
         Facture::create([
+            'libelle' => 'Facture n°' . $entretien->id.'pour l\'entreprise ' . $entretien->entreprise->nom,
             'ref' => 'FACT-' . strtoupper(Str::random(8)),
             'entreprise_id' => $entretien->entreprise_id,
             'entretien_id' => $entretien->id,
@@ -520,6 +524,49 @@ class ManageEntreprise extends Component
                 ]);
             }
         }
+    }
+
+    public function openGererVehiculesModal($entretienId)
+    {
+        $this->selectedEntretien = Entretien::with(['contrat'])->findOrFail($entretienId);
+        $this->showGererVehiculesModal = true;
+    }
+
+    // MÉTHODE MODIFIÉE
+    public function marquerVehiculeTermine($historiqueId)
+    {
+        $historique = HistoriqueEntretient::findOrFail($historiqueId);
+        $historique->update(['status' => HistoriqueEntretient::DONE]);
+
+        $entretien = $historique->entretien;
+        $entretien->increment('nombre_vehicules_fait');
+        $entretien->decrement('nombre_vehicules_restant');
+
+        // Changer le statut de l'entretien si c'était le premier véhicule
+        if($entretien->status === Entretien::PENDING) {
+            $entretien->update(['status' => Entretien::IN_PROGRESS]);
+        }
+
+        $this->send_event_at_toast('Véhicule marqué comme terminé!', 'success', 'top-end');
+
+        // Recharger l'entretien
+        $this->selectedEntretien = $entretien->fresh();
+    }
+
+    // NOUVELLE MÉTHODE - Pour annuler un véhicule marqué terminé
+    public function annulerVehiculeTermine($historiqueId)
+    {
+        $historique = HistoriqueEntretient::findOrFail($historiqueId);
+        $historique->update(['status' => HistoriqueEntretient::PENDING]);
+
+        $entretien = $historique->entretien;
+        $entretien->decrement('nombre_vehicules_fait');
+        $entretien->increment('nombre_vehicules_restant');
+
+        $this->send_event_at_toast('Statut du véhicule annulé', 'info', 'top-end');
+
+        // Recharger l'entretien
+        $this->selectedEntretien = $entretien->fresh();
     }
 
     // ==================== FACTURES ====================

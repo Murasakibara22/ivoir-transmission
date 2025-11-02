@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Contrat;
 use App\Models\Facture;
+use App\Models\Paiement;
 use App\Models\Vehicule;
 use App\Models\Reservation;
 use App\Models\HistoriqueEntretient;
@@ -65,5 +66,9 @@ class Entreprise extends Model implements Authenticatable
 
     public function reservations()  {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function paiement()  {
+        return $this->hasMany(Paiement::class);
     }
 }

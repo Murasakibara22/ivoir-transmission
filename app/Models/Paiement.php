@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Facture;
+use App\Models\Entreprise;
 use App\Models\Reservation;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 
 class Paiement extends Model
@@ -22,9 +25,12 @@ class Paiement extends Model
     CONST EXPIRED = "EXPIRED";
     CONST INITIATED = "INITIATED";
 
+    CONST ESPECES = "ESPECES";
+
     protected $fillable = [
         'reservation_id',
         'user_id',
+        'entreprise_id',
         'montant',
         'methode',
         'status',
@@ -32,6 +38,9 @@ class Paiement extends Model
         'snapshot_reservation',
         'snapshot_users',
         'slug',
+
+        'model_id',
+        'model_type', // Factures ou Reservation
     ];
 
     public function reservation()  {
@@ -50,4 +59,57 @@ class Paiement extends Model
 
         return $reference;
     }
+
+
+     public function payable(): MorphTo
+    {
+        return $this->morphTo('model');
+    }
+
+    public function entreprise()  {
+        return $this->belongsTo(Entreprise::class,'entreprise_id');
+    }
+
+
+    public function scopeForEntreprise($query, $entrepriseId)
+    {
+        return $query->whereHas('reservation', function ($q) use ($entrepriseId) {
+            $q->where('entreprise_id', $entrepriseId);
+        })->orWhereHasMorph('payable', [Facture::class], function ($q) use ($entrepriseId) {
+            $q->where('entreprise_id', $entrepriseId);
+        });
+    }
+
+    /**
+     * Scope pour les paiements réussis
+     */
+    public function scopePaid($query)
+    {
+        return $query->where('status', self::PAID);
+    }
+
+    /**
+     * Scope pour les paiements en attente
+     */
+    public function scopePending($query)
+    {
+        return $query->where('status', self::PENDING);
+    }
+
+    /**
+     * Vérifie si le paiement est réussi
+     */
+    public function isPaid(): bool
+    {
+        return $this->status === self::PAID;
+    }
+
+    /**
+     * Vérifie si le paiement est en attente
+     */
+    public function isPending(): bool
+    {
+        return $this->status === self::PENDING;
+    }
+
 }

@@ -3,11 +3,12 @@
 
 namespace App\Services;
 
-use App\Models\Offer;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
-use App\Models\Customer;
 use App\Models\User;
+use App\Models\Offer;
+use GuzzleHttp\Client;
+use App\Models\Facture;
+use App\Models\Customer;
 use App\Models\Paiement;
 use App\Models\Reservation;
 use App\Models\Notification;
@@ -42,6 +43,8 @@ class PaymentService {
         $paiement->reference = Paiement::generateUniqueReference();
         $paiement->montant = $reservation->montant;
         $paiement->reservation_id = $reservation_id;
+        $paiement->model_id = $reservation_id;
+        $paiement->model_type = Reservation::class;
         $paiement->status = Paiement::INITIATED;
         $paiement->user_id = auth()->user()->id;
         $paiement->snapshot_users = json_encode([
@@ -84,6 +87,55 @@ class PaymentService {
             "customer_email"=> auth()->user()->email ?? "",
             "customer_firstname"=>auth()->user()->username,
             "customer_lastname"=>auth()->user()->username
+        ];
+        // return response()->json($body);
+
+
+        $response = Http::withHeaders($headers)->post('https://api.adjem.in/v3/gateway/merchants/create_payment',$body);
+
+
+        return $response['data']['gateway_payment_url'];
+
+    }
+
+
+
+    static public function storepaimentFacture($paiement_id, $contact){
+        $clientAuth = new Client();
+        $options = [
+            'form_params' => [
+            'client_id' => Paiement::CLIENID,
+            'client_secret' => Paiement::CLIENSECRET,
+            'grant_type' => 'client_credentials'
+        ]];
+        $response = $clientAuth->request('POST', 'https://api.adjem.in/v3/oauth/token',$options);
+
+        $token = json_decode($response->getBody())->access_token;
+
+
+        $paiement = Paiement::find($paiement_id);
+
+        $client = new Client();
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json', // Ajout du Content-Type
+            'Authorization' => 'Bearer ' . $token
+        ];
+
+        $body = [
+            "amount"=> intval($paiement->montant), //$paiement->montant
+            "currency_code"=>"XOF",
+            "merchant_trans_id"=> $paiement->reference,
+            "seller_username"=>"tousuniscoeurjoyeux",
+            "payment_type"=>"gateway",
+            "designation"=> "Paiement de facture ".$paiement->payable->ref,
+            "webhook_url"=> "http://127.0.0.1:9000/api/webhook/adjeminpay",
+            "return_url"=> "http://127.0.0.1:9000/success-transaction",
+            "cancel_url"=> "http://127.0.0.1:9000/",
+            "customer_recipient_number"=> $contact,
+            "customer_email"=> auth('entreprise')->user()->email ?? "",
+            "customer_firstname"=>auth('entreprise')->user()->name,
+            "customer_lastname"=>auth('entreprise')->user()->name ?? ""
         ];
         // return response()->json($body);
 
@@ -165,54 +217,123 @@ class PaymentService {
 
 
         $paiement = Paiement::where('ref',$transaction_reference)->first();
-        $reservation = Reservation::where('id',$paiement->reservation_id)->first();
-        if(!$reservation) {
-            return 'reservation introuvable';
-        }
+
+        if($paiement->model_type == Reservation::class){
+                $reservation = Reservation::where('id',$paiement->model_id)->first();
+                if(!$reservation) {
+                    return 'reservation introuvable';
+                }
 
 
 
-        switch ($status) {
-            case Paiement::SUCCESSFUL:
-                    $this->validatereservation($reservation);
+                switch ($status) {
+                    case Paiement::SUCCESSFUL:
+                            $this->validatereservation($reservation);
 
-                    $paiement->status = Paiement::SUCCESSFUL;
-                    $paiement->methode = $request->payment_method ?? "Wave_ci";
-                    $paiement->is_completed = true;
-                    $paiement->save();
+                            $paiement->status = Paiement::SUCCESSFUL;
+                            $paiement->methode = $request->payment_method ?? "Wave_ci";
+                            $paiement->is_completed = true;
+                            $paiement->save();
 
-                break;
-            case Paiement::CANCELED:
-                    $this->Cancelreservation($reservation);
+                        break;
+                    case Paiement::CANCELED:
+                            $this->Cancelreservation($reservation);
 
-                    $paiement->status = Paiement::CANCELED;
-                    $paiement->methode = $request->payment_method ?? "Wave_ci";
-                    $paiement->is_completed = true;
-                    $paiement->save();
+                            $paiement->status = Paiement::CANCELED;
+                            $paiement->methode = $request->payment_method ?? "Wave_ci";
+                            $paiement->is_completed = true;
+                            $paiement->save();
 
-                break;
-            case Paiement::FAILED:
-                $this->Cancelreservation($reservation);
+                        break;
+                    case Paiement::FAILED:
+                        $this->Cancelreservation($reservation);
 
+                            $paiement->status = Paiement::FAILED;
+                            $paiement->methode = $request->payment_method ?? "Wave_ci";
+                            $paiement->is_completed = true;
+                            $paiement->save();
+                        break;
+                    case Paiement::EXPIRED:
+                        $this->Cancelreservation($reservation);
+
+                            $paiement->status = Paiement::EXPIRED;
+                            $paiement->methode = $request->payment_method ?? "Wave_ci";
+                            $paiement->is_completed = true;
+                            $paiement->save();
+
+                        break;
+
+                    default:
+                        return  'MISSING_TRANSACTION_STATUS';
+                        break;
+                }
+        }elseif($paiement->model_type == Facture::class) {
+            $facture = Facture::where('id',$paiement->model_id)->first();
+            if(!$facture) {
+                return 'facture introuvable';
+            }
+
+            switch ($status) {
+                case Paiement::SUCCESSFUL:
+                        $paiement->status = Paiement::SUCCESSFUL;
+                        $paiement->methode = $request->payment_method ?? "Wave_ci";
+                        $paiement->is_completed = true;
+                        $paiement->save();
+
+                        $facture->update([
+                            'moyen_paiement' => Facture::MOBILE_MONEY,
+                            'reference_paiement' => $paiement->reference,
+                            'status_paiement' => Facture::PAID
+                        ]);
+
+                    break;
+
+                case Paiement::CANCELED:
+                        $paiement->status = Paiement::CANCELED;
+                        $paiement->methode = $request->payment_method ?? "Wave_ci";
+                        $paiement->is_completed = true;
+                        $paiement->save();
+
+                         $facture->update([
+                            'moyen_paiement' => Facture::MOBILE_MONEY,
+                            'reference_paiement' => $paiement->reference,
+                            'status_paiement' => Facture::CANCELED
+                        ]);
+                    break;
+                case Paiement::FAILED:
                     $paiement->status = Paiement::FAILED;
                     $paiement->methode = $request->payment_method ?? "Wave_ci";
                     $paiement->is_completed = true;
                     $paiement->save();
-                break;
-            case Paiement::EXPIRED:
-                $this->Cancelreservation($reservation);
 
+
+                    $facture->update([
+                        'moyen_paiement' => Facture::MOBILE_MONEY,
+                        'reference_paiement' => $paiement->reference,
+                        'status_paiement' => Facture::FAILED
+                    ]);
+
+                    break;
+                case Paiement::EXPIRED:
                     $paiement->status = Paiement::EXPIRED;
                     $paiement->methode = $request->payment_method ?? "Wave_ci";
                     $paiement->is_completed = true;
                     $paiement->save();
 
-                break;
+                    $facture->update([
+                        'moyen_paiement' => Facture::MOBILE_MONEY,
+                        'reference_paiement' => $paiement->reference,
+                        'status_paiement' => Facture::FAILED
+                    ]);
 
-            default:
-                return  'MISSING_TRANSACTION_STATUS';
-                break;
+                    break;
+
+                default:
+                    return  'MISSING_TRANSACTION_STATUS';
+                    break;
+            }
         }
+
 
         return $paiement;
     }

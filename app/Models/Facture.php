@@ -17,6 +17,7 @@ class Facture extends Model
     CONST PAID = 'PAID';
     CONST OVERDUE = 'OVERDUE';
     CONST CANCELLED = 'CANCELLED';
+    CONST FAILED = 'FAILED';
 
 
     CONST VIREMENT = 'VIREMENT';

@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->date('date_emission');
 
-            $table->enum('status_paiement', ['PENDING', 'PAID', 'OVERDUE', 'CANCELLED'])->default('PENDING');
+            $table->enum('status_paiement', ['PENDING', 'PAID', 'OVERDUE', 'CANCELLED','FAILED'])->default('PENDING');
             $table->enum('moyen_paiement', ['VIREMENT', 'CHEQUE', 'ESPECES', 'CARTE', 'MOBILE_MONEY'])->nullable();
             $table->string('reference_paiement')->nullable();
         });

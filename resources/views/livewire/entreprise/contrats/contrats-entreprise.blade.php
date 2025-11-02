@@ -89,7 +89,7 @@
         </div>
 
         <!-- Filters -->
-        <div class="card">
+        <div class="card mt-6 mb-3">
             <div class="flex flex-col lg:flex-row gap-4">
                 <div class="flex-1">
                     <input type="text" wire:model.live.debounce.300ms="search"

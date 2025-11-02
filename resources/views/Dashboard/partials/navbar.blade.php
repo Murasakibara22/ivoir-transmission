@@ -75,13 +75,13 @@
                         <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.contrats' ? 'active' : '' }}" href="{{ route('dashboard.contrats') }}"  role="button">
                             <i class="ri-bill-line"></i> <span data-key="t-dashboards">Contrats</span>
                         </a>
-                    </li> <!-- end Dashboard Menu -->
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.entretiens' ? 'active' : '' }}" href="{{ route('dashboard.entretiens') }}"  role="button">
                             <i class="ri-recycle-line"></i> <span data-key="t-dashboards">Rendez-vous Entreprises</span>
                         </a>
-                    </li> <!-- end Dashboard Menu -->
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.factures' ? 'active' : '' }}" href="{{ route('dashboard.factures') }}"  role="button">

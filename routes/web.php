@@ -39,6 +39,7 @@ Route::get('connexion/entreprise', function() {
             Route::view('reports','Entreprise.dashboard.reports.index')->name('reports.index');
             Route::view('maintenance','Entreprise.dashboard.maintenance.index')->name('maintenance.index');
             Route::view('team','Entreprise.dashboard.team.index')->name('team.index');
+            Route::view('contrats','Entreprise.dashboard.contrats.index')->name('contrats.index');
 
         });
     });

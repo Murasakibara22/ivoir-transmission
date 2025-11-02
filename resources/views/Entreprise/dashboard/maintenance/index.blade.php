@@ -431,65 +431,6 @@
 
     </div>
 
-    <!-- Planification en masse Section -->
-    <div class="card">
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h3 class="text-lg font-semibold text-white">Planification en masse</h3>
-                <p class="text-sm text-slate-400 mt-1">Planifiez plusieurs RDV simultanément pour votre flotte</p>
-            </div>
-            <button class="btn btn-primary btn-sm" onclick="openMassPlanningModal()">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                </svg>
-                Planifier en masse
-            </button>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="p-4 bg-slate-700/30 rounded-xl border border-slate-600/30">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-sm text-slate-400">Véhicules sélectionnés</p>
-                        <p class="text-xl font-bold text-white">0</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 bg-slate-700/30 rounded-xl border border-slate-600/30">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-sm text-slate-400">RDV à planifier</p>
-                        <p class="text-xl font-bold text-white">0</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 bg-slate-700/30 rounded-xl border border-slate-600/30">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-sm text-slate-400">Coût estimé total</p>
-                        <p class="text-xl font-bold text-white">0 FCFA</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Pagination -->
     <div class="card">

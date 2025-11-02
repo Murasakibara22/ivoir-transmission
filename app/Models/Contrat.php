@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Facture;
 use App\Models\Entretien;
 use App\Models\Entreprise;
 use Illuminate\Database\Eloquent\Model;
@@ -53,5 +54,9 @@ class Contrat extends Model
 
     public function entretiens(){
         return $this->hasMany(Entretien::class);
+    }
+
+    public function factures()  {
+        return $this->hasMany(Facture::class);
     }
 }

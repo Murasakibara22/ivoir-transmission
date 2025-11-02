@@ -97,6 +97,13 @@ Route::group(['middleware' => 'auth'], function () {
 
                 return view('Dashboard.pages.entreprise.show', compact('entreprise'));
             })->name('entreprise.show');
+
+            Route::view('vehicules','Dashboard.pages.vehicules.index')->name('vehicules');
+            Route::view('contrats','Dashboard.pages.contrats.index')->name('contrats');
+            Route::view('entretiens','Dashboard.pages.entretiens.index')->name('entretiens');
+            Route::view('factures','Dashboard.pages.factures.index')->name('factures');
+
+
             Route::view('etat_financiers','Dashboard.pages.finance.index')->name('finance');
             Route::view('services','Dashboard.pages.service.index')->name('services');
             Route::view('ville-communes','Dashboard.pages.Ville.index')->name('villes');

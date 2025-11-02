@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Contrat;
 use App\Models\Entreprise;
+use App\Models\HistoriqueEntretient;
 use Illuminate\Database\Eloquent\Model;
 
 class Entretien extends Model
@@ -38,5 +39,9 @@ class Entretien extends Model
 
     public function entreprise() {
         return $this->belongsTo(Entreprise::class);
+    }
+
+    public function historique_entretiens()  {
+        return $this->hasMany(HistoriqueEntretient::class);
     }
 }

@@ -48,17 +48,49 @@
                     </a>
                 </li> <!-- end Dashboard Menu -->
 
-                <li class="nav-item">
-                    <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.entreprise' ? 'active' : '' }}" href="{{ route('dashboard.entreprise') }}"  role="button">
-                        <i class="ri-xbox-line"></i> <span data-key="t-dashboards">Entreprises</span>
-                    </a>
-                </li> <!-- end Dashboard Menu -->
+
 
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.finance' ? 'active' : '' }}" href="{{ route('dashboard.finance') }}"  role="button">
                         <i class="ri-bank-card-2-line"></i> <span data-key="t-dashboards">États financiers</span>
                     </a>
                 </li> <!-- end Dashboard Menu -->
+
+
+                <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Gestions Entreprises</span></li>
+
+                   <li class="nav-item">
+                        <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.entreprise' ? 'active' : '' }}" href="{{ route('dashboard.entreprise') }}"  role="button">
+                            <i class="ri-xbox-line"></i> <span data-key="t-dashboards">Entreprises</span>
+                        </a>
+                    </li> <!-- end Dashboard Menu -->
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.vehicules' ? 'active' : '' }}" href="{{ route('dashboard.vehicules') }}"  role="button">
+                            <i class="ri-car-line"></i> <span data-key="t-dashboards">Vehicules</span>
+                        </a>
+                    </li> <!-- end Dashboard Menu -->
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.contrats' ? 'active' : '' }}" href="{{ route('dashboard.contrats') }}"  role="button">
+                            <i class="ri-bill-line"></i> <span data-key="t-dashboards">Contrats</span>
+                        </a>
+                    </li> <!-- end Dashboard Menu -->
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.entretiens' ? 'active' : '' }}" href="{{ route('dashboard.entretiens') }}"  role="button">
+                            <i class="ri-recycle-line"></i> <span data-key="t-dashboards">Rendez-vous Entreprises</span>
+                        </a>
+                    </li> <!-- end Dashboard Menu -->
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.factures' ? 'active' : '' }}" href="{{ route('dashboard.factures') }}"  role="button">
+                            <i class="ri-file-list-3-line"></i> <span data-key="t-dashboards">Factures</span>
+                        </a>
+                    </li> <!-- end Dashboard Menu -->
+
+
+
 
                 <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Services</span></li>
 

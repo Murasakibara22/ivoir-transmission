@@ -497,12 +497,12 @@
                                                             <li><hr class="dropdown-divider"></li>
                                                             @endif
                                                             <li>
-                                                                <a href="#" class="dropdown-item">
+                                                                <a href="#" wire:click="openContratDetailsModal({{ $contrat->id }})" class="dropdown-item">
                                                                     <i class="ri-eye-line me-2"></i>Voir détails
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="#" class="dropdown-item">
+                                                                <a href="#" wire:click="openEditContratModal({{ $contrat->id }})" class="dropdown-item">
                                                                     <i class="ri-edit-line me-2"></i>Modifier
                                                                 </a>
                                                             </li>
@@ -744,4 +744,6 @@
     @include('livewire.dashboard.entreprise.modals.add-contrat')
     @include('livewire.dashboard.entreprise.modals.gerer-vehicules-entretien')
     @include('livewire.dashboard.entreprise.modals.cloture-entretien')
+    @include('livewire.dashboard.entreprise.modals.contrat-details')
+    @include('livewire.dashboard.entreprise.modals.edit-contrat')
 </div>

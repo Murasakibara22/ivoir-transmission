@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Entreprise\Contrats;
 
-use App\Livewire\UtilsSweetAlert;
 use App\Models\Contrat;
 use Livewire\Component;
-use Livewire\WithPagination;
+use App\Models\Entretien;
+use Illuminate\Support\Str;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
+use App\Livewire\UtilsSweetAlert;
+use App\Models\HistoriqueEntretient;
 use Illuminate\Support\Facades\Auth;
 
 class ContratsEntreprise extends Component
@@ -120,8 +123,43 @@ class ContratsEntreprise extends Component
             'entreprise_validation_note' => $this->confirmation_note,
         ]);
 
+        $this->creerPremierEntretien($this->contratToConfirm);
+
         $this->closeConfirmModal();
         $this->send_event_at_toast('Contrat confirmé avec succès', 'success', 'top-end');
+    }
+
+
+    private function creerPremierEntretien($contrat)
+    {
+        $entretien = Entretien::create([
+            'contrat_id' => $contrat->id,
+            'entreprise_id' => $contrat->entreprise_id,
+            'date_prevue' => $contrat->date_premier_entretien,
+            'numero_entretien' => 1,
+            'nombre_vehicules_total' => $contrat->nombre_vehicules,
+            'nombre_vehicules_fait' => 0,
+            'nombre_vehicules_restant' => $contrat->nombre_vehicules,
+            'cout_prevu' => $contrat->montant_entretien,
+            'status' => Entretien::PENDING,
+            'slug' => Str::random(10) . uniqid(),
+        ]);
+
+        // Créer un historique pour chaque véhicule
+        $vehicules = Auth::guard('entreprise')->user()->vehicules()->limit($contrat->nombre_vehicules)->get();
+
+        foreach ($vehicules as $vehicule) {
+            HistoriqueEntretient::create([
+                'vehicule_id' => $vehicule->id,
+                'entreprise_id' => $contrat->entreprise_id,
+                'entretien_id' => $entretien->id,
+                'contrat_id' => $contrat->id,
+                'type_entretient' => 'Entretien contractuel',
+                'date_entretient' => $contrat->date_premier_entretien,
+                'status' => HistoriqueEntretient::PENDING,
+                'slug' => Str::random(10) . uniqid(),
+            ]);
+        }
     }
 
     public function refuserContrat()

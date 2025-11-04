@@ -35,6 +35,7 @@ class ManageEntreprise extends Component
     public $showClotureEntretienModal = false;
 
     public $showGererVehiculesModal = false;
+    public $showContratDetailsModal = false;
 
     // Informations entreprise
     public $name;
@@ -344,6 +345,76 @@ class ManageEntreprise extends Component
         $this->send_event_at_toast('Contrat ajouté avec succès!', 'success', 'top-right');
     }
 
+
+
+    public function openContratDetailsModal($contratId)
+    {
+        $this->selectedContrat = Contrat::with(['entretiens', 'factures'])->findOrFail($contratId);
+        $this->showContratDetailsModal = true;
+    }
+
+    public function closeContratDetailsModal()
+    {
+        $this->showContratDetailsModal = false;
+        $this->selectedContrat = null;
+    }
+
+    public function openEditContratModal($contratId)
+    {
+        $this->selectedContrat = Contrat::findOrFail($contratId);
+
+        $this->contrat_libelle = $this->selectedContrat->libelle;
+        $this->contrat_description = $this->selectedContrat->description;
+        $this->contrat_frequence_entretien = $this->selectedContrat->frequence_entretien;
+        $this->contrat_duree_contrat_mois = $this->selectedContrat->duree_contrat_mois;
+        $this->contrat_date_debut = $this->selectedContrat->date_debut;
+        $this->contrat_date_premier_entretien = $this->selectedContrat->date_premier_entretien;
+        $this->contrat_nombre_vehicules = $this->selectedContrat->nombre_vehicules;
+        $this->contrat_montant_entretien = $this->selectedContrat->montant_entretien;
+
+        $this->showEditContratModal = true;
+        $this->showContratDetailsModal = false;
+    }
+
+    public function closeEditContratModal()
+    {
+        $this->showEditContratModal = false;
+        $this->resetContratForm();
+    }
+
+    public function updateContrat()
+    {
+        $this->validate([
+            'contrat_libelle' => 'required|string|max:255',
+            'contrat_frequence_entretien' => 'required|in:MENSUEL,TRIMESTRIEL,SEMESTRIEL,ANNUEL',
+            'contrat_duree_contrat_mois' => 'required|integer|min:1',
+            'contrat_date_debut' => 'required|date',
+            'contrat_date_premier_entretien' => 'required|date',
+            'contrat_nombre_vehicules' => 'required|integer|min:1',
+            'contrat_montant_entretien' => 'required|numeric|min:0',
+        ]);
+
+        $dateDebut = \Carbon\Carbon::parse($this->contrat_date_debut);
+        $this->contrat_duree_contrat_mois = intval($this->contrat_duree_contrat_mois);
+        $dateFin = $dateDebut->copy()->addMonths($this->contrat_duree_contrat_mois);
+
+        $this->selectedContrat->update([
+            'libelle' => $this->contrat_libelle,
+            'description' => $this->contrat_description,
+            'frequence_entretien' => $this->contrat_frequence_entretien,
+            'duree_contrat_mois' => $this->contrat_duree_contrat_mois,
+            'date_debut' => $this->contrat_date_debut,
+            'date_fin' => $dateFin,
+            'date_premier_entretien' => $this->contrat_date_premier_entretien,
+            'nombre_vehicules' => $this->contrat_nombre_vehicules,
+            'montant_entretien' => $this->contrat_montant_entretien,
+        ]);
+
+        $this->closeEditContratModal();
+        $this->send_event_at_toast('Contrat modifié avec succès!', 'success', 'top-right');
+    }
+
+
     public function activerContrat($contratId)
     {
         $contrat = Contrat::findOrFail($contratId);
@@ -532,6 +603,12 @@ class ManageEntreprise extends Component
         $this->showGererVehiculesModal = true;
     }
 
+    public function voirDetailsEntretien($entretienId)
+    {
+        $this->selectedEntretien = Entretien::with(['contrat'])->findOrFail($entretienId);
+        $this->showGererVehiculesModal = true;
+    }
+
     // MÉTHODE MODIFIÉE
     public function marquerVehiculeTermine($historiqueId)
     {
@@ -553,6 +630,28 @@ class ManageEntreprise extends Component
         $this->selectedEntretien = $entretien->fresh();
     }
 
+    public function marquerVehiculeNonFait($historiqueId)
+    {
+        $historique = HistoriqueEntretient::findOrFail($historiqueId);
+        $historique->update(['status' => HistoriqueEntretient::CANCELLED]);
+
+        $entretien = $historique->entretien;
+
+
+        $entretien->increment('nombre_vehicules_restant');
+        $entretien->decrement('nombre_vehicules_fait');
+
+        // Changer le statut de l'entretien si c'était le premier véhicule
+        // if($entretien->status === Entretien::PENDING) {
+        //     $entretien->update(['status' => Entretien::IN_PROGRESS]);
+        // }
+
+        $this->send_event_at_toast('Véhicule marqué comme non fait !', 'warning', 'top-end');
+
+        // Recharger l'entretien
+        $this->selectedEntretien = $entretien->fresh();
+    }
+
     // NOUVELLE MÉTHODE - Pour annuler un véhicule marqué terminé
     public function annulerVehiculeTermine($historiqueId)
     {
@@ -560,8 +659,14 @@ class ManageEntreprise extends Component
         $historique->update(['status' => HistoriqueEntretient::PENDING]);
 
         $entretien = $historique->entretien;
-        $entretien->decrement('nombre_vehicules_fait');
-        $entretien->increment('nombre_vehicules_restant');
+
+        if($entretien->nombre_vehicules_fait > 0){
+            $entretien->decrement('nombre_vehicules_fait');
+        }
+
+        if($entretien->nombre_vehicules_restant < $entretien->nombre_vehicules_total){
+            $entretien->increment('nombre_vehicules_restant');
+        }
 
         $this->send_event_at_toast('Statut du véhicule annulé', 'info', 'top-end');
 

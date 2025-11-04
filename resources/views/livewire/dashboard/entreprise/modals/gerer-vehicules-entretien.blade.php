@@ -157,14 +157,18 @@
                                                 <span class="badge bg-warning">
                                                     <i class="ri-time-line me-1"></i>En cours
                                                 </span>
+                                            @elseif($historique->status === 'CANCELLED')
+                                                <span class="badge bg-danger">
+                                                    <i class="ri-time-line me-1"></i>Non fait
+                                                </span>
                                             @else
                                                 <span class="badge bg-secondary">
                                                     <i class="ri-time-line me-1"></i>En attente
                                                 </span>
                                             @endif
                                         </td>
-                                        <td>
-                                            @if($historique->status !== 'DONE')
+                                        <td class="justify-content-center">
+                                            @if($historique->status !== 'DONE' && $historique->status !== 'CANCELLED')
                                                 <button wire:click="marquerVehiculeTermine({{ $historique->id }})"
                                                         class="btn btn-sm btn-success"
                                                         wire:loading.attr="disabled"
@@ -173,6 +177,18 @@
                                                         <i class="ri-check-line me-1"></i>Marquer fait
                                                     </span>
                                                     <span wire:loading wire:target="marquerVehiculeTermine({{ $historique->id }})">
+                                                        <span class="spinner-border spinner-border-sm" role="status"></span>
+                                                    </span>
+                                                </button>
+
+                                                <button wire:click="marquerVehiculeNonFait({{ $historique->id }})"
+                                                        class="btn btn-sm btn-danger"
+                                                        wire:loading.attr="disabled"
+                                                        wire:target="marquerVehiculeNonFait({{ $historique->id }})">
+                                                    <span wire:loading.remove wire:target="marquerVehiculeNonFait({{ $historique->id }})">
+                                                        <i class="ri-check-line me-1"></i>Non Fait
+                                                    </span>
+                                                    <span wire:loading wire:target="marquerVehiculeNonFait({{ $historique->id }})">
                                                         <span class="spinner-border spinner-border-sm" role="status"></span>
                                                     </span>
                                                 </button>
@@ -205,10 +221,12 @@
                     <i class="ri-close-line me-1"></i>Fermer
                 </button>
                 @if($selectedEntretien->nombre_vehicules_fait === $selectedEntretien->nombre_vehicules_total)
-                <button wire:click="openClotureEntretienModal({{ $selectedEntretien->id }})"
-                        class="btn btn-success">
-                    <i class="ri-check-double-line me-1"></i>Clôturer l'entretien
-                </button>
+                    @if($selectedEntretien->status != "COMPLETED")
+                    <button wire:click="openClotureEntretienModal({{ $selectedEntretien->id }})"
+                            class="btn btn-success">
+                        <i class="ri-check-double-line me-1"></i>Clôturer l'entretien
+                    </button>
+                    @endif
                 @endif
             </div>
         </div>

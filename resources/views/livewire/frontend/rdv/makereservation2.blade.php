@@ -83,7 +83,7 @@
                                                 <div class="@if($showCommune) col-lg-6 @else col-lg-12 @endif">
                                                     <div class="mb-3">
                                                         <label for="billinginfo-phone" class="form-label">Adresse <span class="text-danger">*</span> </label>
-                                                        <input type="text" class="form-control" wire:model="adresse_livraison" placeholder="Renseignez une adresse" autocomplete="false" id="autocomplete">
+                                                        <input type="text" class="form-control" wire:model.live="adresse_livraison" placeholder="Renseignez une adresse" autocomplete="false" id="autocomplete">
                                                     </div>
                                                     @error('adresse_livraison') <span class="text-danger">{{ $message }}</span> @enderror
                                                 </div>

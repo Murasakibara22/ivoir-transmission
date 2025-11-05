@@ -44,4 +44,6 @@ class Entretien extends Model
     public function historique_entretiens()  {
         return $this->hasMany(HistoriqueEntretient::class);
     }
+
+  
 }

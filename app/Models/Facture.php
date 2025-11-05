@@ -52,7 +52,6 @@ class Facture extends Model
             'entretien_id',
             'contrat_id',
             'date_emission',
-            'date_paiement',
             'status_paiement',
             'moyen_paiement',
             'reference_paiement',
@@ -85,6 +84,13 @@ class Facture extends Model
 
     public function contrat(){
         return $this->belongsTo(Contrat::class);
+    }
+
+    public function paiements() {
+        return Paiement::where([
+            ['model_id', $this->id],
+             ['model_type', get_class($this)]
+             ]);
     }
 
 }

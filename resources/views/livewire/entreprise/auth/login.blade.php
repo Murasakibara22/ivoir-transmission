@@ -54,7 +54,7 @@ new class extends Component {
 
                 // Vérifier le rôle utilisateur (entreprise)
                 $user = Auth::guard('entreprise')->user();
-                if (!$user->hasRole('entreprise')) {
+                if (!$user) {
                     Auth::guard('entreprise')->logout();
                     throw ValidationException::withMessages([
                         'email' => 'Accès réservé aux comptes entreprise.',
@@ -62,7 +62,7 @@ new class extends Component {
                 }
 
                 // Redirection vers le dashboard
-                $this->redirectRoute('entreprise.dashboard');
+                return redirect()->route('entreprise.dashboard.index');
 
             } else {
                 $this->errorMessage = 'Email ou mot de passe incorrect.';
@@ -71,7 +71,7 @@ new class extends Component {
         } catch (ValidationException $e) {
             $this->errorMessage = $e->getMessage();
         } catch (\Exception $e) {
-            $this->errorMessage = 'Une erreur est survenue. Veuillez réessayer.';
+            $this->errorMessage = 'Une erreur est survenue. Veuillez réessayer.'. $e->getMessage();
         } finally {
             $this->isLoading = false;
         }

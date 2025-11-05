@@ -34,7 +34,7 @@
                 <!-- Status Badge -->
                 <div class="flex items-center justify-between">
                     <div>
-                        @if($selectedItem->status_paiement === 'PAID')
+                        @if($selectedItem->status_paiement === 'PAYE')
                         <span class="status-badge status-success text-base">
                             <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -107,7 +107,7 @@
                 </div>
 
                 <!-- Informations de paiement si payé -->
-                @if($selectedItem->status_paiement === 'PAID')
+                @if($selectedItem->status_paiement === 'PAYE')
                 <div>
                     <h4 class="text-sm font-semibold text-slate-400 mb-3">Informations de paiement</h4>
                     <div class="p-4 bg-green-500/10 border border-green-500/20 rounded-xl space-y-2">

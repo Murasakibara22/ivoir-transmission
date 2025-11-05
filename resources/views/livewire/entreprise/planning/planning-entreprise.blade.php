@@ -88,47 +88,32 @@
         <div class="card mt-6 mb-3">
             <div class="flex flex-col lg:flex-row gap-4">
                 <!-- Filters -->
-                <div class="flex-1 flex flex-col sm:flex-row gap-3">
-                    <select wire:model.live="vehiculeFilter"
-                            class="px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">Tous les véhicules</option>
-                        @foreach($vehicules as $vehicule)
-                            <option value="{{ $vehicule->id }}">{{ $vehicule->libelle }} - {{ $vehicule->matricule }}</option>
-                        @endforeach
-                    </select>
+                    <!-- Filters -->
+                    <div class="flex-1 flex flex-col sm:flex-row gap-3">
+                        <select wire:model.live="contratFilter"
+                                class="px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Tous les contrats</option>
+                            @foreach($contrats as $contrat)
+                                <option value="{{ $contrat->id }}">{{ $contrat->libelle }}</option>
+                            @endforeach
+                        </select>
 
-                    <select wire:model.live="statusFilter"
-                            class="px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">Tous les statuts</option>
-                        <option value="PENDING">En attente</option>
-                        <option value="IN_PROGRESS">En cours</option>
-                        <option value="DONE">Terminé</option>
-                        <option value="CANCELLED">Annulé</option>
-                    </select>
+                        <select wire:model.live="statusFilter"
+                                class="px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Tous les statuts</option>
+                            <option value="PENDING">En attente</option>
+                            <option value="IN_PROGRESS">En cours</option>
+                            <option value="COMPLETED">Terminé</option>
+                            <option value="CANCELLED">Annulé</option>
+                        </select>
 
-                    <button wire:click="$set('vehiculeFilter', ''); $set('statusFilter', '')"
-                            class="px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white hover:bg-slate-700 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- View Toggle -->
-                <div class="flex bg-slate-700/50 rounded-xl p-1">
-                    <button wire:click="switchView('calendar')"
-                            class="view-toggle {{ $viewMode === 'calendar' ? 'active' : '' }} px-4 py-2 rounded-lg transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                    </button>
-                    <button wire:click="switchView('list')"
-                            class="view-toggle {{ $viewMode === 'list' ? 'active' : '' }} px-4 py-2 rounded-lg transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                        </svg>
-                    </button>
-                </div>
+                        <button wire:click="$set('contratFilter', ''); $set('statusFilter', '')"
+                                class="px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white hover:bg-slate-700 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                        </button>
+                    </div>
             </div>
         </div>
 
@@ -143,10 +128,11 @@
                 @include('livewire.entreprise.planning.partials.calendar-view')
             @endif
 
+            <div class="mt-6"></div>
             <!-- List View -->
-            @if($viewMode === 'list')
+            {{-- @if($viewMode === 'list') --}}
                 @include('livewire.entreprise.planning.partials.list-view')
-            @endif
+            {{-- @endif --}}
         </div>
 
 

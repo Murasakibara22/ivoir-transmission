@@ -32,11 +32,11 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
                             <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3
-                                {{ $paiement->status === 'PAID' ? 'bg-green-500/10' : '' }}
+                                {{ $paiement->status === 'PAYE' ? 'bg-green-500/10' : '' }}
                                 {{ $paiement->status === 'PENDING' ? 'bg-orange-500/10' : '' }}
                                 {{ $paiement->status === 'FAILED' ? 'bg-red-500/10' : '' }}">
                                 <svg class="w-5 h-5
-                                    {{ $paiement->status === 'PAID' ? 'text-green-400' : '' }}
+                                    {{ $paiement->status === 'PAYE' ? 'text-green-400' : '' }}
                                     {{ $paiement->status === 'PENDING' ? 'text-orange-400' : '' }}
                                     {{ $paiement->status === 'FAILED' ? 'text-red-400' : '' }}"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +80,8 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-nowrap">
-                        @if($paiement->status === 'PAID')
+                        {{ $paiement->status }}
+                        @if($paiement->status === 'PAYE')
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/20">
                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -98,6 +99,7 @@
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
                             Initié
                         </span>
+
                         @else
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

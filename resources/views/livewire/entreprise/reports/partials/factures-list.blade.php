@@ -56,11 +56,11 @@
                             <span class="text-slate-500">
                                 Montant: <span class="text-white font-semibold">{{ number_format($facture->montant_ttc) }} FCFA</span>
                             </span>
-                            @if($facture->status_paiement === 'PAID' && $facture->moyen_paiement)
+                            {{-- @if($facture->status_paiement === 'PAID' && $facture->moyen_paiement) --}}
                             <span class="text-slate-500">
-                                Moyen: <span class="text-green-400">{{ $facture->moyen_paiement }}</span>
+                               @if($facture->moyen_paiement) Moyen: @endif <span class="text-green-400">{{ $facture->moyen_paiement }}</span>
                             </span>
-                            @endif
+                            {{-- @endif --}}
                             @if($facture->date_echeance)
                             <span class="text-slate-500">
                                 Échéance:

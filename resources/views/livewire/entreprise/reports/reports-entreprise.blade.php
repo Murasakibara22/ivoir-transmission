@@ -85,7 +85,11 @@
 
     {{-- Graphs --}}
 
-    @include('livewire.entreprise.reports.partials.charts')
+    @include('livewire.entreprise.reports.partials.charts', [
+        'depensesChartData' => $this->depensesChartData,
+        'repartitionChartData' => $this->repartitionChartData,
+        'repartitionData' => $this->repartitionData
+    ])
 
     <!-- Tabs -->
     <div class="card mb-6">

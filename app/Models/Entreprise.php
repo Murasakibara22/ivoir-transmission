@@ -6,6 +6,7 @@ use App\Models\Contrat;
 use App\Models\Facture;
 use App\Models\Paiement;
 use App\Models\Vehicule;
+use App\Models\Entretien;
 use App\Models\Reservation;
 use App\Models\HistoriqueEntretient;
 use Illuminate\Database\Eloquent\Model;
@@ -62,6 +63,10 @@ class Entreprise extends Model implements Authenticatable
 
     public function factures() {
         return $this->hasMany(Facture::class);
+    }
+
+    public function entretiens(){
+        return $this->hasMany(Entretien::class);
     }
 
     public function reservations()  {

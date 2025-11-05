@@ -51,7 +51,7 @@
         <div class="dropdown">
             <button class="p-2 text-slate-400 hover:text-white rounded-lg relative" id="notifications-toggle">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-3.5-3.5a7 7 0 10-4.95 4.95L15 17zm-3.586 0L9 19.414V21a2 2 0 01-2 2H5a2 2 0 01-2-2v-1.586L9.414 15H5a7 7 0 110-14h4.414L3 7.414V6a2 2 0 012-2h2a2 2 0 012 2v1.414L14.586 1H19a7 7 0 110 14h-4.414L17 17.414V19a2 2 0 01-2 2h-2a2 2 0 01-2-2v-1.586L11.414 17z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-11.909-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
                 <!-- Notification badge -->
                 <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">

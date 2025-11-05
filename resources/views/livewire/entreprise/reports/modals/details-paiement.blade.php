@@ -12,12 +12,12 @@
             <div class="flex items-center justify-between p-6 border-b border-slate-700/50">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12
-                        {{ $selectedItem->status === 'PAID' ? 'bg-green-500/10' : '' }}
+                        {{ $selectedItem->status === 'PAYE' ? 'bg-green-500/10' : '' }}
                         {{ $selectedItem->status === 'PENDING' ? 'bg-orange-500/10' : '' }}
                         {{ $selectedItem->status === 'FAILED' ? 'bg-red-500/10' : '' }}
                         rounded-xl flex items-center justify-center">
                         <svg class="w-6 h-6
-                            {{ $selectedItem->status === 'PAID' ? 'text-green-400' : '' }}
+                            {{ $selectedItem->status === 'PAYE' ? 'text-green-400' : '' }}
                             {{ $selectedItem->status === 'PENDING' ? 'text-orange-400' : '' }}
                             {{ $selectedItem->status === 'FAILED' ? 'text-red-400' : '' }}"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,7 +42,7 @@
                 <!-- Status & Montant -->
                 <div class="flex items-center justify-between p-4 bg-slate-700/30 rounded-xl">
                     <div>
-                        @if($selectedItem->status === 'PAID')
+                        @if($selectedItem->status === 'PAYE')
                         <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-green-500/10 text-green-400 border border-green-500/20">
                             <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>

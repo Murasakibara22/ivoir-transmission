@@ -18,7 +18,7 @@ class Paiement extends Model
     CONST CLIENSECRET =  "br6YoIFLuSxA94gbA3HMZFn6PwC1q9voHMMNs3Yh";
 
     CONST CANCELED = 'ANNULER';
-    CONST PENDING = 'en attente';
+    CONST PENDING = 'PENDING';
     CONST PAID = 'PAYE';
     CONST SUCCESSFUL = "PAYE";
     CONST FAILED = "FAILED";

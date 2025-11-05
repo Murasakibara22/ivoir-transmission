@@ -5,14 +5,17 @@ namespace App\Livewire\Dashboard\Entreprise;
 use App\Models\Contrat;
 use App\Models\Facture;
 use Livewire\Component;
+use App\Models\Paiement;
 use App\Models\Vehicule;
 use App\Models\Entretien;
 use App\Models\Entreprise;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Livewire\UtilsSweetAlert;
 use App\Models\HistoriqueEntretient;
+
 
 class ManageEntreprise extends Component
 {
@@ -74,6 +77,9 @@ class ManageEntreprise extends Component
     public $selectedEntretien = null;
     public $entretien_cout_final;
     public $entretien_commentaire;
+
+    //Factures
+    public $facture_id;
 
     // Filtres
     public $search = '';
@@ -672,6 +678,64 @@ class ManageEntreprise extends Component
 
         // Recharger l'entretien
         $this->selectedEntretien = $entretien->fresh();
+    }
+
+
+
+    public function confirmerPaiement($factureId){
+        $facture = Facture::findOrFail($factureId);
+
+        if(!$facture->status){
+            return $this->send_event_at_toast('Facture non trouvée', 'warning', 'top-end');
+        }
+
+        $this->facture_id = $factureId;
+
+        $this->sweetAlert_confirm_success($facture, 'Confirmer le paiement', 'Confirmer le paiement en espèce de la facture?', 'validatePaimentEspece', 'success');
+    }
+
+    #[on('validatePaimentEspece')]
+    public function validatePaimentEspece() {
+
+         $facture = Facture::findOrFail($this->facture_id);
+
+        if(!$facture->status){
+            return $this->send_event_at_toast('Facture non trouvée', 'warning', 'top-end');
+        }
+
+        if($facture->status_paiement === Facture::PAID){
+            return $this->send_event_at_toast('Facture deja payée', 'warning', 'top-end');
+        }
+
+        $this->confirmPaiementEspece($facture);
+
+
+        if($facture->status_paiement === Facture::OVERDUE || $facture->status_paiement === Facture::PENDING){
+            $facture->update([
+                'status_paiement' => Facture::PAID,
+                // 'date_paiement' => now(),
+            ]);
+            $this->send_event_at_toast('Facture marquée comme payée', 'success', 'top-end');
+        }
+    }
+
+
+    private function confirmPaiementEspece(Facture $facture){
+
+    //    try{
+            $paiement  = $facture->paiements()->first();
+
+
+            if($paiement->status === Paiement::PENDING){
+                $paiement->update([
+                    'status' => Paiement::PAID,
+                ]);
+            }
+
+
+    //    }catch(\Exception $e){
+    //        \Log::error($e->getMessage());
+    //    }
     }
 
     // ==================== FACTURES ====================

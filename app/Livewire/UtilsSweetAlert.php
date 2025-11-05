@@ -73,6 +73,18 @@ trait UtilsSweetAlert {
         ]);
     }
 
+    public function sweetAlert_confirm_options_with_button($model, string $title, string $message , $event_retour, $type, $succesButton, $cancelButton) : void  {
+        $this->dispatch('swal:modalDeleteOptionsWithButton', [
+            'title' => $title,
+            'text' => $message,
+            'type' => $type,
+            'id' => $model->id ,
+            'succesButton' => $succesButton,
+            'cancelButton' => $cancelButton,
+            'eventRetour' =>  $event_retour,
+        ]);
+    }
+
     public function sweetAlert_confirm_success($model, string $title, string $message , $event_retour, $type) : void  {
         $this->dispatch('swal:modalConfirmOptions', [
             'title' => $title,

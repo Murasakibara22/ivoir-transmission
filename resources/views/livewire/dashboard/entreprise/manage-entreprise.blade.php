@@ -668,6 +668,7 @@
                                                 <th>Entretien</th>
                                                 <th>Date émission</th>
                                                 <th>Date échéance</th>
+                                                <th>Mode de paiements</th>
                                                 <th>Montant TTC</th>
                                                 <th>Statut</th>
                                                 <th>Actions</th>
@@ -690,6 +691,7 @@
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($facture->date_emission)->format('d/m/Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($facture->date_echeance)->format('d/m/Y') }}</td>
+                                                <td>{{ $facture->moyen_paiement ?? "-" }}</td>
                                                 <td class="fw-semibold">{{ number_format($facture->montant_ttc) }} FCFA</td>
                                                 <td>
                                                     @if($facture->status_paiement === 'PAID')
@@ -703,6 +705,11 @@
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    @if($facture->moyen_paiement == "ESPECES" && $facture->status_paiement == "PENDING")
+                                                    <a href="javascript:void(0);" wire:click="confirmerPaiement({{ $facture->id }})" class="btn btn-sm btn-success">
+                                                        <i class="ri-check-line me-1"></i>confirmer le paiement
+                                                    </a>
+                                                    @endif
                                                     <a href="#" class="btn btn-sm btn-soft-primary">
                                                         <i class="ri-download-line me-1"></i>PDF
                                                     </a>

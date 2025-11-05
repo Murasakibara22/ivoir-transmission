@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Livewire\Entreprise\Vehicules;
 
 use App\Livewire\UtilsSweetAlert;
@@ -15,10 +14,12 @@ class VehiculesList extends Component
     public $search = '';
     public $statusFilter = '';
     public $marqueFilter = '';
-    public $viewMode = 'grid'; // 'grid' ou 'list'
+    public $viewMode = 'grid';
 
-    // Listeners
-    protected $listeners = ['vehicule-created' => 'refreshVehicules'];
+    // Modals
+    public $showDetailModal = false;
+    public $showHistoriqueModal = false;
+    public $selectedVehicule = null;
 
     public function mount()
     {
@@ -45,10 +46,27 @@ class VehiculesList extends Component
         $this->viewMode = $mode;
     }
 
-    public function refreshVehicules()
+    public function showDetails($vehiculeId)
     {
-        // Force le rafraîchissement de la liste
-        $this->render();
+        $this->selectedVehicule = auth('entreprise')->user()->vehicules()->find($vehiculeId);
+        $this->showDetailModal = true;
+    }
+
+    public function showHistorique($vehiculeId)
+    {
+        $this->selectedVehicule = auth('entreprise')->user()->vehicules()
+            ->with(['historique_entretiens' => function($query) {
+                $query->orderBy('date_entretient', 'desc');
+            }])
+            ->find($vehiculeId);
+        $this->showHistoriqueModal = true;
+    }
+
+    public function closeModals()
+    {
+        $this->showDetailModal = false;
+        $this->showHistoriqueModal = false;
+        $this->selectedVehicule = null;
     }
 
     public function getVehiculesProperty()
@@ -71,25 +89,24 @@ class VehiculesList extends Component
             $query->where('marque', $this->marqueFilter);
         }
 
-        // Filtre par statut (basé sur date_prochaine_visite)
+        // Filtre par statut (basé sur historique_entretients)
         if ($this->statusFilter) {
-            switch ($this->statusFilter) {
-                case 'urgent':
-                    // Véhicules dont la date de prochaine visite est dépassée
-                    $query->whereNotNull('date_prochaine_visite')
-                          ->where('date_prochaine_visite', '<', now());
-                    break;
-                case 'warning':
-                    // Véhicules dont la date est dans les 7 prochains jours
-                    $query->whereNotNull('date_prochaine_visite')
-                          ->whereBetween('date_prochaine_visite', [now(), now()->addDays(7)]);
-                    break;
-                case 'good':
-                    // Véhicules à jour (date > 7 jours)
-                    $query->whereNotNull('date_prochaine_visite')
-                          ->where('date_prochaine_visite', '>', now()->addDays(7));
-                    break;
-            }
+            $query->whereHas('historique_entretiens', function($q) {
+                switch ($this->statusFilter) {
+                    case 'urgent':
+                        $q->whereNotNull('prochain_entretien_date')
+                          ->where('prochain_entretien_date', '<=', now()->addDays(5));
+                        break;
+                    case 'warning':
+                        $q->whereNotNull('prochain_entretien_date')
+                          ->whereBetween('prochain_entretien_date', [now()->addDays(6), now()->addDays(14)]);
+                        break;
+                    case 'good':
+                        $q->whereNotNull('prochain_entretien_date')
+                          ->where('prochain_entretien_date', '>', now()->addDays(14));
+                        break;
+                }
+            });
         }
 
         return $query->paginate(12);
@@ -97,22 +114,36 @@ class VehiculesList extends Component
 
     public function getStatsProperty()
     {
+        $entrepriseId = auth('entreprise')->user()->id;
+
         $totalVehicules = auth('entreprise')->user()->vehicules()->count();
 
-        $urgent = auth('entreprise')->user()->vehicules()
-            ->whereNotNull('date_prochaine_visite')
-            ->where('date_prochaine_visite', '<', now())
-            ->count();
+        // Urgent: maintenance dans les 5 prochains jours
+        $urgent = \DB::table('historique_entretients as he')
+            ->join('vehicules as v', 'he.vehicule_id', '=', 'v.id')
+            ->where('v.entreprise_id', $entrepriseId)
+            ->whereNotNull('he.prochain_entretien_date')
+            ->where('he.prochain_entretien_date', '<=', now()->addDays(5))
+            ->distinct('v.id')
+            ->count('v.id');
 
-        $aSurveiller = auth('entreprise')->user()->vehicules()
-            ->whereNotNull('date_prochaine_visite')
-            ->whereBetween('date_prochaine_visite', [now(), now()->addDays(7)])
-            ->count();
+        // À surveiller: maintenance entre 6 et 14 jours
+        $aSurveiller = \DB::table('historique_entretients as he')
+            ->join('vehicules as v', 'he.vehicule_id', '=', 'v.id')
+            ->where('v.entreprise_id', $entrepriseId)
+            ->whereNotNull('he.prochain_entretien_date')
+            ->whereBetween('he.prochain_entretien_date', [now()->addDays(6), now()->addDays(14)])
+            ->distinct('v.id')
+            ->count('v.id');
 
-        $aJour = auth('entreprise')->user()->vehicules()
-            ->whereNotNull('date_prochaine_visite')
-            ->where('date_prochaine_visite', '>', now()->addDays(7))
-            ->count();
+        // À jour: maintenance dans plus de 14 jours
+        $aJour = \DB::table('historique_entretients as he')
+            ->join('vehicules as v', 'he.vehicule_id', '=', 'v.id')
+            ->where('v.entreprise_id', $entrepriseId)
+            ->whereNotNull('he.prochain_entretien_date')
+            ->where('he.prochain_entretien_date', '>', now()->addDays(14))
+            ->distinct('v.id')
+            ->count('v.id');
 
         return [
             'total' => $totalVehicules,
@@ -124,7 +155,6 @@ class VehiculesList extends Component
 
     public function getMarquesProperty()
     {
-        // Liste des marques disponibles dans les véhicules de l'entreprise
         return auth('entreprise')->user()->vehicules()
             ->select('marque')
             ->distinct()
@@ -135,15 +165,22 @@ class VehiculesList extends Component
 
     public function getVehiculeStatus($vehicule)
     {
-        if (!$vehicule->date_prochaine_visite) {
+        // Récupérer le dernier historique d'entretien avec une date de prochain entretien
+        $dernierEntretien = $vehicule->historique_entretiens()
+            ->whereNotNull('prochain_entretien_date')
+            ->orderBy('date_entretient', 'desc')
+            ->first();
+
+        if (!$dernierEntretien || !$dernierEntretien->prochain_entretien_date) {
             return 'unknown';
         }
 
-        $dateProchaine = \Carbon\Carbon::parse($vehicule->date_prochaine_visite);
+        $dateProchaine = \Carbon\Carbon::parse($dernierEntretien->prochain_entretien_date);
+        $joursRestants = now()->diffInDays($dateProchaine, false);
 
-        if ($dateProchaine->isPast()) {
+        if ($joursRestants < 0 || $joursRestants <= 5) {
             return 'urgent';
-        } elseif ($dateProchaine->diffInDays(now()) <= 7) {
+        } elseif ($joursRestants <= 14) {
             return 'warning';
         } else {
             return 'good';
@@ -172,19 +209,32 @@ class VehiculesList extends Component
 
     public function getStatusMessage($vehicule)
     {
-        if (!$vehicule->date_prochaine_visite) {
+        $dernierEntretien = $vehicule->historique_entretiens()
+            ->whereNotNull('prochain_entretien_date')
+            ->orderBy('date_entretient', 'desc')
+            ->first();
+
+        if (!$dernierEntretien || !$dernierEntretien->prochain_entretien_date) {
             return ['text' => 'Date de visite non définie', 'class' => 'text-slate-400'];
         }
 
-        $dateProchaine = \Carbon\Carbon::parse($vehicule->date_prochaine_visite);
+        $dateProchaine = \Carbon\Carbon::parse($dernierEntretien->prochain_entretien_date);
         $status = $this->getVehiculeStatus($vehicule);
 
         if ($status === 'urgent') {
-            $retard = $dateProchaine->diffInDays(now());
-            return [
-                'text' => "Maintenance dépassée de {$retard} jour(s)",
-                'class' => 'text-red-400'
-            ];
+            if ($dateProchaine->isPast()) {
+                $retard = $dateProchaine->diffInDays(now());
+                return [
+                    'text' => "Maintenance dépassée de {$retard} jour(s)",
+                    'class' => 'text-red-400'
+                ];
+            } else {
+                $jours = now()->diffInDays($dateProchaine);
+                return [
+                    'text' => "Maintenance dans {$jours} jour(s)",
+                    'class' => 'text-red-400'
+                ];
+            }
         } elseif ($status === 'warning') {
             $jours = now()->diffInDays($dateProchaine);
             return [

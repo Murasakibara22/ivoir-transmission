@@ -265,7 +265,7 @@ class ReportsEntreprise extends Component
         $this->contact_paiement = $this->contact_paiement ??  auth('entreprise')->user()->phone;
 
         if(!$this->contact_paiement){
-            return $this->send_event_at_toast('Le contact pour le paiement est requis', 'error', 'top-end'); 
+            return $this->send_event_at_toast('Le contact pour le paiement est requis', 'error', 'top-end');
         }
 
         $prefix = "+225";
@@ -358,14 +358,14 @@ class ReportsEntreprise extends Component
 
         for ($i = $months - 1; $i >= 0; $i--) {
             $date = now()->subMonths($i);
-            $labels[] = $date->format('M Y');
+            $labels[] = $date->translatedFormat('M Y');
 
             $montant = Facture::where('entreprise_id', $entreprise->id)
                 ->whereMonth('date_emission', $date->month)
                 ->whereYear('date_emission', $date->year)
                 ->sum('montant_ttc');
 
-            $data[] = $montant;
+            $data[] = (float) $montant;
         }
 
         return [
@@ -380,15 +380,15 @@ class ReportsEntreprise extends Component
 
         $repartition = Facture::where('entreprise_id', $entreprise->id)
             ->where('status_paiement', 'PAID')
-            ->selectRaw('type, SUM(montant_ttc) as total')
+            ->selectRaw('COALESCE(type, "Autre") as type, SUM(montant_ttc) as total')
             ->groupBy('type')
             ->get();
 
-        $colors = ['#3b82f6', '#22c55e', '#f59e0b', '#a855f7'];
+        $colors = ['#3b82f6', '#22c55e', '#f59e0b', '#a855f7', '#ec4899', '#8b5cf6'];
 
         return [
             'labels' => $repartition->pluck('type')->toArray(),
-            'values' => $repartition->pluck('total')->toArray(),
+            'values' => $repartition->pluck('total')->map(fn($val) => (float) $val)->toArray(),
             'colors' => array_slice($colors, 0, $repartition->count())
         ];
     }
@@ -396,40 +396,56 @@ class ReportsEntreprise extends Component
     public function getRepartitionDataProperty()
     {
         $entreprise = auth('entreprise')->user();
+
         $total = Facture::where('entreprise_id', $entreprise->id)
             ->where('status_paiement', 'PAID')
             ->sum('montant_ttc');
 
+        if ($total == 0) {
+            return [
+                [
+                    'label' => 'Aucune donnée',
+                    'percentage' => 100,
+                    'color' => '#64748b'
+                ]
+            ];
+        }
+
         $repartition = Facture::where('entreprise_id', $entreprise->id)
             ->where('status_paiement', 'PAID')
-            ->selectRaw('type, SUM(montant_ttc) as total')
+            ->selectRaw('COALESCE(type, "Autre") as type, SUM(montant_ttc) as total')
             ->groupBy('type')
             ->get();
 
-        $colors = ['#3b82f6', '#22c55e', '#f59e0b', '#a855f7'];
+        $colors = ['#3b82f6', '#22c55e', '#f59e0b', '#a855f7', '#ec4899', '#8b5cf6'];
 
         return $repartition->map(function($item, $index) use ($total, $colors) {
             return [
-                'label' => $item->type ?? 'Autre',
-                'percentage' => $total > 0 ? round(($item->total / $total) * 100, 1) : 0,
+                'label' => $item->type,
+                'percentage' => round(($item->total / $total) * 100, 1),
                 'color' => $colors[$index] ?? '#64748b'
             ];
         })->toArray();
-
     }
 
     public function updatedChartPeriod()
     {
-        $this->dispatch('updateCharts', [
-            'depenses' => $this->depensesChartData,
-            'repartition' => $this->repartitionChartData
-        ]);
+        $this->depensesChartData = $this->getDepensesChartDataProperty();
+        $this->repartitionChartData = $this->getRepartitionChartDataProperty();
+
+        $this->dispatch('updateCharts',
+            depenses: $this->depensesChartData,
+            repartition: $this->repartitionChartData
+        );
     }
 
-    public function render()
+   public function render()
     {
         $data = [
             'activeTab' => $this->activeTab,
+            'depensesChartData' => $this->depensesChartData,
+            'repartitionChartData' => $this->repartitionChartData,
+            'repartitionData' => $this->repartitionData,
         ];
 
         if ($this->activeTab === 'factures') {

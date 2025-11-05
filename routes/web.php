@@ -38,8 +38,8 @@ Route::get('connexion/entreprise', function() {
             Route::view('vehicules','Entreprise.dashboard.vehicules.index')->name('vehicules.index');
             Route::view('reports','Entreprise.dashboard.reports.index')->name('reports.index');
             Route::view('maintenance','Entreprise.dashboard.maintenance.index')->name('maintenance.index');
-            Route::view('team','Entreprise.dashboard.team.index')->name('team.index');
             Route::view('contrats','Entreprise.dashboard.contrats.index')->name('contrats.index');
+            Route::view('mon-profile','Entreprise.dashboard.profile.index')->name('profile.index');
 
         });
     });

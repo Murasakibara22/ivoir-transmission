@@ -163,9 +163,11 @@ Route::get('/deconnexion', function () {
 
     if(auth()->guard('entreprise')->check()){
         auth()->guard('entreprise')->logout();
+        session()->invalidate();
         return redirect('/');
     }
 
     auth()->logout();
+    session()->invalidate();
     return redirect('/');
 })->name('deconnexion');

@@ -32,11 +32,17 @@ class Entreprise extends Model implements Authenticatable
         'type',
         'status',
         'cgu',
+
+        'otp',
+        'otp_validated_at',
+        'otp_expired_at',
+        'changed_first_password',
     ];
 
     protected $casts = [
         'address' => 'array',
         'password' => 'hashed',
+        'changed_first_password' => 'boolean',
     ];
 
     protected $hidden = [

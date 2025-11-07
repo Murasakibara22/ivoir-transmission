@@ -20,6 +20,8 @@
     <meta name="theme-color" content="#2563eb">
     <link rel="apple-touch-icon" href="{{ asset('assets/images/icons/icon-192x192.png') }}">
 
+    @livewireStyles
+
     @stack('styles')
 </head>
 <body class="h-full bg-slate-900">
@@ -50,6 +52,10 @@
         </nav>
     </div>
 
+
+    {{-- @livewire('entreprise.change-password-modal') --}}
+
+    @livewireScripts
     <!-- Scripts -->
     <script src="{{ asset('entreprise/assets/js/dashboard.js') }}"></script>
     @stack('scripts')

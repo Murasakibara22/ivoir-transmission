@@ -409,98 +409,180 @@
     {{-- Modal --}}
 
 
-    <div class="modal fade bd-example-modal-lg" wire:ignore.self id="add_entreprise" tabindex="-1" role="dialog"
-        aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered">
+    <div wire:ignore.self class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="add_entreprise" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header bg-primary light">
-                    <h5 class="modal-title text-white">Nouveau Partenaire</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
+                {{-- Chargement --}}
+                <div wire:loading>
+                    <div class="overlay">
+                        <div class="spinner"></div>
+                    </div>
                 </div>
-                <form wire:submit.prevent="storeEntreprise">
-                    <div class="modal-body">
 
-                        <div class="basic-form">
-                            <div class="row">
+                <div class="modal-header p-3 bg-success">
+                    <h4 class="card-title text-white mb-0">
+                        <i class="ri-building-2-line me-2"></i>
+                        Ajouter une nouvelle entreprise
+                    </h4>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
-                                <div class="col-6 mx-auto">
-                                    @if($AsImage)
-                                        <img src="{{ $AsImage->temporaryUrl()}}" alt="" class="" style="width: 95%; height: 100%;">
-                                    @endif
-                                </div>
-
-                                <div class="mb-4 col-md-12">
-                                    <label class="text-label form-label text-black" for="validationCustomUsername">Logo
-                                         Partenaire<span class="text-danger">*</span></label>
-                                    <div class="input-group mb-3 col-md-6">
-                                        <input type="file" accept="jpg,png" class="form-control" wire:model='AsImage'
-                                            placeholder="Entrer un logo">
+                <div class="modal-body text-center p-4">
+                    <form wire:submit.prevent='storeEntreprise'>
+                        <div class="row">
+                            <!-- Logo de l'entreprise -->
+                            <div class="col-12 mb-4">
+                                <div class="text-center">
+                                    <img class="image icon-shape rounded-circle border border-3 border-light shadow-sm"
+                                        @if (!is_null($AsImage))
+                                            src="{{ $AsImage->temporaryUrl() }}"
+                                        @else
+                                            src="../Backend/images/default-company.png"
+                                        @endif
+                                        alt="Logo entreprise"
+                                        style="height: 120px; width: 120px; object-fit: cover"/>
+                                    <div class="mt-2">
+                                        <small class="text-muted">Logo de l'entreprise</small>
                                     </div>
-                                    @error('AsImage')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
                                 </div>
+                            </div>
 
-
-
-                                <div class="mb-3 col-md-12">
-                                    <label class="text-label form-label text-black" for="validationCustomUsername">Nom
-                                        du Partenaire<span class="text-danger">*</span></label>
-                                    <div class="input-group mb-3 col-md-6">
-                                        <input type="text" class="form-control" wire:model='name'
-                                            placeholder="Entrer une raison sociale">
-                                    </div>
+                            <!-- Informations de base -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label text-start fw-semibold">
+                                        <i class="ri-building-line me-1 text-primary"></i>
+                                        Nom de l'entreprise <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control @error('name') is-invalid @enderror"
+                                        wire:model='name'
+                                        placeholder="Entrer le nom de l'entreprise">
                                     @error('name')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="mb-3 col-md-12">
-                                    <label class="text-label form-label text-black" for="validationCustomUsername">Contact
-                                        du Partenaire<span class="text-danger">*</span></label>
-                                    <div class="input-group mb-3 col-md-6">
-                                        <input type="number" maxlength="10" min="1" class="form-control" wire:model='phone'
-                                            placeholder="Entrer un titre">
-                                    </div>
-                                    @error('phone')
-                                        <span class="text-danger">{{ $message }}</span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label text-start fw-semibold">
+                                        <i class="ri-image-line me-1 text-success"></i>
+                                        Logo <span class="text-muted">(Facultatif)</span>
+                                    </label>
+                                    <input type="file"
+                                        class="form-control @error('AsImage') is-invalid @enderror"
+                                        accept=".png, .jpg, .jpeg"
+                                        wire:model='AsImage'>
+                                    @error('AsImage')
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="mb-3 col-md-12">
-                                    <label class="text-label form-label text-black" for="validationCustomUsername">Email
-                                        <span class="text-danger">*</span></label>
-                                    <div class="input-group mb-3 col-md-6">
-                                        <input type="email" class="form-control" wire:model='email'
-                                            placeholder="Entrer un titre">
+                            </div>
+
+                            <!-- Contact -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label text-start fw-semibold">
+                                        <i class="ri-phone-line me-1 text-info"></i>
+                                        Téléphone <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">+225</span>
+                                        <input type="tel"
+                                            class="form-control @error('phone') is-invalid @enderror"
+                                            wire:model='phone'
+                                            placeholder="Ex: 0123456789">
+                                        @error('phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
+                                    <small class="text-muted">Format: 10 chiffres sans espaces</small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label text-start fw-semibold">
+                                        <i class="ri-mail-line me-1 text-warning"></i>
+                                        Email <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="email"
+                                        class="form-control @error('email') is-invalid @enderror"
+                                        wire:model='email'
+                                        placeholder="exemple@entreprise.com">
                                     @error('email')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                            </div>
 
-                                <div class="mb-3 col-md-12">
-                                    <label class="text-label form-label text-black" for="validationCustomUsername">Mot de passe
-                                        <span class="text-danger">*</span></label>
-                                    <div class="input-group mb-3 col-md-6">
-                                        <input type="password" class="form-control" wire:model='password'
-                                            placeholder="..........">
+                            <!-- Adresse -->
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="form-label text-start fw-semibold">
+                                        <i class="ri-map-pin-line me-1 text-secondary"></i>
+                                        Adresse <span class="text-muted">(Facultatif)</span>
+                                    </label>
+                                    <textarea class="form-control @error('address') is-invalid @enderror"
+                                            wire:model='address'
+                                            rows="2"
+                                            placeholder="Adresse complète de l'entreprise"></textarea>
+                                    @error('address')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Type d'entreprise -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label text-start fw-semibold">
+                                        <i class="ri-organization-chart me-1 text-purple"></i>
+                                        Type d'entreprise <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select @error('type') is-invalid @enderror"
+                                            wire:model='type'>
+                                        <option value="">Sélectionner un type</option>
+                                        <option value="FREE">Gratuit</option>
+                                        <option value="SARL">SARL</option>
+                                        <option value="SA">SA</option>
+                                        <option value="SAS">SAS</option>
+                                        <option value="SASU">SASU</option>
+                                        <option value="EI">Entreprise Individuelle</option>
+                                    </select>
+                                    @error('type')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Info mot de passe -->
+                            <div class="col-md-6">
+                                <div class="alert alert-info mb-3 d-flex align-items-center">
+                                    <i class="ri-information-line fs-4 me-2"></i>
+                                    <div class="text-start">
+                                        <small class="mb-0">
+                                            <strong>Mot de passe automatique</strong><br>
+                                            Un mot de passe sécurisé sera généré et envoyé par email
+                                        </small>
                                     </div>
-                                    @error('password')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
                                 </div>
-
-
                             </div>
                         </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger light">retour</button>
-                        <button type="submit" class="btn btn-primary">Enregistrer</button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">
+                                <i class="ri-close-line me-1"></i>
+                                Annuler
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="ri-save-line me-1"></i>
+                                Enregistrer
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

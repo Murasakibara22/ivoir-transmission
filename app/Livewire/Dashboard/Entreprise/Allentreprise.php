@@ -8,6 +8,8 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Livewire\UtilsSweetAlert;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EntrepriseCredentials;
 use Livewire\Attributes\On;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -20,7 +22,7 @@ class Allentreprise extends Component
 
     public $id_entreprise;
 
-    public $AsImage, $name, $address, $phone, $email, $password, $type, $status, $cgu;
+    public $AsImage, $name, $address, $phone, $email, $type, $status, $cgu;
 
     public $search = '';
     public $filter_type = '';
@@ -32,26 +34,25 @@ class Allentreprise extends Component
         'name' => 'required|string|max:255',
         'phone' => 'required|numeric|unique:entreprises,phone',
         'email' => 'required|email|max:255|unique:entreprises,email',
-        'password' => 'required|min:8',
+        'type' => 'required|string',
+        'address' => 'nullable|string|max:500',
     ];
 
     protected $messages = [
         'name.required' => 'Ce champ est obligatoire',
-        'name.string' => 'Ce champs doit être une chaine de caractères',
-        'name.max' => 'Ce champs ne doit pas dépasser 255 caractères',
+        'name.string' => 'Ce champs doit être une chaine de caractères',
+        'name.max' => 'Ce champs ne doit pas dépasser 255 caractères',
         'phone.required' => 'Le phone est obligatoire',
-        'phone.string' => 'Le phone doit être une chaine de caractères',
-        'phone.max' => 'Le phone ne doit pas dépasser 15 caractères',
-        'phone.integer' => 'Le phone doit être un namebre',
-        'phone.not_exists' => 'Le phone existe déja',
+        'phone.string' => 'Le phone doit être une chaine de caractères',
+        'phone.max' => 'Le phone ne doit pas dépasser 15 caractères',
+        'phone.integer' => 'Le phone doit être un nombre',
+        'phone.not_exists' => 'Le phone existe déja',
         'email.required' => 'L\'email est obligatoire',
-        'email.string' => 'L\'email doit être une chaine de caractères',
-        'email.max' => 'L\'email ne doit pas dépasser 255 caractères',
-        'email.email' => 'L\'email doit être une adresse email valide',
-        'email.not_exists' => 'L\'email existe déja',
-        'dial_code.required' => 'Le code de téléphone est obligatoire',
-        'password.required' => 'Le mot de passe est obligatoire',
-        'password.min' => 'Le mot de passe doit contenir au moins 8 caractères',
+        'email.string' => 'L\'email doit être une chaine de caractères',
+        'email.max' => 'L\'email ne doit pas dépasser 255 caractères',
+        'email.email' => 'L\'email doit être une adresse email valide',
+        'email.not_exists' => 'L\'email existe déja',
+        'type.required' => 'Le type est obligatoire',
     ];
 
      public function updated($propertyName)
@@ -75,8 +76,8 @@ class Allentreprise extends Component
                 $uploadedImage = Cloudinary::upload($img->getRealPath(),[
                     'folder' => 'ivoireTransmission',
                     'transformation' => [
-                        'width' => 150,
-                        'height' => 150,
+                        'width' => 400,
+                        'height' => 400,
                         'crop' => 'fill'
                     ]
                 ]);
@@ -90,20 +91,36 @@ class Allentreprise extends Component
         }
 
         if (preg_match('/^[\d+]+$/', $this->phone)) {
+            // Générer un mot de passe aléatoire de 10 caractères
+            $generatedPassword = \Illuminate\Support\Str::random(10);
+
             $entreprise = Entreprise::create([
                 'name' => $this->name,
                 'phone' => "+225".$this->phone,
                 'email' => $this->email,
                 'logo' => $photo,
-                'slug' => generateSlug('Entreprise' , $this->name),
-                'password' => Hash::make($this->password),
+                'type' => $this->type ?? 'FREE',
+                'address' => $this->address,
+                'status' => 'ACTIVATED',
+                'slug' => generateSlug('Entreprise', $this->name),
+                'password' => Hash::make($generatedPassword),
             ]);
+
+            // Envoyer l'email avec les credentials
+            try {
+                Mail::to($entreprise->email)->send(new EntrepriseCredentials($entreprise, $generatedPassword));
+                $this->send_event_at_sweetAlerte('Action réussie !!','L\'entreprise a été ajoutée avec succès. Un email avec les identifiants a été envoyé à '.$entreprise->email, 'success');
+            } catch (\Exception $e) {
+                // Log l'erreur mais continue quand même
+                \Log::error('Erreur envoi email credentials: ' . $e->getMessage());
+                $this->send_event_at_sweetAlerte('Entreprise créée','L\'entreprise a été créée mais l\'email n\'a pas pu être envoyé. Mot de passe: '.$generatedPassword, 'warning');
+            }
+
         } else {
-            $this->send_event_at_toast('Le contact doit être un nombre', 'error','bottom-right');
+            $this->send_event_at_toast('Le contact doit être un nombre', 'error','bottom-right');
             return;
         }
 
-        $this->send_event_at_sweetAlerte('Action reussie !!','Le partenaire a été ajouté avec succès', 'success');
         $this->reset();
     }
 
@@ -172,8 +189,8 @@ class Allentreprise extends Component
                 $uploadedImage = Cloudinary::upload($img->getRealPath(),[
                     'folder' => 'ivoireTransmission',
                     'transformation' => [
-                        'width' => 150,
-                        'height' => 150,
+                        'width' => 400,
+                        'height' => 400,
                         'crop' => 'fill'
                     ]
                 ]);
@@ -209,9 +226,6 @@ class Allentreprise extends Component
 
             $entreprise->update();
 
-            // Log (décommentez si vous utilisez ActivityLog)
-            // ActivityLog("Modification d'une entreprise : ".$entreprise->name, "Admin");
-
             $this->send_event_at_sweetAlerte("Validé", "Modification effectuée !!", "success");
             $this->closeModal_after_edit("edit_entreprise");
             $this->reset();
@@ -223,19 +237,13 @@ class Allentreprise extends Component
     }
 
     /**
-     * Fonction pour supprimer une entreprise (avec confirmation)
+     * Fonction pour confirmer la suppression d'une entreprise
      */
-    public function deleteEntreprise($id_entreprise)
+    public function confirmDelete(int $id_entreprise)
     {
         $entreprise = Entreprise::find($id_entreprise);
 
         if ($entreprise) {
-            // Vérifier s'il y a des dépendances (décommentez et adaptez selon vos relations)
-            // if ($entreprise->services()->exists() || $entreprise->users()->exists()) {
-            //     $this->send_event_at_sweet_alert_not_timer("Erreur", "L'entreprise sélectionnée ne peut pas être supprimée car elle contient des données liées !!", "error");
-            //     return;
-            // }
-
             $this->sweetAlert_confirm_options(
                 $entreprise,
                 "Suppression d'entreprise",
@@ -266,17 +274,6 @@ class Allentreprise extends Component
                 }
             }
 
-            // Log (décommentez si vous utilisez ActivityLog)
-            // ActivityLog("Suppression d'une entreprise : ".$entreprise->name, "Admin");
-
-            // Optionnel : Désactiver les entités liées au lieu de les supprimer
-            // Service::each(function ($service) use ($entreprise) {
-            //     if ($service->entreprise_id == $entreprise->id) {
-            //         $service->status = 'INACTIVATED';
-            //         $service->update();
-            //     }
-            // });
-
             $entreprise->delete();
 
             $this->send_event_at_toast("Suppression effectuée !!", "success", "bottom-end");
@@ -299,7 +296,7 @@ class Allentreprise extends Component
         $this->filter_type = '';
         $this->filter_status = '';
         $this->filter_date = '';
-        $this->resetPage(); // Réinitialise la pagination
+        $this->resetPage();
     }
 
     /**
@@ -307,13 +304,9 @@ class Allentreprise extends Component
      */
     public function exportData()
     {
-        // Logique d'export (Excel, CSV, PDF, etc.)
         $this->send_event_at_toast('Export en cours...', 'info', 'top-right');
     }
 
-    /**
-     * Méthode appelée quand une propriété est mise à jour (pour réinitialiser la pagination)
-     */
     public function updatedSearch()
     {
         $this->resetPage();
@@ -379,7 +372,7 @@ class Allentreprise extends Component
 
 
 
-    
+
     public function render()
     {
         // Construction de la requête avec filtres
@@ -413,18 +406,16 @@ class Allentreprise extends Component
         // Récupération des données avec pagination
         $list_entreprise = $query->orderBy('created_at', 'desc')->paginate(30);
 
-        // Calcul des statistiques (pour les cards)
+        // Calcul des statistiques
         $stats_all_entreprise = Entreprise::count();
-        $stats_all_commerciale = Entreprise::where('type', 'COMMERCIAL')->count(); // Adaptez selon votre logique
-        $stats_all_user = Entreprise::whereNotNull('email')->count(); // Ou selon votre logique utilisateur
+        $stats_all_commerciale = Entreprise::where('type', 'COMMERCIAL')->count();
+        $stats_all_user = Entreprise::whereNotNull('email')->count();
 
-        // Statistiques supplémentaires pour les nouvelles cards
-        $stats_vues_today = 1245; // Remplacez par votre logique de comptage des vues
+        $stats_vues_today = 1245;
         $stats_nouvelles_inscriptions = Entreprise::whereDate('created_at', today())->count();
         $stats_en_attente = Entreprise::where('status', 'PENDING')->count();
         $stats_problemes = Entreprise::where('status', 'SUSPENDED')->count();
 
-        // Statistiques de progression (pour les badges)
         $stats_progression_entreprise = $this->calculateProgression('entreprise');
         $stats_progression_commerciale = $this->calculateProgression('commerciale');
         $stats_progression_user = $this->calculateProgression('user');

@@ -118,11 +118,11 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.marque' ? 'active' : '' }}" href="{{ route('dashboard.marque') }}" role="button">
                         <i class="ri-user-line"></i> <span data-key="t-dashboards">Modèle / Marques</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ Route::currentRouteName() == 'dashboard.villes' ? 'active' : '' }}" href="{{ route('dashboard.villes') }}" role="button">

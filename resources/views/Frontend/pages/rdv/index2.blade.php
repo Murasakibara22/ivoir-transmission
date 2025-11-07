@@ -6,7 +6,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Dashboard | IVOIRE TRANSMISSION - @stack('title') </title>
+    <title>IVOIRE TRANSMISSION - @stack('title') </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Language" content="fr-FR">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -24,19 +24,19 @@
     <!-- Open Graph (Facebook, WhatsApp) -->
     <meta property="og:type" content="website">
     <meta property="og:locale" content="fr-FR">
-    <meta property="og:site_name" content="IVOIRE TRANSMISSION - Tableau de Bord">
-    <meta property="og:title" content="IVOIRE TRANSMISSION - Tableau de Bord Administratif">
+    <meta property="og:site_name" content="IVOIRE TRANSMISSION - Réservation">
+    <meta property="og:title" content="IVOIRE TRANSMISSION - Réservation Administratif">
     <meta property="og:description" content="Gérez facilement les ventes, les commandes et les stocks de votre boutique IVOIRE TRANSMISSION. Interface intuitive pour optimiser la gestion de votre commerce.">
-    <meta property="og:url" content="https://twinshair-ci.com/dashboard/home">
-    <meta property="og:image" content="https://twinshair-ci.com/public/frontend/assets/logo.jpeg">
+    <meta property="og:url" content="https://ivoiretransmission.com/">
+    <meta property="og:image" content="https://ivoiretransmission.com/public/logo.jpg">
     <meta property="og:image:alt" content="IVOIRE TRANSMISSION - Interface de Gestion">
     <meta property="og:country-name" content="Côte d'Ivoire">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="IVOIRE TRANSMISSION - Tableau de Bord">
-    <meta name="twitter:description" content="Accédez au tableau de bord de gestion de votre boutique IVOIRE TRANSMISSION et optimisez vos ventes en Côte d'Ivoire.">
-    <meta name="twitter:image" content="https://twinshair-ci.com/images/dashboard.jpg">
+    <meta name="twitter:title" content="IVOIRE TRANSMISSION - Réservation">
+    <meta name="twitter:description" content="Accédez au Réservation de gestion de votre boutique IVOIRE TRANSMISSION et optimisez vos ventes en Côte d'Ivoire.">
+    <meta name="twitter:image" content="https://ivoiretransmission.com/logo.jpg">
     <meta name="twitter:site" content="@IVOIRETRANSMISSION">
 
     <!-- Géolocalisation -->

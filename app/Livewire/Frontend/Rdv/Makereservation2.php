@@ -38,6 +38,12 @@ class Makereservation2 extends Component
     public $showCommune = false ;
     public $joursAutorises = [];
 
+    // Modal position
+    public $showPositionModal = false;
+    public $tempAddress = '';
+    public $tempLocation = null;
+    public $confirmedPosition = false;
+
     //Vehicule
     public $select_marque, $select_type , $detail_vehicule , $chassis, $year_vehicule, $infos_supp_vehicules;
     public $AsImages = [];
@@ -63,7 +69,7 @@ class Makereservation2 extends Component
         }
 
         $commune = Commune::where('nom',$this->select_commune)->first();
-        
+
         if (!$commune || !$commune->jours) {
             $this->joursAutorises = [];
             return;
@@ -80,7 +86,7 @@ class Makereservation2 extends Component
         // Mapping des jours français vers les jours anglais de Carbon
         $joursMapping = [
             'lundi' => 'Monday',
-            'mardi' => 'Tuesday', 
+            'mardi' => 'Tuesday',
             'mercredi' => 'Wednesday',
             'jeudi' => 'Thursday',
             'vendredi' => 'Friday',
@@ -116,6 +122,37 @@ class Makereservation2 extends Component
         }else{
             $this->montant_service = $commune->frais_service;
         }
+    }
+
+    public function openPositionModal($address, $location)
+    {
+        $this->tempAddress = $address;
+        $this->tempLocation = $location;
+        $this->showPositionModal = true;
+        $this->dispatch('openMapModal', location: $location);
+    }
+
+public function confirmPosition($finalLocation)
+{
+    $this->location = $finalLocation;
+    $this->adresse_livraison = $finalLocation['adresse_name'] . ' ' . $finalLocation['adresse'];
+    $this->confirmedPosition = true;
+    $this->showPositionModal = false;
+
+    // Reset des variables temporaires
+    $this->tempAddress = '';
+    $this->tempLocation = null;
+
+    $this->dispatch('positionConfirmed');
+}
+    public function closePositionModal()
+    {
+        $this->showPositionModal = false;
+        // RETIRER TOUTE CETTE PARTIE :
+        // if (!$this->confirmedPosition) {
+        //     $this->adresse_livraison = '';
+        //     $this->location = null;
+        // }
     }
 
    public function updatedCategorie()

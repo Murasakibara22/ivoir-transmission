@@ -39,18 +39,4 @@ window.Echo.private('user.'+ userIdd)
 });
 
 
-//Presence channel
-// window.Echo.join(`notification`)
-//     .here((users) => {
-//         console.log("Admins en ligne:", users[0].id);
-//         var beep = new Audio();
-//         beep.src ="../../new-message-sound.mp3";
-//         beep.play();
-//     })
-//     .joining((user) => {
-//         console.log("Admin connecté:", user);
-//     })
-//     .leaving((user) => {
-//         console.log("Admin déconnecté:", user);
 
-//     });

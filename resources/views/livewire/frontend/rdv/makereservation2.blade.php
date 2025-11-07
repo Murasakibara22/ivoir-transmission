@@ -1,4 +1,96 @@
 <div>
+    <!-- Modal de sélection de position -->
+    @if($showPositionModal)
+    <div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+         style="z-index: 9999; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px);"
+         wire:click="closePositionModal">
+
+        <div class="bg-white rounded-4 shadow-lg position-relative"
+             style="width: 90%; max-width: 800px; max-height: 90vh; overflow: hidden;"
+             wire:click.stop>
+
+            <!-- Header -->
+            <div class="p-4 border-bottom bg-light">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="mb-1 fw-bold text-dark">
+                            <i class="ri-map-pin-line text-warning me-2"></i>
+                            Sélectionnez votre position exacte
+                        </h5>
+                        <p class="text-muted small mb-0">
+                            👆 Cliquez sur la carte ou déplacez le marqueur pour définir votre position
+                        </p>
+                    </div>
+                    <button onclick="@this.call('closePositionModal')"
+                            class="btn btn-sm btn-light rounded-circle p-2"
+                            style="width: 35px; height: 35px;">
+                        <i class="ri-close-line fs-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Map Container -->
+            <div class="position-relative" style="height: 450px;">
+                <div id="map" style="width: 100%; height: 100%;"></div>
+
+                <!-- Overlay d'instructions -->
+                <div class="position-absolute top-0 start-0 m-3 bg-white rounded-3 shadow p-3" style="max-width: 280px; z-index: 1000;">
+                    <div class="d-flex align-items-start">
+                        <i class="ri-information-line text-primary fs-4 me-2"></i>
+                        <div>
+                            <p class="mb-1 fw-semibold small">Comment ça marche ?</p>
+                            <p class="text-muted small mb-0">Déplacez le marqueur rouge ou cliquez sur la carte pour indiquer votre position précise.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Indicateur de chargement -->
+                <div id="mapLoader" class="position-absolute top-50 start-50 translate-middle">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Chargement...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adresse sélectionnée -->
+            <div class="p-4 bg-light border-top border-bottom">
+                <label class="form-label small text-muted mb-2">Adresse sélectionnée :</label>
+                <div class="d-flex align-items-center bg-white p-3 rounded-3 border">
+                    <i class="ri-map-pin-2-fill text-danger fs-4 me-3"></i>
+                    <div class="flex-grow-1">
+                        <p class="mb-0 fw-medium" id="selectedAddress">{{ $tempAddress }}</p>
+                        <p class="mb-0 small text-muted" id="selectedCoords"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="p-4 d-flex gap-3">
+                <button onclick="@this.call('closePositionModal')"
+                        class="btn btn-light flex-fill">
+                    <i class="ri-arrow-left-line me-2"></i>
+                    Retour
+                </button>
+
+                <button type="button"
+                        id="useCurrentLocation"
+                        class="btn btn-outline-primary">
+                    <i class="ri-focus-3-line me-2"></i>
+                    Ma position actuelle
+                </button>
+
+                <button type="button"
+                        id="confirmPositionBtn"
+                        class="btn btn-primary flex-fill"
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <i class="ri-check-line me-2"></i>
+                    Confirmer cette position
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <div class="page-content">
         <div class="container-fluid">
 
@@ -549,59 +641,293 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwmz2CstWs-2hp_ygHYc527i7XBgIrNJg&libraries=places&callback=initMap" async></script>
 
 <script>
-    async function initMap() {
-        var input = document.getElementById('autocomplete');
-        const options = {
-            componentRestrictions: { country: "ci" },
+async function initMap() {
+    var input = document.getElementById('autocomplete');
+    const options = {
+        componentRestrictions: { country: "ci" },
+    };
+
+    var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    autocomplete.addListener('place_changed', function () {
+        var place = autocomplete.getPlace();
+
+        if (!place.geometry) {
+            alert("Aucune géométrie disponible pour ce lieu.");
+            return;
+        }
+
+        // Récupération des informations
+        var latitude = place.geometry.location.lat();
+        var longitude = place.geometry.location.lng();
+        var adresse_name = place.name;
+        var adresse_complete = place.formatted_address;
+
+        let commune = "";
+        place.address_components.forEach(component => {
+            if (component.types.includes("sublocality") || component.types.includes("sublocality_level_1")) {
+                commune = component.long_name;
+            }
+        });
+
+        // Si aucune commune trouvée
+        if (!commune) {
+           @this.set('select_commune', null)
+        }
+
+        // Création de l'objet JSON
+        var location = {
+            adresse: adresse_complete,
+            adresse_name: adresse_name,
+            latitude: latitude,
+            longitude: longitude
         };
 
-        var autocomplete = new google.maps.places.Autocomplete(input, options);
 
-        autocomplete.addListener('place_changed', function () {
-            var place = autocomplete.getPlace();
 
-            if (!place.geometry) {
-                alert("Aucune géométrie disponible pour ce lieu.");
-                return;
+        // Transfert temporaire vers Livewire et ouverture du modal
+        @this.set('adresse_livraison', adresse_name + ' ' + adresse_complete)
+        @this.set('select_commune', commune)
+
+        // Ouvrir le modal pour confirmation de position
+        @this.call('openPositionModal', adresse_name + ' ' + adresse_complete, location);
+    });
+}
+
+// Écouter la confirmation de position
+window.addEventListener('positionConfirmed', function() {
+    console.log('Position confirmée !');
+    const input = document.getElementById('autocomplete');
+    if (input) {
+        input.classList.add('border-success');
+        input.classList.add('border-3');
+        setTimeout(() => {
+            input.classList.remove('border-success');
+            input.classList.remove('border-3');
+        }, 2000);
+    }
+});
+</script>
+
+<!-- Script pour le modal de carte -->
+
+
+<script>
+let map;
+let marker;
+
+// Réinitialiser les variables à chaque ouverture
+window.addEventListener('openMapModal', function(event) {
+    // Reset complet
+    map = null;
+    marker = null;
+
+    setTimeout(() => {
+        initializeMap(event.detail.location);
+    }, 300);
+});
+
+function initializeMap(location) {
+    const mapLoader = document.getElementById('mapLoader');
+
+    // Position initiale (depuis l'adresse sélectionnée)
+    const initialPos = location ? {
+        lat: parseFloat(location.latitude),
+        lng: parseFloat(location.longitude)
+    } : { lat: 5.316667, lng: -4.033333 };
+
+    // Créer la carte
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: initialPos,
+        zoom: 16,
+        mapTypeControl: true,
+        streetViewControl: false,
+        fullscreenControl: true,
+        styles: [
+            {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [{ visibility: "on" }]
             }
+        ]
+    });
 
-            // Récupération des informations
-            var latitude = place.geometry.location.lat();
-            var longitude = place.geometry.location.lng();
-            var adresse_name = place.name;
-            var adresse_complete = place.formatted_address;
+    // Créer le marqueur draggable
+    marker = new google.maps.Marker({
+        position: initialPos,
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        icon: {
+            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+            scaledSize: new google.maps.Size(50, 50)
+        },
+        title: "Votre position"
+    });
 
+    // Masquer le loader
+    if (mapLoader) mapLoader.style.display = 'none';
 
-            let commune = "";
-            place.address_components.forEach(component => {
-                if (component.types.includes("sublocality") || component.types.includes("sublocality_level_1")) {
-                    commune = component.long_name;
-                }
-            });
+    // Mettre à jour l'adresse lors du déplacement du marqueur
+    google.maps.event.addListener(marker, 'dragend', function() {
+        updateAddressFromMarker(marker.getPosition());
+    });
 
-            // Si aucune commune trouvée
-            if (!commune) {
-               @this.set('select_commune', null)
+    // Permettre de cliquer sur la carte pour déplacer le marqueur
+    google.maps.event.addListener(map, 'click', function(event) {
+        marker.setPosition(event.latLng);
+        updateAddressFromMarker(event.latLng);
+    });
+
+    // Initialiser l'affichage de l'adresse
+    updateAddressFromMarker(marker.getPosition());
+
+    // Attacher les boutons APRÈS la création de la carte
+    attachModalButtons();
+}
+
+function updateAddressFromMarker(position) {
+    const geocoder = new google.maps.Geocoder();
+    const coordsDisplay = document.getElementById('selectedCoords');
+
+    // Gérer les deux types de position
+    let lat, lng;
+    if (typeof position.lat === 'function') {
+        lat = position.lat();
+        lng = position.lng();
+    } else {
+        lat = position.lat;
+        lng = position.lng;
+    }
+
+    if (coordsDisplay) {
+        coordsDisplay.textContent = `Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`;
+    }
+
+    // Géocodage inverse
+    geocoder.geocode({ location: { lat: lat, lng: lng } }, (results, status) => {
+        if (status === 'OK' && results[0]) {
+            const addressElement = document.getElementById('selectedAddress');
+            if (addressElement) {
+                addressElement.textContent = results[0].formatted_address;
             }
+        }
+    });
+}
 
-            // Création de l'objet JSON
-            var location = {
-                adresse: adresse_complete,
-                adresse_name: adresse_name,
-                latitude: latitude,
-                longitude: longitude
-            };
+function attachModalButtons() {
+    // Bouton "Ma position actuelle"
+    const useCurrentBtn = document.getElementById('useCurrentLocation');
+    if (useCurrentBtn) {
+        // Retirer ancien listener s'il existe
+        const newBtn = useCurrentBtn.cloneNode(true);
+        useCurrentBtn.parentNode.replaceChild(newBtn, useCurrentBtn);
 
-            console.log("Location:", location);
+        newBtn.addEventListener('click', function() {
+            if (navigator.geolocation) {
+                this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Localisation...';
+                this.disabled = true;
 
-            // Transfert vers Livewire
-            @this.set('adresse_livraison', adresse_name + ' ' + adresse_complete)
-            @this.set('location', location)
-            @this.set('select_commune', commune)
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
 
+                        if (map && marker) {
+                            map.setCenter(pos);
+                            map.setZoom(17);
+                            marker.setPosition(pos);
+                            updateAddressFromMarker(pos);
+                        }
+
+                        this.innerHTML = '<i class="ri-check-line me-2"></i>Position obtenue !';
+                        this.classList.add('btn-success');
+                        this.classList.remove('btn-outline-primary');
+
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="ri-focus-3-line me-2"></i>Ma position actuelle';
+                            this.classList.remove('btn-success');
+                            this.classList.add('btn-outline-primary');
+                            this.disabled = false;
+                        }, 2000);
+                    },
+                    (error) => {
+                        alert('Impossible d\'obtenir votre position. Veuillez autoriser la géolocalisation.');
+                        this.innerHTML = '<i class="ri-focus-3-line me-2"></i>Ma position actuelle';
+                        this.disabled = false;
+                    }
+                );
+            }
         });
     }
+
+    // Bouton "Confirmer"
+    const confirmBtn = document.getElementById('confirmPositionBtn');
+    if (confirmBtn) {
+        // Retirer ancien listener s'il existe
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
+        newConfirmBtn.addEventListener('click', function() {
+            if (!marker) return;
+
+            const position = marker.getPosition();
+            const geocoder = new google.maps.Geocoder();
+
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirmation...';
+            this.disabled = true;
+
+            geocoder.geocode({ location: position }, (results, status) => {
+                if (status === 'OK' && results[0]) {
+                    const finalLocation = {
+                        adresse: results[0].formatted_address,
+                        adresse_name: results[0].name || results[0].address_components[0].long_name,
+                        latitude: position.lat(),
+                        longitude: position.lng()
+                    };
+
+                    // Envoyer au composant Livewire
+                    @this.call('confirmPosition', finalLocation);
+                }
+            });
+        });
+    }
+}
 </script>
+
+
+<style>
+/* Styles pour le modal et la carte */
+#map {
+    border-radius: 0;
+}
+
+.gm-style-iw {
+    border-radius: 8px !important;
+}
+
+.gm-style-iw-d {
+    overflow: hidden !important;
+}
+
+/* Animation d'entrée du modal */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.position-fixed > div {
+    animation: modalFadeIn 0.3s ease-out;
+}
+</style>
 
 
 
@@ -632,7 +958,6 @@
     }
 
     function sendPhoneData() {
-        console.log(iti.getNumber());
         var phoneNumber = iti.getNumber();
         @this.set('contact_livraison',phoneNumber);
         @this.set('dialCode', iti.getSelectedCountryData().dialCode);

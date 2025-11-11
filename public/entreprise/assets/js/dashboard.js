@@ -45,30 +45,29 @@ class DashboardApp {
         // Notifications
         this.setupNotifications();
     }
+    
+setupMobileNavigation() {
+    const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
 
-    setupMobileNavigation() {
-        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+    mobileNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            // NE PAS empêcher le comportement par défaut - laisser le lien naviguer
+            
+            // Retirer active de tous les items
+            mobileNavItems.forEach(nav => nav.classList.remove('active'));
 
-        mobileNavItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
+            // Ajouter active à l'item cliqué
+            item.classList.add('active');
 
-                // Retirer active de tous les items
-                mobileNavItems.forEach(nav => nav.classList.remove('active'));
+            // Haptic feedback sur mobile
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
 
-                // Ajouter active à l'item cliqué
-                item.classList.add('active');
-
-                // Haptic feedback sur mobile
-                if (navigator.vibrate) {
-                    navigator.vibrate(50);
-                }
-
-                // Changer le contenu
-                this.switchDashboardView(item.dataset.view);
-            });
+            // Le lien href va gérer la navigation naturellement
         });
-    }
+    });
+}
 
     setupVehicleCards() {
         const vehicleCards = document.querySelectorAll('.card-vehicle');

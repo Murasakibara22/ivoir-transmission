@@ -28,28 +28,27 @@
     <div class="dashboard-container">
 
         <!-- Desktop Sidebar -->
-        <aside class="dashboard-sidebar hide-mobile fixed inset-y-0 left-0 z-50 w-64 bg-slate-800/90 backdrop-blur-xl border-r border-slate-700/50">
-            @include('Entreprise.partials.sidebar')
-        </aside>
+<aside class="dashboard-sidebar hide-mobile fixed inset-y-0 left-0 z-40 w-64 bg-slate-800/90 backdrop-blur-xl border-r border-slate-700/50">
+    @include('Entreprise.partials.sidebar')
+</aside>
 
-        <!-- Main Content -->
-        <div class="dashboard-main lg:ml-64">
-            <!-- Top Navigation -->
-            <header class="dashboard-header bg-slate-800/90 backdrop-blur-xl border-b border-slate-700/50 px-4 py-3 lg:px-6">
-                @include('Entreprise.partials.navbar')
-            </header>
+<!-- Main Content -->
+<div class="dashboard-main lg:ml-64">
+    <!-- Top Navigation -->
+    <header class="dashboard-header bg-slate-800/90 backdrop-blur-xl border-b border-slate-700/50 px-4 py-3 lg:px-6 relative z-30">
+        @include('Entreprise.partials.navbar')
+    </header>
 
+    <!-- Page Content -->
+    <main class="p-4 lg:p-6 relative z-10">
+        @yield('content')
+    </main>
+</div>
 
-            <!-- Page Content -->
-            <main class="p-4 lg:p-6">
-                @yield('content')
-            </main>
-        </div>
-
-        <!-- Mobile Bottom Navigation -->
-        <nav class="dashboard-sidebar show-mobile fixed bottom-0 inset-x-0 z-50 bg-slate-800/95 backdrop-blur-xl border-t border-slate-700/50">
-            @include('Entreprise.partials.mobile-nav')
-        </nav>
+<!-- Mobile Bottom Navigation -->
+<nav class="dashboard-sidebar show-mobile fixed bottom-0 inset-x-0 z-40 bg-slate-800/95 backdrop-blur-xl border-t border-slate-700/50">
+    @include('Entreprise.partials.mobile-nav')
+</nav>
     </div>
 
 

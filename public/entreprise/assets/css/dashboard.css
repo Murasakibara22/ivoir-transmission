@@ -102,7 +102,7 @@ body {
 /* Header avec z-index élevé pour les dropdowns */
 .dashboard-header {
   position: relative;
-  z-index: 60;
+  z-index: 30;
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   border-bottom: 1px solid var(--glass-border);
@@ -498,6 +498,17 @@ body {
 /* ========================================
    DROPDOWNS & MODALS
 ======================================== */
+
+[class*="modal"],
+    .modal,
+    .fixed[style*="z-index: 9999"] {
+        z-index: 9999 !important;
+    }
+    
+    /* Dropdowns de la navbar */
+    .dropdown-menu {
+        z-index: 1000 !important;
+    }
 
 .dropdown {
   position: relative;

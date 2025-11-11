@@ -334,7 +334,7 @@
 
     <!-- Modal Détails -->
     @if($showDetailModal && $selectedVehicule)
-        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" wire:click="closeModals">
+        <div class="fixed inset-0  flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" wire:click="closeModals"  style="z-index: 9999 !important; background-color: rgba(0,0,0,0.5);">
             <div class="bg-slate-800 rounded-2xl border border-slate-700 w-full max-w-4xl max-h-[90vh] overflow-y-auto" wire:click.stop>
                 <!-- Modal Header -->
                 <div class="sticky top-0 bg-slate-800 border-b border-slate-700 p-6 flex items-center justify-between z-10">

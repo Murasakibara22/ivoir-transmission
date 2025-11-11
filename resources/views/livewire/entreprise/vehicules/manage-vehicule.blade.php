@@ -1,7 +1,7 @@
 <div>
     <!-- Modal Add Vehicle - Livewire Version -->
     @if($showModal)
-    <div class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+    <div class="fixed inset-0  flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm " style="z-index: 9999; background-color: rgba(0,0,0,0.5);">
         <div class="bg-slate-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
 
 
@@ -350,7 +350,7 @@
 
     <!-- Modal Détails Véhicule -->
 @if($showDetailsModal && $selectedVehicule)
-<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+<div class="fixed inset-0 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"  style="z-index: 9999; background-color: rgba(0,0,0,0.5);">
     <div class="bg-slate-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div class="sticky top-0 bg-slate-800 border-b border-slate-700 p-6 z-10">
             <div class="flex items-center justify-between">

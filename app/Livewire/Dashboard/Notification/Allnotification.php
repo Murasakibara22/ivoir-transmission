@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Dashboard\Notification;
 
+use App\Models\Contrat;
 use Livewire\Component;
 use App\Models\Reservation;
 use Livewire\Attributes\On;
@@ -69,14 +70,27 @@ class Allnotification extends Component
 
     function viewReservation($notif)  {
 
-        $meta_data_id = NotificationAdmin::find($notif['id'])->meta_data_id;
-        // {{ route('admin.reservations.show', App\Models\Reservation::find($selected_notification->notif)->slug) }}
+        if($notif['meta_data_type'] == Reservation::class) {
+             $meta_data_id = NotificationAdmin::find($notif['id'])->meta_data_id;
+            // {{ route('admin.reservations.show', App\Models\Reservation::find($selected_notification->notif)->slug) }}
 
-        if($meta_data_id == null) {
-            return redirect()->route('dashboard.reservations.index');
+            if($meta_data_id == null) {
+                return redirect()->route('dashboard.reservations.index');
+            }
+
+            return redirect()->route('dashboard.reservations.show', Reservation::where('slug',$meta_data_id)->first()->slug);
         }
 
-        return redirect()->route('dashboard.reservations.show', Reservation::where('slug',$meta_data_id)->first()->slug);
+
+        if($notif['meta_data_type'] == Contrat::class) {
+             $meta_data_id = NotificationAdmin::find($notif['id'])->meta_data_id;
+            // {{ route('admin.reservations.show', App\Models\Reservation::find($selected_notification->notif)->slug) }}
+
+            if($meta_data_id == null) {
+                return redirect()->route('dashboard.notifications.index');
+            }
+            return redirect()->route('dashboard.contrats.show', Contrat::where('slug',$meta_data_id)->first()->slug);
+        }
     }
 
     public function render()

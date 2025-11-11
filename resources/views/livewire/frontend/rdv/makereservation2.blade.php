@@ -180,7 +180,7 @@
 
                                                 <div class="@if($showCommune) col-lg-6 @else col-lg-12 @endif">
                                                     <div class="mb-3">
-                                                        <label for="billinginfo-phone" class="form-label">Adresse <span class="text-danger">*</span> </label>
+                                                        <label for="billinginfo-phone" class="form-label">Situation géographique <span class="text-danger">*</span> </label>
                                                         <input type="text" class="form-control" wire:model.live="adresse_livraison" placeholder="Renseignez une adresse" autocomplete="false" id="autocomplete">
                                                     </div>
                                                     @error('adresse_livraison') <span class="text-danger">{{ $message }}</span> @enderror
@@ -394,7 +394,7 @@
                                             <div class="collapse show" id="paymentmethodCollapse">
                                                 <div class="card p-4 border shadow-none mb-0 mt-4">
                                                     <div class="row gy-3">
-                                                            <div class="col-lg-4">
+                                                            <div class="col-lg-6">
                                                                 <div class="mb-3">
                                                                     <label for="billinginfo-firstName" class="form-label">Nom & Prénoms <span class="text-muted">(FACULTATIF)</span> </label>
                                                                     <input type="text" wire:model="username" class="form-control" id="billinginfo-firstName" placeholder="Enter first name" value="">
@@ -402,7 +402,7 @@
                                                                 @error('username') <span class="text-danger">{{ $message }}</span> @enderror
                                                             </div>
 
-                                                            <div class="col-lg-4">
+                                                            <div class="col-lg-6">
                                                                 <div class="mb-3" wire:ignore>
                                                                     <label for="billinginfo-phone" class="form-label">Contact / Whatsapp <span class="text-danger">*</span> </label>
                                                                     <input type="number" class="form-control" maxlength="10" minlength="10"  wire:model="contact_livraison"  placeholder="Entrer votre numéro de téléphone...">
@@ -412,15 +412,7 @@
 
                                                             </div>
 
-                                                            <div class="col-lg-4">
-                                                                <div class="mb-3" wire:ignore>
-                                                                    <label for="billinginfo-phone" class="form-label">Email <span class="text-muted">( FACULTATIF )</span> </label>
-                                                                    <input type="text" class="form-control"  wire:model="email_livraison"  placeholder="Entrer votre adresse email...">
-                                                                    {{-- <p id="output">Please enter a valid number below</p>            --}}
-                                                                </div>
-                                                                @error('email_livraison') <span class="text-danger">{{ $message }}</span> @enderror
 
-                                                            </div>
 
                                                     </div>
                                                 </div>

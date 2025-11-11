@@ -340,6 +340,7 @@ public function confirmPosition($location)
             'subtitle' => $message,
             'type' => 'reservation',
             'meta_data_id' => $reservation->slug,
+            'meta_data_type' => Reservation::class,
         ]);
 
         User::where('role_id','!=',Role::where('libelle','Utilisateur')->first()->id)->get()->each(function ($user) use ($reservation,$message) {

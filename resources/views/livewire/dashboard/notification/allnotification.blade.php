@@ -161,7 +161,7 @@
 
                                 <br />
                                 <br />
-                                @if($selected_notification->meta_data_id)
+                                @if($selected_notification->meta_data_id && $selected_notification->meta_data_type == 'App\Models\Reservation')
                                 <a href="javascript:void(0);" wire:click="viewReservation({{ $selected_notification }})" class="link-success">voir la réservation</a>
                                 @endif
                             </p>

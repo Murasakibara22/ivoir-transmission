@@ -2,15 +2,22 @@
 
 namespace App\Livewire\Entreprise\Contrats;
 
+use App\Models\Role;
+use App\Models\User;
 use App\Models\Contrat;
 use Livewire\Component;
 use App\Models\Entretien;
+use App\Events\MessageSend;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
+
+use App\Mail\ContratConfirmed;
 use App\Livewire\UtilsSweetAlert;
+use App\Models\NotificationAdmin;
 use App\Models\HistoriqueEntretient;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ContratsEntreprise extends Component
 {
@@ -124,6 +131,35 @@ class ContratsEntreprise extends Component
         ]);
 
         $this->creerPremierEntretien($this->contratToConfirm);
+
+        // 📧 Envoi du mail à tous les Super Admins
+        $superAdmins = User::where('role_id', '!=', Role::where('libelle', 'Utilisateur')->first()->id)->get();
+        
+        foreach ($superAdmins as $admin) {
+            try {
+                Mail::to($admin->email)->send(new ContratConfirmed($this->contratToConfirm));
+            } catch (\Exception $e) {
+                \Log::error('Erreur envoi email contrat confirmé: ' . $e->getMessage());
+            }
+        }
+
+        // 🔔 Notification aux admins (comme pour les réservations)
+        $message = "L'entreprise " . $this->contratToConfirm->entreprise->name . 
+                " vient de confirmer le contrat '" . $this->contratToConfirm->libelle . 
+                "' pour " . $this->contratToConfirm->nombre_vehicules . " véhicules";
+        
+        NotificationAdmin::create([
+            'title' => 'Nouveau contrat confirmé',
+            'subtitle' => $message,
+            'type' => 'contrat',
+            'meta_data_id' => $this->contratToConfirm->slug,
+            'meta_data_type' => Contrat::class,
+        ]);
+
+        // 📡 Broadcast en temps réel aux admins
+        $superAdmins->each(function ($admin) use ($message) {
+            broadcast(new MessageSend($admin->id, $message, $this->contratToConfirm->slug));
+        });
 
         $this->closeConfirmModal();
         $this->send_event_at_toast('Contrat confirmé avec succès', 'success', 'top-end');

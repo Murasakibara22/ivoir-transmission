@@ -20,7 +20,8 @@ class NotificationAdmin extends Model
         'meta_data_id',
         'is_read',
         'is_received',
-        'type'
+        'type',
+        'meta_data_type',
     ];
 
 

@@ -53,7 +53,7 @@
     </div>
 
 
-    {{-- @livewire('entreprise.change-password-modal') --}}
+    @livewire('entreprise.change-password-modal')
 
     @livewireScripts
     <!-- Scripts -->

@@ -132,19 +132,22 @@ class Makereservation2 extends Component
         $this->dispatch('openMapModal', location: $location);
     }
 
-public function confirmPosition($finalLocation)
+protected $listeners = ['confirmPosition'];
+
+public function confirmPosition($location)
 {
-    $this->location = $finalLocation;
-    $this->adresse_livraison = $finalLocation['adresse_name'] . ' ' . $finalLocation['adresse'];
-    $this->confirmedPosition = true;
+    // Ton code de traitement ici
+    $this->adresse_livraison = $location['adresse'];
+    $this->latitude = $location['latitude'];
+    $this->longitude = $location['longitude'];
+
+    // Fermer le modal
     $this->showPositionModal = false;
 
-    // Reset des variables temporaires
-    $this->tempAddress = '';
-    $this->tempLocation = null;
-
+    // Émettre un événement de confirmation
     $this->dispatch('positionConfirmed');
 }
+
     public function closePositionModal()
     {
         $this->showPositionModal = false;

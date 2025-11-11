@@ -5,12 +5,12 @@
          style="z-index: 9999; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px);"
          wire:click="closePositionModal">
 
-        <div class="bg-white rounded-4 shadow-lg position-relative"
-             style="width: 90%; max-width: 800px; max-height: 90vh; overflow: hidden;"
-             wire:click.stop>
+        <div class="bg-white rounded-4 shadow-lg position-relative d-flex flex-column"
+            style="width: 90%; max-width: 800px; max-height: 90vh;"
+            wire:click.stop>
 
-            <!-- Header -->
-            <div class="p-4 border-bottom bg-light">
+            <!-- Header - FIXE -->
+            <div class="p-4 border-bottom bg-light flex-shrink-0">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
                         <h5 class="mb-1 fw-bold text-dark">
@@ -29,63 +29,69 @@
                 </div>
             </div>
 
-            <!-- Map Container -->
-            <div class="position-relative" style="height: 450px;">
-                <div id="map" style="width: 100%; height: 100%;"></div>
+            <!-- Contenu scrollable -->
+            <div class="flex-grow-1" style="overflow-y: auto; overflow-x: hidden;">
+                <!-- Map Container -->
+                <div class="position-relative" style="height: 450px; min-height: 300px;">
+                    <div id="map" style="width: 100%; height: 100%;"></div>
 
-                <!-- Overlay d'instructions -->
-                <div class="position-absolute top-0 start-0 m-3 bg-white rounded-3 shadow p-3" style="max-width: 280px; z-index: 1000;">
-                    <div class="d-flex align-items-start">
-                        <i class="ri-information-line text-primary fs-4 me-2"></i>
-                        <div>
-                            <p class="mb-1 fw-semibold small">Comment ça marche ?</p>
-                            <p class="text-muted small mb-0">Déplacez le marqueur rouge ou cliquez sur la carte pour indiquer votre position précise.</p>
+                    <!-- Overlay d'instructions -->
+                    <div class="position-absolute top-0 start-0 m-3 bg-white rounded-3 shadow p-3" style="max-width: 280px; z-index: 1000;">
+                        <div class="d-flex align-items-start">
+                            <i class="ri-information-line text-primary fs-4 me-2"></i>
+                            <div>
+                                <p class="mb-1 fw-semibold small">Comment ça marche ?</p>
+                                <p class="text-muted small mb-0">Déplacez le marqueur rouge ou cliquez sur la carte pour indiquer votre position précise.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Indicateur de chargement -->
+                    <div id="mapLoader" class="position-absolute top-50 start-50 translate-middle">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Chargement...</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Indicateur de chargement -->
-                <div id="mapLoader" class="position-absolute top-50 start-50 translate-middle">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Chargement...</span>
+                <!-- Adresse sélectionnée -->
+                <div class="p-4 bg-light border-top">
+                    <label class="form-label small text-muted mb-2">Adresse sélectionnée :</label>
+                    <div class="d-flex align-items-center bg-white p-3 rounded-3 border">
+                        <i class="ri-map-pin-2-fill text-danger fs-4 me-3"></i>
+                        <div class="flex-grow-1">
+                            <p class="mb-0 fw-medium" id="selectedAddress">{{ $tempAddress }}</p>
+                            <p class="mb-0 small text-muted" id="selectedCoords"></p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Adresse sélectionnée -->
-            <div class="p-4 bg-light border-top border-bottom">
-                <label class="form-label small text-muted mb-2">Adresse sélectionnée :</label>
-                <div class="d-flex align-items-center bg-white p-3 rounded-3 border">
-                    <i class="ri-map-pin-2-fill text-danger fs-4 me-3"></i>
-                    <div class="flex-grow-1">
-                        <p class="mb-0 fw-medium" id="selectedAddress">{{ $tempAddress }}</p>
-                        <p class="mb-0 small text-muted" id="selectedCoords"></p>
-                    </div>
+            <!-- Footer Actions - FIXE -->
+            <div class="p-4 border-top bg-white flex-shrink-0">
+                <div class="d-flex flex-column flex-sm-row gap-2 gap-sm-3">
+                    <button onclick="@this.call('closePositionModal')"
+                            class="btn btn-light order-3 order-sm-1">
+                        <i class="ri-arrow-left-line me-2"></i>
+                        Retour
+                    </button>
+
+                    <button type="button"
+                            id="useCurrentLocation"
+                            class="btn btn-outline-primary order-2 order-sm-2">
+                        <i class="ri-focus-3-line me-2"></i>
+                        <span class="d-none d-sm-inline">Ma position actuelle</span>
+                        <span class="d-inline d-sm-none">Ma position</span>
+                    </button>
+
+                    <button type="button"
+                            id="confirmPositionBtn"
+                            class="btn btn-primary flex-sm-fill order-1 order-sm-3"
+                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <i class="ri-check-line me-2"></i>
+                        Confirmer cette position
+                    </button>
                 </div>
-            </div>
-
-            <!-- Footer Actions -->
-            <div class="p-4 d-flex gap-3">
-                <button onclick="@this.call('closePositionModal')"
-                        class="btn btn-light flex-fill">
-                    <i class="ri-arrow-left-line me-2"></i>
-                    Retour
-                </button>
-
-                <button type="button"
-                        id="useCurrentLocation"
-                        class="btn btn-outline-primary">
-                    <i class="ri-focus-3-line me-2"></i>
-                    Ma position actuelle
-                </button>
-
-                <button type="button"
-                        id="confirmPositionBtn"
-                        class="btn btn-primary flex-fill"
-                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                    <i class="ri-check-line me-2"></i>
-                    Confirmer cette position
-                </button>
             </div>
         </div>
     </div>
@@ -815,21 +821,24 @@ function updateAddressFromMarker(position) {
     });
 }
 
+
 function attachModalButtons() {
     // Bouton "Ma position actuelle"
     const useCurrentBtn = document.getElementById('useCurrentLocation');
+
     if (useCurrentBtn) {
-        // Retirer ancien listener s'il existe
         const newBtn = useCurrentBtn.cloneNode(true);
         useCurrentBtn.parentNode.replaceChild(newBtn, useCurrentBtn);
 
         newBtn.addEventListener('click', function() {
+            const button = this;
+
             if (navigator.geolocation) {
-                this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Localisation...';
-                this.disabled = true;
+                button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Localisation...';
+                button.disabled = true;
 
                 navigator.geolocation.getCurrentPosition(
-                    (position) => {
+                    function(position) {
                         const pos = {
                             lat: position.coords.latitude,
                             lng: position.coords.longitude
@@ -842,31 +851,52 @@ function attachModalButtons() {
                             updateAddressFromMarker(pos);
                         }
 
-                        this.innerHTML = '<i class="ri-check-line me-2"></i>Position obtenue !';
-                        this.classList.add('btn-success');
-                        this.classList.remove('btn-outline-primary');
+                        button.innerHTML = '<i class="ri-check-line me-2"></i><span class="d-none d-sm-inline">Position obtenue !</span><span class="d-inline d-sm-none">OK !</span>';
+                        button.classList.add('btn-success');
+                        button.classList.remove('btn-outline-primary');
 
-                        setTimeout(() => {
-                            this.innerHTML = '<i class="ri-focus-3-line me-2"></i>Ma position actuelle';
-                            this.classList.remove('btn-success');
-                            this.classList.add('btn-outline-primary');
-                            this.disabled = false;
+                        setTimeout(function() {
+                            button.innerHTML = '<i class="ri-focus-3-line me-2"></i><span class="d-none d-sm-inline">Ma position actuelle</span><span class="d-inline d-sm-none">Ma position</span>';
+                            button.classList.remove('btn-success');
+                            button.classList.add('btn-outline-primary');
+                            button.disabled = false;
                         }, 2000);
                     },
-                    (error) => {
-                        alert('Impossible d\'obtenir votre position. Veuillez autoriser la géolocalisation.');
-                        this.innerHTML = '<i class="ri-focus-3-line me-2"></i>Ma position actuelle';
-                        this.disabled = false;
+                    function(error) {
+                        let errorMsg = 'Impossible d\'obtenir votre position.';
+
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMsg = 'Vous avez refusé l\'accès à votre position. Veuillez autoriser la géolocalisation dans les paramètres de votre navigateur.';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMsg = 'Votre position est actuellement indisponible.';
+                                break;
+                            case error.TIMEOUT:
+                                errorMsg = 'La demande de géolocalisation a expiré. Veuillez réessayer.';
+                                break;
+                        }
+
+                        alert(errorMsg);
+                        button.innerHTML = '<i class="ri-focus-3-line me-2"></i><span class="d-none d-sm-inline">Ma position actuelle</span><span class="d-inline d-sm-none">Ma position</span>';
+                        button.disabled = false;
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
                     }
                 );
+            } else {
+                alert('La géolocalisation n\'est pas supportée par votre navigateur.');
             }
         });
     }
 
     // Bouton "Confirmer"
     const confirmBtn = document.getElementById('confirmPositionBtn');
+
     if (confirmBtn) {
-        // Retirer ancien listener s'il existe
         const newConfirmBtn = confirmBtn.cloneNode(true);
         confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
 
@@ -875,11 +905,12 @@ function attachModalButtons() {
 
             const position = marker.getPosition();
             const geocoder = new google.maps.Geocoder();
+            const button = this;
 
-            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirmation...';
-            this.disabled = true;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirmation...';
+            button.disabled = true;
 
-            geocoder.geocode({ location: position }, (results, status) => {
+            geocoder.geocode({ location: position }, function(results, status) {
                 if (status === 'OK' && results[0]) {
                     const finalLocation = {
                         adresse: results[0].formatted_address,
@@ -888,8 +919,15 @@ function attachModalButtons() {
                         longitude: position.lng()
                     };
 
-                    // Envoyer au composant Livewire
+                    // Envoyer au composant Livewire - MÉTHODE CORRIGÉE
                     @this.call('confirmPosition', finalLocation);
+
+                    // Ou si emit ne marche pas, utilise cette alternative :
+                    // window.livewire.find('{{ $_instance->getId() }}').call('confirmPosition', finalLocation);
+                } else {
+                    alert('Erreur lors de la confirmation de la position. Veuillez réessayer.');
+                    button.innerHTML = '<i class="ri-check-line me-2"></i>Confirmer cette position';
+                    button.disabled = false;
                 }
             });
         });

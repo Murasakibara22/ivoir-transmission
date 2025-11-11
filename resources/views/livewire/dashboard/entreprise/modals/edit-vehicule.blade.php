@@ -150,6 +150,92 @@
                                    min="0"
                                    placeholder="Ex: 50000">
                         </div>
+
+
+
+
+                        <!-- Section Photos du véhicule -->
+<div class="col-12 mt-3 mb-3">
+    <h6 class="text-warning mb-3">
+        <i class="ri-image-line me-1"></i>Photos du véhicule
+    </h6>
+</div>
+
+<div class="col-12 mb-3">
+    <!-- Images existantes -->
+    @if(!empty($existingImages))
+        <label class="form-label">Images actuelles</label>
+        <div class="row g-3 mb-3">
+            @foreach($existingImages as $index => $imagePath)
+                <div class="col-md-3" wire:key="existing-image-{{ $index }}">
+                    <div class="position-relative">
+                        <img src="{{ $imagePath }}" 
+                             class="img-fluid rounded-3 border" 
+                             style="height: 150px; width: 100%; object-fit: cover;">
+                        <button type="button" 
+                                wire:click="removeExistingImage({{ $index }})"
+                                class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle"
+                                style="width: 30px; height: 30px; padding: 0;">
+                            <i class="ri-close-line"></i>
+                        </button>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+    
+    <!-- Zone d'ajout de nouvelles images -->
+    <label class="form-label">Ajouter de nouvelles photos</label>
+    <div class="border border-2 border-dashed rounded-3 p-4 text-center" 
+         style="background: #fff8e1; cursor: pointer;"
+         onclick="document.getElementById('editVehiculeImageInput').click()">
+        <i class="ri-upload-cloud-2-line fs-1 text-warning mb-2 d-block"></i>
+        <p class="mb-2 fw-medium">Ajouter plus de photos</p>
+        <p class="text-muted small mb-0">Formats acceptés: JPG, PNG (Max 2MB par image)</p>
+        <input type="file" 
+               id="editVehiculeImageInput"
+               wire:model="vehicule_images" 
+               accept="image/*" 
+               multiple 
+               class="d-none">
+    </div>
+    
+    <!-- Indicateur de chargement -->
+    <div wire:loading wire:target="vehicule_images" class="mt-2">
+        <div class="alert alert-info mb-0">
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Chargement des images en cours...
+        </div>
+    </div>
+    
+    @error('vehicule_images.*') 
+        <div class="text-danger small mt-2">{{ $message }}</div> 
+    @enderror
+    
+    <!-- Prévisualisation des nouvelles images -->
+    @if(!empty($vehicule_images))
+        <div class="row g-3 mt-2">
+            @foreach($vehicule_images as $index => $image)
+                <div class="col-md-3" wire:key="new-image-{{ $index }}">
+                    <div class="position-relative">
+                        <img src="{{ $image->temporaryUrl() }}" 
+                             class="img-fluid rounded-3 border" 
+                             style="height: 150px; width: 100%; object-fit: cover;">
+                        <button type="button" 
+                                wire:click="removeNewImage({{ $index }})"
+                                class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle"
+                                style="width: 30px; height: 30px; padding: 0;">
+                            <i class="ri-close-line"></i>
+                        </button>
+                        <div class="badge bg-success position-absolute bottom-0 start-0 m-2">
+                            Nouveau
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+</div>
                     </div>
                 </div>
                 <div class="modal-footer">

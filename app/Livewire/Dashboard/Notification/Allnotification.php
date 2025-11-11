@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Notification;
 
 use Livewire\Component;
+use App\Models\Reservation;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Locked;
@@ -63,6 +64,19 @@ class Allnotification extends Component
         }
         $notification->delete();
         $this->send_event_at_toast('notification supprimé avec succès', 'success', 'top-right');
+    }
+
+
+    function viewReservation($notif)  {
+
+        $meta_data_id = NotificationAdmin::find($notif['id'])->meta_data_id;
+        // {{ route('admin.reservations.show', App\Models\Reservation::find($selected_notification->notif)->slug) }}
+
+        if($meta_data_id == null) {
+            return redirect()->route('dashboard.reservations.index');
+        }
+
+        return redirect()->route('dashboard.reservations.show', Reservation::where('slug',$meta_data_id)->first()->slug);
     }
 
     public function render()

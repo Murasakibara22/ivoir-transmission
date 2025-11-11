@@ -117,7 +117,7 @@ Route::group(['middleware' => 'auth'], function () {
                     return redirect()->back();
                 }
 
-                return view('Dashboard.pages.reservation.show', compact('reservation'));
+                return view('Dashboard.pages.Reservation.show', compact('reservation'));
              })->name('reservations.show');
              Route::get('reservations/invoice/{slug}',  function ($slug) {
 

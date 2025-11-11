@@ -353,7 +353,7 @@
 
 
                                                                     <li class="list-inline-item"  title="Delete">
-                                                                        <a class="remove-item-btn" href="javascript:void(0);" wire:click="deleteEntreprise({{ $item->id }})">
+                                                                        <a class="remove-item-btn" href="javascript:void(0);" wire:click="confirmDelete({{ $item->id }})">
                                                                             <i class="ri-delete-bin-fill align-bottom text-danger"></i>
                                                                         </a>
                                                                     </li>

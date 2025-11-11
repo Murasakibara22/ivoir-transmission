@@ -64,6 +64,7 @@
         </div>
     </div>
 
+    @stack('scripts')
      @livewireScripts
     <script src="{{ asset('entreprise/assets/js/auth.js') }}" type="text/javascript"> </script>
 </body>

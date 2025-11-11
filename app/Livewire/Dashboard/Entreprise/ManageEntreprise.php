@@ -15,6 +15,8 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Livewire\UtilsSweetAlert;
 use App\Models\HistoriqueEntretient;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+
 
 
 class ManageEntreprise extends Component
@@ -62,6 +64,10 @@ class ManageEntreprise extends Component
     public $vehicule_couleur;
     public $vehicule_kilometrage_actuel;
 
+    public $vehicule_images = [];
+    public $existingImages = [];
+    public $imagesToDelete = [];
+
     // Contrat
     public $selectedContrat = null;
     public $contrat_libelle;
@@ -77,6 +83,8 @@ class ManageEntreprise extends Component
     public $selectedEntretien = null;
     public $entretien_cout_final;
     public $entretien_commentaire;
+
+
 
     //Factures
     public $facture_id;
@@ -206,6 +214,33 @@ class ManageEntreprise extends Component
             'vehicule_marque' => 'required|string',
         ]);
 
+        $uploadedImages = [];
+        if (!empty($this->vehicule_images)) {
+                foreach ($this->vehicule_images as $image) {
+                    $img = $image;
+                    $messi = md5($img->getClientOriginalExtension().time().$img).".".$img->getClientOriginalExtension();
+
+                    $uploadedImage = Cloudinary::upload($img->getRealPath(),[
+                        'folder' => 'ivoireTransmission',
+                        'transformation' => [
+                            'width' => 850,
+                            'height' => 638,
+                            'crop' => 'fill'
+                        ]
+                    ]);
+
+                    $publicId = $uploadedImage->getPublicId();
+
+                    $imageUrl = Cloudinary::getUrl($publicId);
+
+                    $uploadedImages[] = $imageUrl;
+                }
+            }
+
+            // Fusionner avec les images existantes
+            $allImages = $uploadedImages;
+
+
         $this->entreprise->vehicules()->create([
             'libelle' => $this->vehicule_libelle,
             'matricule' => $this->vehicule_matricule,
@@ -219,7 +254,9 @@ class ManageEntreprise extends Component
             'kilometrage_actuel' => $this->vehicule_kilometrage_actuel ?? 0,
             'slug' => Str::random(10) . uniqid(),
             'status' => 'ACTIVATED',
+            'images' => !empty($allImages) ? json_encode($allImages) : null,
         ]);
+
 
         $this->closeAddVehiculeModal();
         $this->send_event_at_toast('Véhicule ajouté avec succès!', 'success', 'top-right');
@@ -239,6 +276,10 @@ class ManageEntreprise extends Component
         $this->vehicule_carburant = $this->selectedVehicule->carburant;
         $this->vehicule_couleur = $this->selectedVehicule->couleur;
         $this->vehicule_kilometrage_actuel = $this->selectedVehicule->kilometrage_actuel;
+
+        $this->existingImages = json_decode($this->selectedVehicule->images, true) ?? [];
+        $this->vehicule_images = [];
+        $this->imagesToDelete = [];
 
         $this->showEditVehiculeModal = true;
     }
@@ -264,6 +305,48 @@ class ManageEntreprise extends Component
             'couleur' => $this->vehicule_couleur,
             'kilometrage_actuel' => $this->vehicule_kilometrage_actuel,
         ]);
+
+         $currentImages = $this->selectedVehicule->images ? json_decode($this->selectedVehicule->images, true) : [];
+
+        // Supprimer les images marquées pour suppression
+        foreach ($this->imagesToDelete as $imageToDelete) {
+            if (($key = array_search($imageToDelete, $currentImages)) !== false) {
+                Cloudinary::destroy($imageToDelete);
+                unset($currentImages[$key]);
+            }
+        }
+
+        $uploadedImages = [];
+        // Ajouter les nouvelles images
+        if (!empty($this->vehicule_images)) {
+            foreach ($this->vehicule_images as $image) {
+                $img = $image;
+                    $messi = md5($img->getClientOriginalExtension().time().$img).".".$img->getClientOriginalExtension();
+
+                    $uploadedImage = Cloudinary::upload($img->getRealPath(),[
+                        'folder' => 'ivoireTransmission',
+                        'transformation' => [
+                            'width' => 850,
+                            'height' => 638,
+                            'crop' => 'fill'
+                        ]
+                    ]);
+
+                    $publicId = $uploadedImage->getPublicId();
+
+                    $imageUrl = Cloudinary::getUrl($publicId);
+
+                    $uploadedImages[] = $imageUrl;
+            }
+        }
+
+        $allImages = array_merge($currentImages, $uploadedImages);
+
+        $this->selectedVehicule->update([
+            'images' => !empty($allImages) ? json_encode($allImages) : null,
+        ]);
+
+
 
         $this->showEditVehiculeModal = false;
         $this->send_event_at_toast('Véhicule mis à jour avec succès!', 'success', 'top-right');
@@ -294,11 +377,39 @@ class ManageEntreprise extends Component
         $this->vehicule_type = '';
         $this->vehicule_carburant = '';
         $this->vehicule_couleur = '';
+         $this->vehicule_images = [];
+        $this->existingImages = [];
+        $this->imagesToDelete = [];
         $this->vehicule_kilometrage_actuel = 0;
         $this->selectedVehicule = null;
     }
 
     // ==================== CONTRATS ====================
+
+
+    public function updatedVehiculeImages()
+{
+    $this->validate([
+        'vehicule_images.*' => 'image|max:2048', // 2MB Max
+    ]);
+}
+
+public function removeExistingImage($index)
+{
+    if (isset($this->existingImages[$index])) {
+        $this->imagesToDelete[] = $this->existingImages[$index];
+        unset($this->existingImages[$index]);
+        $this->existingImages = array_values($this->existingImages);
+    }
+}
+
+public function removeNewImage($index)
+{
+    if (isset($this->vehicule_images[$index])) {
+        unset($this->vehicule_images[$index]);
+        $this->vehicule_images = array_values($this->vehicule_images);
+    }
+}
 
     public function getContratsProperty()
     {

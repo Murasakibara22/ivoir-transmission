@@ -132,7 +132,7 @@ class EntrepriseProfile extends Component
             $this->send_event_at_sweetAlerte('Logo mis à jour avec succès !', 'Votre logo a bien été mis à jour', 'success');
 
         } catch (\Exception $e) {
-            $this->error('Erreur lors de l\'upload du logo : ' . $e->getMessage());
+           $this->send_event_at_sweetAlerte('Erreur lors de l\'upload du logo ', $e->getMessage(), 'error');
         }
     }
 

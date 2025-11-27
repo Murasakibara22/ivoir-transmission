@@ -341,7 +341,11 @@
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar-sm bg-light rounded p-1 me-2">
-                                                            <i class="ri-car-line fs-20 text-primary"></i>
+                                                            @if($vehicule->images && count(json_decode($vehicule->images)) > 0)
+                                                                <img src="{{ json_decode($vehicule->images)[0] }}" alt="Véhicule" class="img-fluid d-block">
+                                                            @else
+                                                                <i class="ri-car-line fs-20 text-primary"></i>
+                                                            @endif
                                                         </div>
                                                         <div>
                                                             <h6 class="mb-0">{{ $vehicule->libelle }}</h6>

@@ -230,12 +230,21 @@
                                             @foreach($list_paiements as $paiement)
                                                 <tr>
                                                     <td class="id"><a href="javascript:void(0);" onclick="ViewInvoice(this);" data-id="25000351" class="fw-medium link-primary">#{{ Illuminate\Support\Str::limit($paiement->reference, 10) }}</a></td>
+                                                    @if($paiement->model_type == 'App\Models\Reservation')
                                                     <td class="customer_name">
                                                         <div class="d-flex align-items-center">
-                                                            <img src="{{ $paiement->user()->first()->photo_url ?? 'https://ui-avatars.com/api/?name=' . $paiement->user()->first()?->username }}" alt="" class="avatar-xs rounded-circle me-2">{{ $paiement->user()->first()?->username }}
+                                                                <img src="{{ $paiement->user()->first()->photo_url ?? 'https://ui-avatars.com/api/?name=' . $paiement->user()->first()?->username }}" alt="" class="avatar-xs rounded-circle me-2">{{ $paiement->user()->first()?->username }}
                                                         </div>
                                                     </td>
                                                     <td class="email">{{ $paiement->user()->first()?->phone }}</td>
+                                                    @elseif($paiement->model_type == 'App\Models\Facture')
+                                                    <td class="customer_name">
+                                                        <div class="d-flex align-items-center">
+                                                                <img src="{{ $paiement->entreprise()->first()->logo ?? 'https://ui-avatars.com/api/?name=' . $paiement->entreprise()->first()?->name }}" alt="" class="avatar-xs rounded-circle me-2">{{ $paiement->entreprise()->first()?->name }}
+                                                        </div>
+                                                    </td>
+                                                    <td class="email">{{ $paiement->entreprise()->first()?->phone }}</td>
+                                                    @endif
                                                     <td class="date">{{ date('d M, Y', strtotime($paiement->created_at)) }}</td>
                                                     <td class="invoice_amount">{{ number_format($paiement->montant, 0, ',', '.') }} fcfa</td>
                                                     <td class="payment">{{ $paiement->methode }}</td>

@@ -361,10 +361,10 @@
                                         <div>
 
                                             <div>
-                                                <h5 class="mb-1 mt-3 text-primary">Moyens de paiements</h5>
+                                                <h5 class="mb-1 mt-3 text-primary">Mode de paiements</h5>
                                             </div>
 
-                                            <div class="row g-4">
+                                            {{-- <div class="row g-4">
 
                                                 <div class="col-lg-6 col-sm-6">
                                                     <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse" aria-expanded="true" aria-controls="paymentmethodCollapse">
@@ -389,7 +389,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             <div class="collapse show" id="paymentmethodCollapse">
                                                 <div class="card p-4 border shadow-none mb-0 mt-4">
@@ -404,7 +404,7 @@
 
                                                             <div class="col-lg-6">
                                                                 <div class="mb-3" wire:ignore>
-                                                                    <label for="billinginfo-phone" class="form-label">Contact / Whatsapp <span class="text-danger">*</span> </label>
+                                                                    <label for="billinginfo-phone" class="form-label">numéro de paiements <span class="text-danger">*</span> </label>
                                                                     <input type="number" class="form-control" maxlength="10" minlength="10"  wire:model="contact_livraison"  placeholder="Entrer votre numéro de téléphone...">
                                                                     {{-- <p id="output">Please enter a valid number below</p>            --}}
                                                                 </div>
@@ -417,7 +417,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="text-success mt-2 fst-italic">
-                                                    <i data-feather="lock" class="text-success icon-xs"></i> Votre transaction est sécurisée avec le cryptage SSL
+                                                    <i data-feather="lock" class="text-success icon-xs"></i> Votre transaction est sécurisée et cryptée.
                                                 </div>
                                             </div>
 

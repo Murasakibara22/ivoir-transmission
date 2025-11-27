@@ -135,11 +135,12 @@ class ManageEntreprise extends Component
 
     public function updateEntrepriseInfo()
     {
+
         $this->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:entreprises,email,' . $this->entrepriseId,
-            'phone' => 'required|string',
-            'address' => 'nullable|array',
+            'phone' => 'required',
+            'address' => 'nullable',
             'type' => 'nullable|string',
             'newLogo' => 'nullable|image|max:2048',
         ]);

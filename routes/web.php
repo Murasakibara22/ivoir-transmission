@@ -29,6 +29,8 @@ Route::get('connexion/entreprise', function() {
     return view('Entreprise.auth.login');
 })->name('login.entreprise');
 
+Route::view('success-transaction', 'Frontend.pages.transaction-success')->name('success-transaction');
+
 
 
     Route::group(['middleware' => 'verifyEntreprise'], function () {

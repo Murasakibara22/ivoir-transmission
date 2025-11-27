@@ -9,5 +9,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::get('webhook/adjeminpay', [PaymentController::class, 'webhookFunc']);
-Route::post('webhook/adjeminpay', [PaymentController::class, 'webhookFunc']);
+Route::get('webhook/ivoire-transmission', [PaymentController::class, 'webhookFunc']);
+Route::post('webhook/ivoire-transmission', [PaymentController::class, 'webhookFunc']);

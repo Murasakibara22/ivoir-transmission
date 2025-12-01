@@ -1,15 +1,16 @@
 <div>
-    <!-- Modal de sélection de position -->
+    {{-- ========================================
+        MODAL POSITION GPS
+    ======================================== --}}
     @if($showPositionModal)
     <div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
          style="z-index: 9999; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px);"
          wire:click="closePositionModal">
 
         <div class="bg-white rounded-4 shadow-lg position-relative d-flex flex-column"
-            style="width: 90%; max-width: 800px; max-height: 90vh;"
-            wire:click.stop>
+             style="width: 90%; max-width: 800px; max-height: 90vh;"
+             wire:click.stop>
 
-            <!-- Header - FIXE -->
             <div class="p-4 border-bottom bg-light flex-shrink-0">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
@@ -18,7 +19,7 @@
                             Sélectionnez votre position exacte
                         </h5>
                         <p class="text-muted small mb-0">
-                            👆 Cliquez sur la carte ou déplacez le marqueur pour définir votre position
+                            👆 Cliquez sur la carte ou déplacez le marqueur
                         </p>
                     </div>
                     <button onclick="@this.call('closePositionModal')"
@@ -29,33 +30,22 @@
                 </div>
             </div>
 
-            <!-- Contenu scrollable -->
-            <div class="flex-grow-1" style="overflow-y: auto; overflow-x: hidden;">
-                <!-- Map Container -->
-                <div class="position-relative" style="height: 450px; min-height: 300px;">
+            <div class="flex-grow-1" style="overflow-y: auto;">
+                <div class="position-relative" style="height: 450px;">
                     <div id="map" style="width: 100%; height: 100%;"></div>
-
-                    <!-- Overlay d'instructions -->
-                    <div class="position-absolute top-0 start-0 m-3 bg-white rounded-3 shadow p-3" style="max-width: 280px; z-index: 1000;">
-                        <div class="d-flex align-items-start">
-                            <i class="ri-information-line text-primary fs-4 me-2"></i>
-                            <div>
-                                <p class="mb-1 fw-semibold small">Comment ça marche ?</p>
-                                <p class="text-muted small mb-0">Déplacez le marqueur rouge ou cliquez sur la carte pour indiquer votre position précise.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Indicateur de chargement -->
                     <div id="mapLoader" class="position-absolute top-50 start-50 translate-middle">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Chargement...</span>
-                        </div>
+                        <div class="spinner-border text-primary"></div>
                     </div>
                 </div>
 
-                <!-- Adresse sélectionnée -->
                 <div class="p-4 bg-light border-top">
+                    <label class="form-label small text-muted mb-2">Rechercher une adresse :</label>
+                    <input type="text"
+                           id="autocomplete-modal"
+                           class="form-control mb-3"
+                           placeholder="Tapez une adresse..."
+                           autocomplete="off">
+
                     <label class="form-label small text-muted mb-2">Adresse sélectionnée :</label>
                     <div class="d-flex align-items-center bg-white p-3 rounded-3 border">
                         <i class="ri-map-pin-2-fill text-danger fs-4 me-3"></i>
@@ -67,29 +57,16 @@
                 </div>
             </div>
 
-            <!-- Footer Actions - FIXE -->
             <div class="p-4 border-top bg-white flex-shrink-0">
                 <div class="d-flex flex-column flex-sm-row gap-2 gap-sm-3">
-                    <button onclick="@this.call('closePositionModal')"
-                            class="btn btn-light order-3 order-sm-1">
-                        <i class="ri-arrow-left-line me-2"></i>
-                        Retour
+                    <button onclick="@this.call('closePositionModal')" class="btn btn-light order-3 order-sm-1">
+                        <i class="ri-arrow-left-line me-2"></i>Retour
                     </button>
-
-                    <button type="button"
-                            id="useCurrentLocation"
-                            class="btn btn-outline-primary order-2 order-sm-2">
-                        <i class="ri-focus-3-line me-2"></i>
-                        <span class="d-none d-sm-inline">Ma position actuelle</span>
-                        <span class="d-inline d-sm-none">Ma position</span>
+                    <button type="button" id="useCurrentLocation" class="btn btn-outline-primary order-2 order-sm-2">
+                        <i class="ri-focus-3-line me-2"></i>Ma position GPS
                     </button>
-
-                    <button type="button"
-                            id="confirmPositionBtn"
-                            class="btn btn-primary flex-sm-fill order-1 order-sm-3"
-                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                        <i class="ri-check-line me-2"></i>
-                        Confirmer cette position
+                    <button type="button" id="confirmPositionBtn" class="btn btn-primary flex-sm-fill order-1 order-sm-3">
+                        <i class="ri-check-line me-2"></i>Confirmer
                     </button>
                 </div>
             </div>
@@ -97,908 +74,710 @@
     </div>
     @endif
 
+    {{-- ========================================
+        MODAL SOS EXPRESS
+    ======================================== --}}
+    @if($showSosModal)
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.8);">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white border-0">
+                    <h5 class="modal-title d-flex align-items-center">
+                        <span class="badge bg-white text-danger me-2">🚨 SOS</span>
+                        Dépannage Express
+                    </h5>
+                    <button type="button" wire:click="closeSosModal" class="btn-close btn-close-white"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    {{-- Progress steps --}}
+                    <div class="d-flex justify-content-between mb-4">
+                        <div class="text-center flex-fill">
+                            <div class="rounded-circle mx-auto mb-2 {{ $sosStep >= 1 ? 'bg-danger text-white' : 'bg-light text-muted' }}"
+                                 style="width: 40px; height: 40px; line-height: 40px;">
+                                @if($sosStep > 1) ✓ @else 1 @endif
+                            </div>
+                            <small class="text-muted">Position</small>
+                        </div>
+                        <div class="flex-fill" style="height: 2px; background: #dee2e6; margin-top: 20px;"></div>
+                        <div class="text-center flex-fill">
+                            <div class="rounded-circle mx-auto mb-2 {{ $sosStep >= 2 ? 'bg-danger text-white' : 'bg-light text-muted' }}"
+                                 style="width: 40px; height: 40px; line-height: 40px;">
+                                @if($sosStep > 2) ✓ @else 2 @endif
+                            </div>
+                            <small class="text-muted">Problème</small>
+                        </div>
+                        <div class="flex-fill" style="height: 2px; background: #dee2e6; margin-top: 20px;"></div>
+                        <div class="text-center flex-fill">
+                            <div class="rounded-circle mx-auto mb-2 {{ $sosStep >= 3 ? 'bg-danger text-white' : 'bg-light text-muted' }}"
+                                 style="width: 40px; height: 40px; line-height: 40px;">
+                                3
+                            </div>
+                            <small class="text-muted">Confirmation</small>
+                        </div>
+                    </div>
+
+                    {{-- ÉTAPE 1 : LOCALISATION --}}
+                    @if($sosStep === 1)
+                    <div class="sos-step">
+                        <h6 class="mb-4 text-center">📍 Où êtes-vous ?</h6>
+                        <div class="d-grid gap-3 mb-3">
+                            <button type="button" wire:click="openPositionModal" class="btn btn-danger btn-lg">
+                                <i class="ri-map-pin-user-fill me-2"></i>Utiliser le GPS
+                            </button>
+                        </div>
+                        @if($adresse_livraison)
+                        <div class="alert alert-success">
+                            <i class="ri-check-circle-line me-2"></i>{{ $adresse_livraison }}
+                        </div>
+                        @endif
+                        <div class="mb-3">
+                            <label class="form-label">Ou saisissez l'adresse</label>
+                            <textarea wire:model="adresse_livraison" class="form-control" rows="2"></textarea>
+                            @error('adresse_livraison')<span class="text-danger small">{{ $message }}</span>@enderror
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- ÉTAPE 2 : TYPE DE SERVICE --}}
+                    @if($sosStep === 2)
+                    <div class="sos-step">
+                        <h6 class="mb-4 text-center">🔧 Quel est le problème ?</h6>
+                        <div class="row g-3">
+                            @foreach($list_service_select as $index => $cat)
+                            <div class="col-6">
+                                <input type="radio" class="btn-check" id="sos{{ $cat->id }}" wire:model="sosService" value="{{ $cat->id }}">
+                                <label class="btn btn-outline-danger w-100 p-3 d-flex flex-column align-items-center" for="sos{{ $cat->id }}">
+                                    <i class="ri-tools-fill fs-2 mb-2"></i>
+                                    <strong class="text-center">{{ $cat->libelle }}</strong>
+                                </label>
+                            </div>
+                            @endforeach
+                        </div>
+                        @error('sosService')<div class="alert alert-danger mt-3">{{ $message }}</div>@enderror
+
+                        {{-- Photo du problème (facultatif) --}}
+                        <div class="mt-4">
+                            <label class="form-label">📸 Photo du problème (facultatif)</label>
+                            <input type="file" wire:model="problemPhoto" accept="image/*" capture="environment" class="form-control">
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- ÉTAPE 3 : CONFIRMATION --}}
+                    @if($sosStep === 3)
+                    <div class="sos-step">
+                        <h6 class="mb-4 text-center">✅ Récapitulatif</h6>
+                        <div class="card bg-light border-0 mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>📍 Position</span>
+                                    <strong>{{ Str::limit($adresse_livraison, 30) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>🔧 Service</span>
+                                    <strong>{{ $list_service_select->find($sosService)?->libelle ?? 'Service' }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>💰 Coût</span>
+                                    <strong class="text-success">{{ number_format($montant_service, 0, ',', ' ') }} FCFA</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>⏱️ Arrivée</span>
+                                    <strong class="text-danger">30-45 min</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">📞 Votre numéro <span class="text-danger">*</span></label>
+                            <input type="tel" wire:model="contact_livraison" class="form-control form-control-lg" placeholder="+225">
+                            @error('contact_livraison')<span class="text-danger small">{{ $message }}</span>@enderror
+                        </div>
+                    </div>
+                    @endif
+                </div>
+
+                <div class="modal-footer border-0 bg-light">
+                    @if($sosStep > 1)
+                    <button type="button" wire:click="sosPreviousStep" class="btn btn-light">
+                        <i class="ri-arrow-left-line me-1"></i> Retour
+                    </button>
+                    @endif
+                    @if($sosStep < 3)
+                    <button type="button" wire:click="sosNextStep" class="btn btn-danger">
+                        Continuer <i class="ri-arrow-right-line ms-1"></i>
+                    </button>
+                    @else
+                    <button type="button" wire:click="confirmSosBooking" class="btn btn-danger btn-lg" wire:loading.attr="disabled">
+                        <span wire:loading.remove>🚨 Confirmer</span>
+                        <span wire:loading><span class="spinner-border spinner-border-sm me-2"></span>En cours...</span>
+                    </button>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    {{-- ========================================
+        PAGE PRINCIPALE
+    ======================================== --}}
     <div class="page-content">
         <div class="container-fluid">
-
-            <!-- start page title -->
+            {{-- Breadcrumb --}}
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                         <h4 class="mb-sm-0">Prenez un Rendez-vous</h4>
-
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="/">Accueil</a></li>
                                 <li class="breadcrumb-item active">Rendez-vous</li>
                             </ol>
                         </div>
-
                     </div>
                 </div>
             </div>
-            <!-- end page title -->
 
+            {{-- ASSISTANT VOCAL TOGGLE --}}
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="card border-primary">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <i class="ri-volume-up-line text-primary fs-3 me-3"></i>
+                                    <div>
+                                        <h6 class="mb-0">Assistant Vocal</h6>
+                                        <small class="text-muted">Activez pour être guidé vocalement</small>
+                                    </div>
+                                </div>
+                                <div class="form-check form-switch form-switch-lg">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           role="switch"
+                                           id="voiceAssistant"
+                                           wire:model.live="voiceAssistantEnabled"
+                                           wire:click="toggleVoiceAssistant">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- TOGGLE : Normal vs SOS --}}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-center">
+                                <div class="btn-group btn-group-lg" role="group">
+                                    <input type="radio" class="btn-check" id="normalBooking" wire:model="bookingType" value="normal" checked>
+                                    <label class="btn btn-outline-primary px-4" for="normalBooking">
+                                        <i class="ri-calendar-check-line me-2"></i>Réservation planifiée
+                                    </label>
+                                    <input type="radio" class="btn-check" id="sosBooking" wire:model="bookingType" value="sos">
+                                    <label class="btn btn-outline-danger px-4" for="sosBooking" wire:click="switchBookingType('sos')">
+                                        <i class="ri-alarm-warning-fill me-2"></i>🚨 SOS Express
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- FORMULAIRE NORMAL --}}
+            @if($bookingType === 'normal')
             <div class="row">
                 <div class="col-xl-8">
                     <div class="card">
-                        <div class="card-body checkout-tab">
-
-                            <form >
-                                <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
-
-                                    <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link fs-15 p-3 active" id="pills-bill-info-tab" data-bs-toggle="pill" data-bs-target="#pills-bill-info" type="button" role="tab" aria-controls="pills-bill-info" aria-selected="true">
-                                                <i class="ri-user-2-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle me-2"></i> Personal Info
-                                            </button>
-                                        </li>
-                                        {{-- <li class="nav-item" role="presentation">
-                                            <button class="nav-link fs-15 p-3" id="pills-bill-address-tab" data-bs-toggle="pill" data-bs-target="#pills-bill-address" type="button" role="tab" aria-controls="pills-bill-address" aria-selected="false">
-                                                <i class="ri-truck-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle me-2"></i> Shipping Info
-                                            </button>
-                                        </li> --}}
-                                        {{-- <li class="nav-item" role="presentation">
-                                            <button class="nav-link fs-15 p-3" id="pills-payment-tab" data-bs-toggle="pill" data-bs-target="#pills-payment" type="button" role="tab" aria-controls="pills-payment" aria-selected="false">
-                                                <i class="ri-bank-card-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle me-2"></i> Payment Info
-                                            </button>
-                                        </li> --}}
-                                        {{-- <li class="nav-item" role="presentation">
-                                            <button class="nav-link fs-15 p-3" id="pills-finish-tab" data-bs-toggle="pill" data-bs-target="#pills-finish" type="button" role="tab" aria-controls="pills-finish" aria-selected="false">
-                                                <i class="ri-checkbox-circle-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle me-2"></i> Finish
-                                            </button>
-                                        </li> --}}
-                                    </ul>
+                        <div class="card-body">
+                            <form wire:submit.prevent="makeReservation">
+                                {{-- SECTION : Informations RDV --}}
+                                <div class="mb-4">
+                                    <h5 class="text-primary mb-3">
+                                        <i class="ri-information-line me-2"></i>INFORMATIONS SUR LE RENDEZ-VOUS
+                                    </h5>
                                 </div>
 
-                                <div class="tab-content">
-                                    <div class="tab-pane fade show active" id="pills-bill-info" role="tabpanel" aria-labelledby="pills-bill-info-tab">
-                                        <div>
-                                            <h5 class="mb-1 text-primary">INFORMATIONS SUR LE RENDEZ-VOUS</h5>
-                                            <p class="text-muted mb-4">s'il vous plaît remplissez les informations ci-dessous.</p>
-                                        </div>
-
-                                        <div>
-
-                                            <div class="row">
-
-                                                @if($showCommune)
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label for="country" class="form-label">Communes <span class="text-danger">*</span> </label>
-                                                        <select   class="form-select" id="country"  wire:model.live="select_commune">
-                                                            <option value="">Sélectionnez...</option>
-                                                            @if($list_commune && $list_commune->count() > 0)
-                                                                @foreach($list_commune as $commune)
-                                                                        <option value="{{$commune->nom}}">{{$commune->nom}}</option>
-                                                                @endforeach
-                                                            @endif
-                                                        </select>
-                                                    @error('select_commune') <span class="text-danger">{{ $message }}</span> @enderror
-                                                    </div>
-                                                </div>
-                                                @endif
-
-                                                <div class="@if($showCommune) col-lg-6 @else col-lg-12 @endif">
-                                                    <div class="mb-3">
-                                                        <label for="billinginfo-phone" class="form-label">Situation géographique <span class="text-danger">*</span> </label>
-                                                        <input type="text" class="form-control" wire:model.live="adresse_livraison" placeholder="Renseignez une adresse" autocomplete="false" id="autocomplete">
-                                                    </div>
-                                                    @error('adresse_livraison') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-
-
-                                                <div class="@if($list_service_select && count($list_service_select) > 0) col-lg-5 @else col-lg-12 @endif">
-                                                    <div class="mb-3">
-                                                        <label for="billinginfo-phone" class="form-label">J'ai besoin de<span class="text-danger">*</span> </label>
-                                                        <select  class="form-select"  wire:model.live="categorie">
-                                                            <option value="">Sélectionnez...</option>
-                                                            @if($list_ctegorie && count($list_ctegorie) > 0)
-                                                                @foreach($list_ctegorie as $categorie)
-                                                                    <option value="{{ $categorie->libelle }}">{{ $categorie->libelle }}</option>
-                                                                @endforeach
-                                                            @endif
-                                                        </select>
-                                                    </div>
-                                                    @error('categorie') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-
-
-                                                @if($list_service_select && count($list_service_select) > 0)
-                                                    <div class="col-lg-7">
-                                                        <label for="genderInput" class="form-label">Besoins</label>
-                                                        <div>
-                                                            @foreach($list_service_select as $service)
-                                                                @php
-                                                                    $isRequired = in_array($service->libelle, $required_service);
-                                                                @endphp
-
-                                                                <div class="form-check form-check-inline mb-2">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        class="form-check-input"
-                                                                        id="formCheck{{ $service->id }}"
-                                                                        value="{{ $service->libelle }}"
-                                                                        wire:model="select_service"
-                                                                        @if($isRequired) checked disabled @endif
-                                                                    >
-                                                                    <label
-                                                                        class="form-check-label @if($isRequired) text-muted @endif"
-                                                                        for="formCheck{{ $service->id }}"
-                                                                    >
-                                                                        {{ $service->libelle }}
-                                                                        @if($isRequired)
-                                                                            <small class="text-muted">(obligatoire)</small>
-                                                                        @endif
-                                                                    </label>
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
-                                                        @error('select_service')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                    @endif
-
-
-
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label for="billinginfo-phone" class="form-label">Date du rendez-vous <span class="text-danger">*</span> </label>
-                                                       <select class="form-select"
-                                                                wire:model="date_rdv"
-                                                                @if(!$adresse_livraison) disabled @endif>
-                                                            <option value="">Sélectionnez...</option>
-                                                            @if($joursAutorises && count($joursAutorises) > 0)
-                                                                @foreach($joursAutorises as $date => $label)
-                                                                    <option value="{{ $date }}">{{ $label }}</option>
-                                                                @endforeach
-                                                            @endif
-                                                        </select>
-                                                        @if(!$adresse_livraison)
-                                                            <div class="text-danger mt-2 small">
-                                                                Veuillez renseigner une adresse avant de sélectionner une date.
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                    @error('date_rdv') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-
-                                                <div class="col-lg-6">
-                                                    <label for="billinginfo-phone" class="form-label">Heure du rendez-vous <span class="text-danger">*</span> </label>
-                                                    <div class="mb-3">
-                                                        <input type="time" wire:model="time_rdv" class="form-control" >
-                                                    </div>
-                                                    @error('time_rdv') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-
-
-
-
-                                                <div class="col-lg-12">
-                                                    <div class="form-check card-radio">
-                                                        <input id="shippingMethod01" name="shippingMethod" type="radio" class="form-check-input" checked="">
-                                                        <label class="form-check-label" for="shippingMethod01">
-                                                            <span class="fs-18 float-end mt-2 text-wrap d-block">{{number_format($montant_service,0,'.',' ')}} fcfa</span>
-                                                            <span class="fs-14 mb-1 text-wrap text-primary d-block">Mains d'œuvres
-                                                                </span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
+                                <div class="row">
+                                    {{-- Adresse avec autocomplete Google Maps --}}
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label">Situation géographique <span class="text-danger">*</span></label>
+                                        <input type="text"
+                                               id="autocomplete"
+                                               wire:model="adresse_livraison"
+                                               class="form-control"
+                                               placeholder="Recherchez votre adresse..."
+                                               autocomplete="off">
+                                        @error('adresse_livraison')<span class="text-danger small">{{ $message }}</span>@enderror
+                                        @if($select_commune)
+                                            <div class="text-success mt-1 small">
+                                                <i class="ri-map-pin-line"></i> Commune détectée : <strong>{{ $select_commune }}</strong>
                                             </div>
-
-                                        </div>
-
-
-
-                                        <div >
-                                            <h5 class="mb-3 mt-5 text-primary">INFORMATIONS SUR LE VÉHICULE</h5>
-                                        </div>
-
-
-                                        <div>
-                                            <div class="row mt-4">
-
-                                                <div class="col-md-4" wire:ignore>
-                                                    <div class="mb-3">
-                                                        <label for="country" class="form-label">Numéro de chassis<span class="text-danger">*</span> </label>
-                                                        <input type="text" wire:model.live="chassis" class="form-control" id="billinginfo-firstName" placeholder="Entrer le numéro de chassis" autocomplete="false">
-                                                    </div>
-                                                    @error('chassis') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="state" class="form-label">Modèles <span class="text-muted"> (FACULTATIF)</span> </label>
-                                                        <input type="text" wire:model="select_type" class="form-control" id="billinginfo-firstName" placeholder="Entrer le ..." autocomplete="false">
-                                                    </div>
-                                                    @error('select_type') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="state" class="form-label">Marques <span class="text-muted"> (FACULTATIF)</span> </label>
-                                                        <input type="text" wire:model="select_marque" class="form-control" id="billinginfo-firstName" placeholder="Entrer la marque..." autocomplete="false">
-                                                    </div>
-                                                    @error('select_marque') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-
-
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="country" class="form-label">Année <span class="text-muted"> (FACULTATIF)</span></label>
-                                                        <input type="text" wire:model="year_vehicule" class="form-control" id="billinginfo-firstName" placeholder="Entrer l'année" autocomplete="false">
-                                                    </div>
-                                                    @error('year_vehicule') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-
-
-
-
-
-
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="zip" class="form-label">images <span class="text-muted"> ( FACULTATIF )</span> </label>
-                                                        <input type="file" wire:model="AsImages" accept=".png, .jpg, .jpeg" multiple class="form-control" id="zip" placeholder="Enter zip code">
-                                                    </div>
-                                                    @error('AsImages') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-
-                                                <div class="col-12">
-                                                    <div class="mb-3">
-                                                        <label for="billinginfo-address" class="form-label">Détails</label>
-                                                        <textarea class="form-control" wire:model="detail_vehicule" id="billinginfo-address" placeholder="Plus de détails" rows="3"></textarea>
-                                                    </div>
-                                                    @error('detail_vehicule') <span class="text-danger">{{ $message }}</span> @enderror
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div>
-
-                                            <div>
-                                                <h5 class="mb-1 mt-3 text-primary">Mode de paiements</h5>
-                                            </div>
-
-                                            {{-- <div class="row g-4">
-
-                                                <div class="col-lg-6 col-sm-6">
-                                                    <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse" aria-expanded="true" aria-controls="paymentmethodCollapse">
-                                                        <div class="form-check card-radio">
-                                                            <input id="paymentMethod02" name="paymentMethod" type="radio" class="form-check-input" checked>
-                                                            <label class="form-check-label" for="paymentMethod02">
-                                                                <span class="fs-16 text-muted me-2"><i class="ri-bank-card-fill align-bottom"></i></span>
-                                                                <span class="fs-14 text-wrap">Mobile Money / Carte de Credit</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-6 col-sm-6">
-                                                    <div data-bs-toggle="collapse" data-bs-target="#" aria-expanded="false" aria-controls="paymentmethodCollapse">
-                                                        <div class="form-check card-radio">
-                                                            <input id="paymentMethod03" disabled name="paymentMethod" type="radio" class="form-check-input">
-                                                            <label class="form-check-label" for="paymentMethod03">
-                                                                <span class="fs-16 text-muted me-2"><i class="ri-money-dollar-box-fill align-bottom"></i></span>
-                                                                <span class="fs-14 text-wrap">Cash / Espèces</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> --}}
-
-                                            <div class="collapse show" id="paymentmethodCollapse">
-                                                <div class="card p-4 border shadow-none mb-0 mt-4">
-                                                    <div class="row gy-3">
-                                                            <div class="col-lg-6">
-                                                                <div class="mb-3">
-                                                                    <label for="billinginfo-firstName" class="form-label">Nom & Prénoms <span class="text-muted">(FACULTATIF)</span> </label>
-                                                                    <input type="text" wire:model="username" class="form-control" id="billinginfo-firstName" placeholder="Enter first name" value="">
-                                                                </div>
-                                                                @error('username') <span class="text-danger">{{ $message }}</span> @enderror
-                                                            </div>
-
-                                                            <div class="col-lg-6">
-                                                                <div class="mb-3" wire:ignore>
-                                                                    <label for="billinginfo-phone" class="form-label">numéro de paiements <span class="text-danger">*</span> </label>
-                                                                    <input type="number" class="form-control" maxlength="10" minlength="10"  wire:model="contact_livraison"  placeholder="Entrer votre numéro de téléphone...">
-                                                                    {{-- <p id="output">Please enter a valid number below</p>            --}}
-                                                                </div>
-                                                                @error('contact_livraison') <span class="text-danger">{{ $message }}</span> @enderror
-
-                                                            </div>
-
-
-
-                                                    </div>
-                                                </div>
-                                                <div class="text-success mt-2 fst-italic">
-                                                    <i data-feather="lock" class="text-success icon-xs"></i> Votre transaction est sécurisée et cryptée.
-                                                </div>
-                                            </div>
-
-
-                                            <div class="d-flex align-items-start gap-3 mt-3">
-                                                <button type="button" wire:click="SubmitRendezVous" class="btn btn-primary btn-label right ms-auto nexttab" wire:loading.attr="disabled">
-                                                    <i class="ri-truck-line label-icon align-middle fs-16 ms-2"></i>
-                                                    <span wire:loading.remove>Confirmez votre rendez-vous</span>
-                                                    <span wire:loading>Traitement en cours...</span>
-                                                </button>
-                                            </div>
-                                        </div>
-
+                                        @endif
                                     </div>
-                                    <!-- end tab pane -->
 
-                                    {{-- <div class="tab-pane fade" id="pills-bill-address" role="tabpanel" aria-labelledby="pills-bill-address-tab">
-                                        <div>
-                                            <h5 class="mb-1">Shipping Information</h5>
-                                            <p class="text-muted mb-4">Please fill all information below</p>
-                                        </div>
-
-                                        <div class="mt-4">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div class="flex-grow-1">
-                                                    <h5 class="fs-14 mb-0">Saved Address</h5>
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <!-- Button trigger modal -->
-                                                    <button type="button" class="btn btn-sm btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addAddressModal">
-                                                        Add Address
-                                                    </button>
-                                                </div>
+                                    {{-- Date --}}
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="form-label">Date <span class="text-danger">*</span></label>
+                                        <select class="form-select" wire:model="date_rdv" @if(!$adresse_livraison) disabled @endif>
+                                            <option value="">Sélectionnez...</option>
+                                            @if($joursAutorises && count($joursAutorises) > 0)
+                                                @foreach($joursAutorises as $date => $label)
+                                                    <option value="{{ $date }}">{{ $label }}</option>
+                                                @endforeach
+                                            @else
+                                                <option value="" disabled>Veuillez d'abord sélectionner une adresse</option>
+                                            @endif
+                                        </select>
+                                        @if(!$adresse_livraison)
+                                            <div class="text-danger mt-1 small">
+                                                <i class="ri-information-line"></i> Sélectionnez d'abord votre position pour voir les dates disponibles
                                             </div>
-                                            <div class="row gy-3">
-                                                <div class="col-lg-4 col-sm-6">
-                                                    <div class="form-check card-radio">
-                                                        <input id="shippingAddress01" name="shippingAddress" type="radio" class="form-check-input" checked>
-                                                        <label class="form-check-label" for="shippingAddress01">
-                                                            <span class="mb-4 fw-semibold d-block text-muted text-uppercase">Home Address</span>
-
-                                                            <span class="fs-14 mb-2 d-block">Marcus Alfaro</span>
-                                                            <span class="text-muted fw-normal text-wrap mb-1 d-block">4739 Bubby Drive Austin, TX 78729</span>
-                                                            <span class="text-muted fw-normal d-block">Mo. 012-345-6789</span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="d-flex flex-wrap p-2 py-1 bg-light rounded-bottom border mt-n1">
-                                                        <div>
-                                                            <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#addAddressModal"><i class="ri-pencil-fill text-muted align-bottom me-1"></i> Edit</a>
-                                                        </div>
-                                                        <div>
-                                                            <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#removeItemModal"><i class="ri-delete-bin-fill text-muted align-bottom me-1"></i> Remove</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4 col-sm-6">
-                                                    <div class="form-check card-radio">
-                                                        <input id="shippingAddress02" name="shippingAddress" type="radio" class="form-check-input">
-                                                        <label class="form-check-label" for="shippingAddress02">
-                                                            <span class="mb-4 fw-semibold d-block text-muted text-uppercase">Office Address</span>
-
-                                                            <span class="fs-14 mb-2 d-block">James Honda</span>
-                                                            <span class="text-muted fw-normal text-wrap mb-1 d-block">1246 Virgil Street Pensacola, FL 32501</span>
-                                                            <span class="text-muted fw-normal d-block">Mo. 012-345-6789</span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="d-flex flex-wrap p-2 py-1 bg-light rounded-bottom border mt-n1">
-                                                        <div>
-                                                            <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#addAddressModal"><i class="ri-pencil-fill text-muted align-bottom me-1"></i> Edit</a>
-                                                        </div>
-                                                        <div>
-                                                            <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#removeItemModal"><i class="ri-delete-bin-fill text-muted align-bottom me-1"></i> Remove</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        @elseif(empty($joursAutorises))
+                                            <div class="text-warning mt-1 small">
+                                                <i class="ri-error-warning-line"></i> Aucune date disponible pour cette commune
                                             </div>
-
-                                            <div class="mt-4">
-                                                <h5 class="fs-14 mb-3">Shipping Method</h5>
-
-                                                <div class="row g-4">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-check card-radio">
-                                                            <input id="shippingMethod01" name="shippingMethod" type="radio" class="form-check-input" checked>
-                                                            <label class="form-check-label" for="shippingMethod01">
-                                                                <span class="fs-20 float-end mt-2 text-wrap d-block fw-semibold">Free</span>
-                                                                <span class="fs-14 mb-1 text-wrap d-block">Free Delivery</span>
-                                                                <span class="text-muted fw-normal text-wrap d-block">Expected Delivery 3 to 5 Days</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-check card-radio">
-                                                            <input id="shippingMethod02" name="shippingMethod" type="radio" class="form-check-input" checked>
-                                                            <label class="form-check-label" for="shippingMethod02">
-                                                                <span class="fs-20 float-end mt-2 text-wrap d-block fw-semibold">$24.99</span>
-                                                                <span class="fs-14 mb-1 text-wrap d-block">Express Delivery</span>
-                                                                <span class="text-muted fw-normal text-wrap d-block">Delivery within 24hrs.</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-start gap-3 mt-4">
-                                            <button type="button" class="btn btn-light btn-label previestab" data-previous="pills-bill-info-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Back to Personal Info</button>
-                                            <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-payment-tab"><i class="ri-bank-card-line label-icon align-middle fs-16 ms-2"></i>Continue to Payment</button>
-                                        </div>
-                                    </div> --}}
-                                    <!-- end tab pane -->
-
-                                    <div class="tab-pane fade" id="pills-payment" role="tabpanel" aria-labelledby="pills-payment-tab">
-
-
-                                        <div class="d-flex align-items-start gap-3 mt-4">
-                                            <button type="button" class="btn btn-light btn-label previestab" data-previous="pills-bill-address-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Back to Shipping</button>
-                                            <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-finish-tab"><i class="ri-shopping-basket-line label-icon align-middle fs-16 ms-2"></i>Complete Order</button>
-                                        </div>
+                                        @endif
+                                        @error('date_rdv')<span class="text-danger small">{{ $message }}</span>@enderror
                                     </div>
-                                    <!-- end tab pane -->
 
-                                    {{-- <div class="tab-pane fade" id="pills-finish" role="tabpanel" aria-labelledby="pills-finish-tab">
-                                        <div class="text-center py-5">
-
-                                            <div class="mb-4">
-                                                <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon>
-                                            </div>
-                                            <h5>Thank you ! Your Order is Completed !</h5>
-                                            <p class="text-muted">You will receive an order confirmation email with details of your order.</p>
-
-                                            <h3 class="fw-semibold">Order ID: <a href="apps-ecommerce-order-details.html" class="text-decoration-underline">VZ2451</a></h3>
-                                        </div>
-                                    </div> --}}
-                                    <!-- end tab pane -->
+                                    {{-- Heure --}}
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="form-label">Heure <span class="text-danger">*</span></label>
+                                        <input type="time" wire:model="time_rdv" class="form-control">
+                                        @error('time_rdv')<span class="text-danger small">{{ $message }}</span>@enderror
+                                    </div>
                                 </div>
-                                <!-- end tab content -->
+
+                                {{-- SECTION : Catégorie de service --}}
+                                <div class="mt-4 mb-4">
+                                    <h5 class="text-primary mb-3">
+                                        <i class="ri-service-line me-2"></i>TYPE DE SERVICE
+                                    </h5>
+                                </div>
+
+                                <div class="row g-3 mb-4">
+                                    @foreach($list_service_select as $cat)
+                                    <div class="col-md-4 col-6">
+                                        <input type="radio" class="btn-check" id="cat{{ $cat->id }}" wire:model.live="categorie" value="{{ $cat->id }}">
+                                        <label class="btn btn-outline-primary w-100 h-100 p-3 d-flex flex-column align-items-center" for="cat{{ $cat->id }}">
+                                            <i class="ri-service-fill fs-2 mb-2"></i>
+                                            <strong class="text-center">{{ $cat->libelle }}</strong>
+                                        </label>
+                                    </div>
+                                    @endforeach
+                                </div>
+
+                                {{-- Services détaillés --}}
+                                @if($categorie)
+                                @php $selectedCategory = $list_service_select->find($categorie); @endphp
+                                @if($selectedCategory && $selectedCategory->services->count() > 0)
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Services disponibles :</h6>
+                                    @foreach($selectedCategory->services as $service)
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" wire:model.live="select_service" value="{{ $service->id }}" id="s{{ $service->id }}">
+                                        <label class="form-check-label w-100 d-flex justify-content-between" for="s{{ $service->id }}">
+                                            <span>{{ $service->libelle }}</span>
+                                            <span class="badge bg-primary">+{{ number_format($service->prix, 0, ',', ' ') }} FCFA</span>
+                                        </label>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                @endif
+                                @endif
+
+                                {{-- SECTION : Véhicule --}}
+                                <div class="mt-4 mb-4">
+                                    <h5 class="text-primary mb-3">
+                                        <i class="ri-car-line me-2"></i>VÉHICULE
+                                    </h5>
+                                </div>
+
+                                {{-- Choix du mode --}}
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <div class="card h-100 border-2 {{ $inputMode === 'scan' ? 'border-primary' : '' }}" style="cursor: pointer;" wire:click="setInputMode('scan')">
+                                            <div class="card-body text-center p-3">
+                                                <i class="ri-camera-line fs-1 mb-2"></i>
+                                                <h6>Scanner chassis</h6>
+                                                <small class="text-muted">Photo automatique</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card h-100 border-2 {{ $inputMode === 'manual' ? 'border-primary' : '' }}" style="cursor: pointer;" wire:click="setInputMode('manual')">
+                                            <div class="card-body text-center p-3">
+                                                <i class="ri-edit-line fs-1 mb-2"></i>
+                                                <h6>Saisie manuelle</h6>
+                                                <small class="text-muted">Entrer les infos</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Mode SCAN --}}
+                                @if($inputMode === 'scan')
+                                <div class="scan-section mb-4">
+                                    @if($chassisImage)
+                                    <div class="text-center">
+                                        <img src="{{ $chassisImage->temporaryUrl() }}" class="img-fluid rounded mb-3" style="max-height: 200px;">
+                                        @if(!$ocrSuccess)
+                                        <div class="d-grid gap-2">
+                                            <button type="button" wire:click="processOCR" class="btn btn-primary" wire:loading.attr="disabled">
+                                                <span wire:loading.remove>Analyser</span>
+                                                <span wire:loading>Analyse...</span>
+                                            </button>
+                                            <button type="button" wire:click="removeChassisImage" class="btn btn-outline-danger btn-sm">Supprimer</button>
+                                        </div>
+                                        @endif
+                                        @if($ocrSuccess)
+                                        <div class="alert alert-success">✅ Scan réussi !</div>
+                                        @endif
+                                    </div>
+                                    @else
+                                    <div class="border-dashed rounded p-4 text-center" style="cursor: pointer;" onclick="document.getElementById('chassisImg').click()">
+                                        <i class="ri-upload-cloud-line display-4 text-primary"></i>
+                                        <p class="mb-0">Cliquez pour prendre une photo</p>
+                                        <input type="file" id="chassisImg" wire:model="chassisImage" accept="image/*" capture="environment" class="d-none">
+                                    </div>
+                                    @endif
+                                </div>
+                                @endif
+
+                                {{-- Mode MANUEL --}}
+                                @if($inputMode === 'manual')
+                                <div class="manual-section mb-4">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">N° Chassis</label>
+                                            <input type="text" wire:model="chassis" class="form-control" placeholder="17 caractères">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Marque</label>
+                                            <input type="text" wire:model="select_marque" class="form-control" placeholder="Ex: Toyota">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Modèle</label>
+                                            <input type="text" wire:model="select_type" class="form-control" placeholder="Ex: Corolla">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Année</label>
+                                            <input type="text" wire:model="year_vehicule" class="form-control" placeholder="Ex: 2020">
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
+                                {{-- SECTION : Contact --}}
+                                <div class="mt-4 mb-4">
+                                    <h5 class="text-primary mb-3">
+                                        <i class="ri-contacts-line me-2"></i>CONTACT
+                                    </h5>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nom</label>
+                                        <input type="text" wire:model="username" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Téléphone <span class="text-danger">*</span></label>
+                                        <input type="tel" wire:model="contact_livraison" class="form-control" placeholder="+225">
+                                        @error('contact_livraison')<span class="text-danger small">{{ $message }}</span>@enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" wire:model="email_livraison" class="form-control">
+                                    </div>
+                                </div>
+
+                                {{-- Bouton validation --}}
+                                <div class="mt-4 d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg" wire:loading.attr="disabled">
+                                        <span wire:loading.remove>✅ Confirmer la réservation</span>
+                                        <span wire:loading><span class="spinner-border spinner-border-sm me-2"></span>En cours...</span>
+                                    </button>
+                                </div>
                             </form>
                         </div>
-                        <!-- end card body -->
                     </div>
-                    <!-- end card -->
                 </div>
-                <!-- end col -->
 
+                {{-- Sidebar résumé --}}
                 <div class="col-xl-4">
-                    <div class="sticky-side-div">
-
-                        <div class="alert border-dashed alert-success" role="alert">
-                            <div class="d-flex align-items-center">
-                                <lord-icon src="https://cdn.lordicon.com/nkmsrxys.json" trigger="loop" colors="primary:#121331,secondary:#f06548" style="width:80px;height:80px"></lord-icon>
-                                <div class="ms-2">
-                                    <h5 class="fs-14 text-danger fw-semibold"> Note importante !!</h5>
-                                    <p class="text-black mb-1">Cumulez des points (Bonus) pour obtenir des coupons de  <br />réductions de <span class="fw-semibold">30%</span> sur votre prochaine réservation </p>
-                                    {{-- <button type="button" class="btn ps-0 btn-sm btn-link text-danger text-uppercase">Add Gift Wrap</button> --}}
-                                </div>
-                            </div>
+                    <div class="card sticky-top" style="top: 100px;">
+                        <div class="card-header">
+                            <h5 class="mb-0">Résumé</h5>
                         </div>
-
-                        <div class="card">
-                            <div class="card-header border-bottom-dashed">
-                                <h5 class="card-title mb-0">Sommes de la reservation</h5>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <small>🎁 Cumulez des points pour des réductions de 30%</small>
                             </div>
-
-                            <div class="card-header bg-light-subtle border-bottom-dashed">
-                                <div class="text-center">
-                                    <h6 class="mb-2">As-tu un code <span class="fw-semibold">promo</span>  ?</h6>
-                                </div>
-                                <div class="hstack gap-3 px-3 mx-n3">
-                                    <input class="form-control me-auto" type="text" placeholder="Enter coupon code" aria-label="Add Promo Code here...">
-                                    <button type="button" class="btn btn-success w-xs">Appliquer</button>
-                                </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Mains d'œuvres</span>
+                                <strong>50,000 FCFA</strong>
                             </div>
-
-                            <div class="card-body pt-2">
-                                <div class="table-responsive">
-                                    <table class="table table-borderless mb-0">
-                                        <tbody>
-                                            {{-- <tr>
-                                                <td class="text-center text-warning" id="cart-subtotal">La mains d'oeuvre varie selon la commune </td>
-                                            </tr> --}}
-
-                                            {{-- <tr>
-                                                <td>Ville :</td>
-                                                <td class="text-end" id="cart-subtotal">Abidjan / 15.000 fcfa</td>
-                                            </tr> --}}
-
-                                            <tr class="table-active">
-                                                <th>Total (FCFA) :</th>
-                                                <td class="text-end">
-                                                    <span class="fw-semibold" id="cart-total">
-                                                        {{ number_format($montant_service, 0, ',','.') }}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- end table-responsive -->
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <strong>Total</strong>
+                                <strong class="text-primary">{{ number_format($montant_service, 0, ',', ' ') }} FCFA</strong>
                             </div>
                         </div>
                     </div>
-                    <!-- end stickey -->
-
                 </div>
             </div>
-            <!-- end row -->
-
+            @endif
         </div>
-        <!-- container-fluid -->
     </div>
-    <!-- End Page-content -->
+
+    {{-- BOUTON FLOTTANT SOS --}}
+    <button wire:click="switchBookingType('sos')" class="btn btn-danger btn-lg rounded-circle position-fixed" style="bottom: 30px; right: 30px; width: 70px; height: 70px; z-index: 1000; box-shadow: 0 10px 30px rgba(220,53,69,0.4);">
+        <i class="ri-alarm-warning-fill fs-3"></i>
+        <div class="small fw-bold">SOS</div>
+    </button>
 </div>
 
-
-
-
 @push('scripts')
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwmz2CstWs-2hp_ygHYc527i7XBgIrNJg&libraries=places&callback=initMap" async></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwmz2CstWs-2hp_ygHYc527i7XBgIrNJg&libraries=places&callback=initMap" async defer></script>
 
 <script>
+// Initialisation de l'autocomplete Google Maps
 async function initMap() {
     var input = document.getElementById('autocomplete');
-    const options = {
-        componentRestrictions: { country: "ci" },
-    };
-
-    var autocomplete = new google.maps.places.Autocomplete(input, options);
-
-    autocomplete.addListener('place_changed', function () {
-        var place = autocomplete.getPlace();
-
-        if (!place.geometry) {
-            alert("Aucune géométrie disponible pour ce lieu.");
-            return;
-        }
-
-        // Récupération des informations
-        var latitude = place.geometry.location.lat();
-        var longitude = place.geometry.location.lng();
-        var adresse_name = place.name;
-        var adresse_complete = place.formatted_address;
-
-        let commune = "";
-        place.address_components.forEach(component => {
-            if (component.types.includes("sublocality") || component.types.includes("sublocality_level_1")) {
-                commune = component.long_name;
-            }
-        });
-
-        // Si aucune commune trouvée
-        if (!commune) {
-           @this.set('select_commune', null)
-        }
-
-        // Création de l'objet JSON
-        var location = {
-            adresse: adresse_complete,
-            adresse_name: adresse_name,
-            latitude: latitude,
-            longitude: longitude
+    if (input) {
+        const options = {
+            componentRestrictions: { country: "ci" },
         };
 
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
 
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
 
-        // Transfert temporaire vers Livewire et ouverture du modal
-        @this.set('adresse_livraison', adresse_name + ' ' + adresse_complete)
-        @this.set('select_commune', commune)
+            if (!place.geometry) {
+                alert("Aucune géométrie disponible pour ce lieu.");
+                return;
+            }
 
-        // Ouvrir le modal pour confirmation de position
-        @this.call('openPositionModal', adresse_name + ' ' + adresse_complete, location);
-    });
+            // Récupération des informations
+            var latitude = place.geometry.location.lat();
+            var longitude = place.geometry.location.lng();
+            var adresse_name = place.name;
+            var adresse_complete = place.formatted_address;
+
+            let commune = "";
+            place.address_components.forEach(component => {
+                if (component.types.includes("sublocality") || component.types.includes("sublocality_level_1")) {
+                    commune = component.long_name;
+                }
+            });
+
+            // Si aucune commune trouvée
+            if (!commune) {
+               @this.set('select_commune', null);
+            }
+
+            // Création de l'objet location
+            var location = {
+                adresse: adresse_complete,
+                adresse_name: adresse_name,
+                latitude: latitude,
+                longitude: longitude
+            };
+
+            // Transfert vers Livewire et ouverture du modal
+            @this.set('adresse_livraison', adresse_name + ' ' + adresse_complete);
+            @this.set('select_commune', commune);
+
+            // Ouvrir le modal pour confirmation de position
+            @this.call('openPositionModal', adresse_name + ' ' + adresse_complete, location);
+        });
+    }
 }
+
+// Initialiser l'autocomplete du modal quand il s'ouvre
+window.addEventListener('openMapModal', function() {
+    setTimeout(function() {
+        var inputModal = document.getElementById('autocomplete-modal');
+        if (inputModal && window.google) {
+            const options = {
+                componentRestrictions: { country: "ci" },
+            };
+
+            var autocompleteModal = new google.maps.places.Autocomplete(inputModal, options);
+
+            autocompleteModal.addListener('place_changed', function () {
+                var place = autocompleteModal.getPlace();
+
+                if (!place.geometry) {
+                    return;
+                }
+
+                var latitude = place.geometry.location.lat();
+                var longitude = place.geometry.location.lng();
+
+                // Déplacer le marker sur la carte
+                if (window.marker) {
+                    var newPos = {lat: latitude, lng: longitude};
+                    window.marker.setPosition(newPos);
+                    window.map.setCenter(newPos);
+                    updateAddress(newPos);
+                }
+            });
+        }
+    }, 500);
+});
 
 // Écouter la confirmation de position
 window.addEventListener('positionConfirmed', function() {
-    console.log('Position confirmée !');
     const input = document.getElementById('autocomplete');
     if (input) {
         input.classList.add('border-success');
-        input.classList.add('border-3');
-        setTimeout(() => {
-            input.classList.remove('border-success');
-            input.classList.remove('border-3');
-        }, 2000);
+        setTimeout(() => input.classList.remove('border-success'), 2000);
     }
 });
-</script>
 
-<!-- Script pour le modal de carte -->
+// Assistant Vocal
+let voiceAssistant = {
+    enabled: @json($voiceAssistantEnabled),
+    synthesis: window.speechSynthesis,
 
+    speak(text) {
+        if (!this.enabled) return;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'fr-FR';
+        utterance.rate = 0.9;
+        this.synthesis.speak(utterance);
+    }
+};
 
-<script>
-let map;
-let marker;
+// Écouter les événements Livewire
+window.addEventListener('voiceAssistantToggled', event => {
+    voiceAssistant.enabled = event.detail.enabled;
+    voiceAssistant.speak(event.detail.message);
+});
 
-// Réinitialiser les variables à chaque ouverture
+window.addEventListener('speakText', event => {
+    voiceAssistant.speak(event.detail.text);
+});
+
+// Google Maps
+let map, marker, geocoder;
+
 window.addEventListener('openMapModal', function(event) {
-    // Reset complet
-    map = null;
-    marker = null;
-
-    setTimeout(() => {
-        initializeMap(event.detail.location);
-    }, 300);
+    setTimeout(() => initializeMap(event.detail.location), 300);
 });
 
 function initializeMap(location) {
-    const mapLoader = document.getElementById('mapLoader');
+    const initialPos = location ? {lat: parseFloat(location.latitude), lng: parseFloat(location.longitude)} : {lat: 5.316667, lng: -4.033333};
 
-    // Position initiale (depuis l'adresse sélectionnée)
-    const initialPos = location ? {
-        lat: parseFloat(location.latitude),
-        lng: parseFloat(location.longitude)
-    } : { lat: 5.316667, lng: -4.033333 };
-
-    // Créer la carte
-    map = new google.maps.Map(document.getElementById('map'), {
+    window.map = new google.maps.Map(document.getElementById('map'), {
         center: initialPos,
-        zoom: 16,
-        mapTypeControl: true,
-        streetViewControl: false,
-        fullscreenControl: true,
-        styles: [
-            {
-                featureType: "poi",
-                elementType: "labels",
-                stylers: [{ visibility: "on" }]
-            }
-        ]
+        zoom: 16
     });
 
-    // Créer le marqueur draggable
-    marker = new google.maps.Marker({
+    window.marker = new google.maps.Marker({
         position: initialPos,
-        map: map,
-        draggable: true,
-        animation: google.maps.Animation.DROP,
-        icon: {
-            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-            scaledSize: new google.maps.Size(50, 50)
-        },
-        title: "Votre position"
+        map: window.map,
+        draggable: true
     });
 
-    // Masquer le loader
-    if (mapLoader) mapLoader.style.display = 'none';
+    document.getElementById('mapLoader').style.display = 'none';
 
-    // Mettre à jour l'adresse lors du déplacement du marqueur
-    google.maps.event.addListener(marker, 'dragend', function() {
-        updateAddressFromMarker(marker.getPosition());
+    window.marker.addListener('dragend', () => updateAddress(window.marker.getPosition()));
+    window.map.addListener('click', (e) => {
+        window.marker.setPosition(e.latLng);
+        updateAddress(e.latLng);
     });
 
-    // Permettre de cliquer sur la carte pour déplacer le marqueur
-    google.maps.event.addListener(map, 'click', function(event) {
-        marker.setPosition(event.latLng);
-        updateAddressFromMarker(event.latLng);
-    });
-
-    // Initialiser l'affichage de l'adresse
-    updateAddressFromMarker(marker.getPosition());
-
-    // Attacher les boutons APRÈS la création de la carte
-    attachModalButtons();
+    updateAddress(window.marker.getPosition());
+    attachButtons();
 }
 
-function updateAddressFromMarker(position) {
+function updateAddress(position) {
+    const lat = typeof position.lat === 'function' ? position.lat() : position.lat;
+    const lng = typeof position.lng === 'function' ? position.lng() : position.lng;
+
     const geocoder = new google.maps.Geocoder();
-    const coordsDisplay = document.getElementById('selectedCoords');
-
-    // Gérer les deux types de position
-    let lat, lng;
-    if (typeof position.lat === 'function') {
-        lat = position.lat();
-        lng = position.lng();
-    } else {
-        lat = position.lat;
-        lng = position.lng;
-    }
-
-    if (coordsDisplay) {
-        coordsDisplay.textContent = `Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`;
-    }
-
-    // Géocodage inverse
-    geocoder.geocode({ location: { lat: lat, lng: lng } }, (results, status) => {
+    geocoder.geocode({location: {lat, lng}}, (results, status) => {
         if (status === 'OK' && results[0]) {
-            const addressElement = document.getElementById('selectedAddress');
-            if (addressElement) {
-                addressElement.textContent = results[0].formatted_address;
-            }
+            document.getElementById('selectedAddress').textContent = results[0].formatted_address;
+            document.getElementById('selectedCoords').textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
         }
     });
 }
 
+function attachButtons() {
+    document.getElementById('useCurrentLocation')?.addEventListener('click', function() {
+        if (navigator.geolocation) {
+            this.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Localisation...';
+            this.disabled = true;
 
-function attachModalButtons() {
-    // Bouton "Ma position actuelle"
-    const useCurrentBtn = document.getElementById('useCurrentLocation');
-
-    if (useCurrentBtn) {
-        const newBtn = useCurrentBtn.cloneNode(true);
-        useCurrentBtn.parentNode.replaceChild(newBtn, useCurrentBtn);
-
-        newBtn.addEventListener('click', function() {
-            const button = this;
-
-            if (navigator.geolocation) {
-                button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Localisation...';
-                button.disabled = true;
-
-                navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        const pos = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-
-                        if (map && marker) {
-                            map.setCenter(pos);
-                            map.setZoom(17);
-                            marker.setPosition(pos);
-                            updateAddressFromMarker(pos);
-                        }
-
-                        button.innerHTML = '<i class="ri-check-line me-2"></i><span class="d-none d-sm-inline">Position obtenue !</span><span class="d-inline d-sm-none">OK !</span>';
-                        button.classList.add('btn-success');
-                        button.classList.remove('btn-outline-primary');
-
-                        setTimeout(function() {
-                            button.innerHTML = '<i class="ri-focus-3-line me-2"></i><span class="d-none d-sm-inline">Ma position actuelle</span><span class="d-inline d-sm-none">Ma position</span>';
-                            button.classList.remove('btn-success');
-                            button.classList.add('btn-outline-primary');
-                            button.disabled = false;
-                        }, 2000);
-                    },
-                    function(error) {
-                        let errorMsg = 'Impossible d\'obtenir votre position.';
-
-                        switch(error.code) {
-                            case error.PERMISSION_DENIED:
-                                errorMsg = 'Vous avez refusé l\'accès à votre position. Veuillez autoriser la géolocalisation dans les paramètres de votre navigateur.';
-                                break;
-                            case error.POSITION_UNAVAILABLE:
-                                errorMsg = 'Votre position est actuellement indisponible.';
-                                break;
-                            case error.TIMEOUT:
-                                errorMsg = 'La demande de géolocalisation a expiré. Veuillez réessayer.';
-                                break;
-                        }
-
-                        alert(errorMsg);
-                        button.innerHTML = '<i class="ri-focus-3-line me-2"></i><span class="d-none d-sm-inline">Ma position actuelle</span><span class="d-inline d-sm-none">Ma position</span>';
-                        button.disabled = false;
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 15000,
-                        maximumAge: 0
-                    }
-                );
-            } else {
-                alert('La géolocalisation n\'est pas supportée par votre navigateur.');
-            }
-        });
-    }
-
-    // Bouton "Confirmer"
-    const confirmBtn = document.getElementById('confirmPositionBtn');
-
-    if (confirmBtn) {
-        const newConfirmBtn = confirmBtn.cloneNode(true);
-        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-
-        newConfirmBtn.addEventListener('click', function() {
-            if (!marker) return;
-
-            const position = marker.getPosition();
-            const geocoder = new google.maps.Geocoder();
-            const button = this;
-
-            button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirmation...';
-            button.disabled = true;
-
-            geocoder.geocode({ location: position }, function(results, status) {
-                if (status === 'OK' && results[0]) {
-                    const finalLocation = {
-                        adresse: results[0].formatted_address,
-                        adresse_name: results[0].name || results[0].address_components[0].long_name,
-                        latitude: position.lat(),
-                        longitude: position.lng()
-                    };
-
-                    // Envoyer au composant Livewire - MÉTHODE CORRIGÉE
-                    @this.call('confirmPosition', finalLocation);
-
-                    // Ou si emit ne marche pas, utilise cette alternative :
-                    // window.livewire.find('{{ $_instance->getId() }}').call('confirmPosition', finalLocation);
-                } else {
-                    alert('Erreur lors de la confirmation de la position. Veuillez réessayer.');
-                    button.innerHTML = '<i class="ri-check-line me-2"></i>Confirmer cette position';
-                    button.disabled = false;
-                }
+            navigator.geolocation.getCurrentPosition(pos => {
+                const position = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+                window.map.setCenter(position);
+                window.marker.setPosition(position);
+                updateAddress(position);
+                this.innerHTML = '<i class="ri-check-line me-2"></i>Position obtenue !';
+                this.disabled = false;
+            }, () => {
+                alert('Impossible d\'obtenir votre position');
+                this.innerHTML = '<i class="ri-focus-3-line me-2"></i>Ma position GPS';
+                this.disabled = false;
             });
-        });
-    }
-}
-</script>
-
-
-<style>
-/* Styles pour le modal et la carte */
-#map {
-    border-radius: 0;
-}
-
-.gm-style-iw {
-    border-radius: 8px !important;
-}
-
-.gm-style-iw-d {
-    overflow: hidden !important;
-}
-
-/* Animation d'entrée du modal */
-@keyframes modalFadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.position-fixed > div {
-    animation: modalFadeIn 0.3s ease-out;
-}
-</style>
-
-
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@20.0.4/build/js/intlTelInput.min.js"></script>
-<script>
-    const input = document.querySelector("#phone");
-
-    //je souhaite aussi augmenter la largeur de mon input
-    const iti = intlTelInput(input, {
-        separateDialCode: true,
-        initialCountry: "auto",
-        geoIpLookup: callback => {
-            fetch("https://ipapi.co/json")
-                .then(res => res.json())
-                .then(data => callback(data.country_code))
-                .catch(() => callback("ci"));
-        },
-        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@20.0.4/build/js/utils.js"
+        }
     });
 
-    // Fonction pour récupérer le dial code et le numéro
-    function getDialCode() {
-        const countryData = iti.getSelectedCountryData();
-        const phoneNumber = input.value; // Récupère la valeur actuelle du champ input
-    }
+    document.getElementById('confirmPositionBtn')?.addEventListener('click', function() {
+        const position = window.marker.getPosition();
+        const geocoder = new google.maps.Geocoder();
 
-    function sendPhoneData() {
-        var phoneNumber = iti.getNumber();
-        @this.set('contact_livraison',phoneNumber);
-        @this.set('dialCode', iti.getSelectedCountryData().dialCode);
+        this.disabled = true;
 
-    }
+        geocoder.geocode({location: position}, (results, status) => {
+            if (status === 'OK' && results[0]) {
+                let commune = "";
+                results[0].address_components.forEach(component => {
+                    if (component.types.includes("sublocality") || component.types.includes("sublocality_level_1")) {
+                        commune = component.long_name;
+                    }
+                });
 
-    // Écouteur d’événement sur le champ input et sur le changement de pays
-    input.addEventListener("countrychange", getDialCode);
-    input.addEventListener("input", getDialCode);
+                const locationData = {
+                    adresse: results[0].formatted_address,
+                    latitude: position.lat(),
+                    longitude: position.lng(),
+                    adresse_name: results[0].name || results[0].address_components[0]?.long_name || ''
+                };
+
+                @this.call('confirmPosition', locationData);
+
+                if (commune) {
+                    @this.set('select_commune', commune);
+                }
+            }
+        });
+    });
+}
 </script>
 
-
-
+<style>
+.border-dashed {
+    border: 2px dashed #dee2e6;
+}
+.form-switch-lg .form-check-input {
+    width: 3rem;
+    height: 1.5rem;
+}
+.btn-check:checked + .btn-outline-primary,
+.btn-check:checked + .btn-outline-danger {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+</style>
 @endpush

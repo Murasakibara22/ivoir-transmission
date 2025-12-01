@@ -61,6 +61,8 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js')}}"></script>
     <![endif]-->
 
+    <script src="https://t.contentsquare.net/uxa/1bbd71817bee5.js"></script>
+
 
 </head>
 

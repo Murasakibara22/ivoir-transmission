@@ -25,18 +25,21 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class Makereservation2 extends Component
 {
-
     use UtilsSweetAlert, WithFileUploads;
 
+    // Gestion des steps
+    public $currentStep = 1;
+    public $completedSteps = [];
 
-    public $adresse_livraison, $date_rdv, $time_rdv, $phone, $location, $detail_rdv, $categorie;
+    // Step 1: Informations sur le rendez-vous
+    public $adresse_livraison, $date_rdv, $time_rdv, $location, $detail_rdv, $categorie;
     public $montant_service = 50000;
-    public $list_service_select ;
+    public $list_service_select;
     public $select_service = [];
-
-    public $select_commune ;
-    public $showCommune = false ;
+    public $select_commune;
+    public $showCommune = false;
     public $joursAutorises = [];
+    public $required_service = [];
 
     // Modal position
     public $showPositionModal = false;
@@ -44,38 +47,154 @@ class Makereservation2 extends Component
     public $tempLocation = null;
     public $confirmedPosition = false;
 
-    //Vehicule
-    public $select_marque, $select_type , $detail_vehicule , $chassis, $year_vehicule, $infos_supp_vehicules;
+    // Step 2: Véhicule
+    public $select_marque, $select_type, $detail_vehicule, $chassis, $year_vehicule, $infos_supp_vehicules;
     public $AsImages = [];
 
-    //Paiement
-    public $username , $contact_livraison, $email_livraison;
-
+    // Step 3: Paiement
+    public $username, $contact_livraison, $email_livraison;
     public $dialCode = "225";
 
-    public $required_service = [];
+    protected $listeners = ['confirmPosition'];
 
+    // ==================== GESTION DES STEPS ====================
 
+    public function goToStep($step)
+    {
+        // Validation avant de passer à l'étape suivante
+        if ($step > $this->currentStep) {
+            if (!$this->validateCurrentStep()) {
+                return;
+            }
+            // Marquer l'étape actuelle comme complétée
+            if (!in_array($this->currentStep, $this->completedSteps)) {
+                $this->completedSteps[] = $this->currentStep;
+            }
+        }
 
+        $this->currentStep = $step;
+        $this->dispatch('stepChanged', $step);
+    }
 
+    public function nextStep()
+    {
+        $this->goToStep($this->currentStep + 1);
+    }
+
+    public function previousStep()
+    {
+        if ($this->currentStep > 1) {
+            $this->currentStep--;
+            $this->dispatch('stepChanged', $this->currentStep);
+        }
+    }
+
+    private function validateCurrentStep()
+    {
+        switch ($this->currentStep) {
+            case 1:
+                return $this->validateStep1();
+            case 2:
+                return $this->validateStep2();
+            case 3:
+                return $this->validateStep3();
+            default:
+                return true;
+        }
+    }
+
+    private function validateStep1()
+    {
+        try {
+            $this->validate([
+                'adresse_livraison' => 'required',
+                'date_rdv' => 'required',
+                'time_rdv' => 'required',
+                'select_commune' => 'required',
+            ], [
+                'adresse_livraison.required' => 'L\'adresse est obligatoire',
+                'date_rdv.required' => 'La date est obligatoire',
+                'time_rdv.required' => 'L\'heure est obligatoire',
+                'select_commune.required' => 'La commune est obligatoire',
+            ]);
+            return true;
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->send_event_at_sweetAlerte(
+                'Informations incomplètes',
+                'Veuillez remplir tous les champs obligatoires',
+                'warning'
+            );
+            throw $e;
+        }
+    }
+
+    private function validateStep2()
+    {
+        try {
+            $this->validate([
+                'chassis' => 'required',
+            ], [
+                'chassis.required' => 'Le numéro de châssis est obligatoire',
+            ]);
+
+            // Si pas de marque et type sélectionnés, détails requis
+            if ($this->select_marque == null && $this->select_type == null) {
+                $this->validate([
+                    'detail_vehicule' => 'required',
+                ], [
+                    'detail_vehicule.required' => 'Veuillez renseigner les détails du véhicule',
+                ]);
+            }
+            return true;
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->send_event_at_sweetAlerte(
+                'Informations véhicule incomplètes',
+                'Veuillez remplir tous les champs obligatoires',
+                'warning'
+            );
+            throw $e;
+        }
+    }
+
+    private function validateStep3()
+    {
+        try {
+            $this->validate([
+                'contact_livraison' => 'required|numeric|min:8',
+            ], [
+                'contact_livraison.required' => 'Le contact est obligatoire',
+                'contact_livraison.min' => 'Le contact doit contenir au moins 8 chiffres',
+                'contact_livraison.numeric' => 'Le contact doit être numérique',
+            ]);
+            return true;
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->send_event_at_sweetAlerte(
+                'Informations paiement incomplètes',
+                'Veuillez renseigner un numéro de téléphone valide',
+                'warning'
+            );
+            throw $e;
+        }
+    }
+
+    // ==================== LOGIQUE MÉTIER (inchangée) ====================
 
     public function updatedSelectCommune()
     {
-        if($this->select_commune == null){
+        if ($this->select_commune == null) {
             $this->joursAutorises = [];
             $this->send_event_at_sweetAlerte('Sélectionnez une commune !!', 'Veuillez choisir une commune dans la liste', 'info');
             $this->showCommune = true;
             return;
         }
 
-        $commune = Commune::where('nom',$this->select_commune)->first();
+        $commune = Commune::where('nom', $this->select_commune)->first();
 
         if (!$commune || !$commune->jours) {
             $this->joursAutorises = [];
             return;
         }
 
-        // Conversion sûre en tableau
         $joursBruts = is_string($commune->jours) ? json_decode($commune->jours, true) : $commune->jours;
 
         if (!is_array($joursBruts)) {
@@ -83,7 +202,6 @@ class Makereservation2 extends Component
             return;
         }
 
-        // Mapping des jours français vers les jours anglais de Carbon
         $joursMapping = [
             'lundi' => 'Monday',
             'mardi' => 'Tuesday',
@@ -94,7 +212,6 @@ class Makereservation2 extends Component
             'dimanche' => 'Sunday'
         ];
 
-        // Convertir les jours français en jours anglais pour Carbon
         $joursPermisEnglish = collect($joursBruts)
             ->map(fn($jour) => $joursMapping[strtolower($jour)] ?? null)
             ->filter()
@@ -102,14 +219,12 @@ class Makereservation2 extends Component
 
         $dates = [];
         $today = Carbon::today();
-        // Étendre sur 60 jours pour avoir plus d'options
         $endPeriod = Carbon::now()->addDays(60);
 
-        // Définir la locale française pour l'affichage
         Carbon::setLocale('fr');
 
         for ($date = $today->copy(); $date->lte($endPeriod); $date->addDay()) {
-            $jourEnCours = $date->format('l'); // Jour en anglais (Monday, Tuesday, etc.)
+            $jourEnCours = $date->format('l');
 
             if (in_array($jourEnCours, $joursPermisEnglish)) {
                 $dates[$date->format('Y-m-d')] = $date->isoFormat('dddd DD MMMM YYYY');
@@ -117,9 +232,9 @@ class Makereservation2 extends Component
         }
 
         $this->joursAutorises = $dates;
-        if($commune->frais_service == 0 || $commune->frais_service == null){
+        if ($commune->frais_service == 0 || $commune->frais_service == null) {
             $this->montant_service = 50000;
-        }else{
+        } else {
             $this->montant_service = $commune->frais_service;
         }
     }
@@ -132,186 +247,107 @@ class Makereservation2 extends Component
         $this->dispatch('openMapModal', location: $location);
     }
 
-protected $listeners = ['confirmPosition'];
-
-public function confirmPosition($location)
-{
-    // Ton code de traitement ici
-    $this->adresse_livraison = $location['adresse'];
-    $this->latitude = $location['latitude'];
-    $this->longitude = $location['longitude'];
-
-    // Fermer le modal
-    $this->showPositionModal = false;
-
-    // Émettre un événement de confirmation
-    $this->dispatch('positionConfirmed');
-}
+    public function confirmPosition($location)
+    {
+        $this->adresse_livraison = $location['adresse'];
+        $this->latitude = $location['latitude'];
+        $this->longitude = $location['longitude'];
+        $this->showPositionModal = false;
+        $this->dispatch('positionConfirmed');
+    }
 
     public function closePositionModal()
     {
         $this->showPositionModal = false;
-        // RETIRER TOUTE CETTE PARTIE :
-        // if (!$this->confirmedPosition) {
-        //     $this->adresse_livraison = '';
-        //     $this->location = null;
-        // }
     }
 
-   public function updatedCategorie()
-{
+    public function updatedCategorie()
+    {
+        $categorie = CategorieService::where('libelle', $this->categorie)->first();
 
-    $categorie = CategorieService::where('libelle', $this->categorie)->first();
+        if (!$categorie || $categorie->services->count() == 0) {
+            $this->list_service_select = [];
+            $this->select_service = [];
+            $this->required_service = [];
+            $this->send_event_at_sweetAlerte("Aucun service", "Cette catégorie ne contient aucun service", "warning");
+            return;
+        }
 
-    if(!$categorie || $categorie->services->count() == 0){
-        $this->list_service_select = [];
+        $this->list_service_select = $categorie->services;
         $this->select_service = [];
         $this->required_service = [];
-        $this->send_event_at_sweetAlerte("Aucun service","Cette catégorie ne contient aucun service","warning");
-        return;
+
+        switch ($categorie->libelle) {
+            case "VIDANGE MOTEUR":
+                $this->required_service = ['Huile de moteur', 'Filtre à huile'];
+                break;
+            case "DIAGNOSTIC ÉLECTRIQUE":
+                $this->required_service = ['Diagnostic batterie'];
+                break;
+            case "VIDANGE DE BOÎTE":
+                $this->required_service = ['Filtre de boîte'];
+                break;
+            default:
+                $this->required_service = [];
+                break;
+        }
+
+        $this->select_service = $this->required_service;
     }
 
-    $this->list_service_select = $categorie->services;
+    public function updatedChassis()
+    {
+        if (strlen($this->chassis) > 9 || strlen($this->chassis) < 17) {
+            $vehicule = $this->decodeChassis($this->chassis);
 
-    // reset avant d'appliquer les nouveaux
-    $this->select_service = [];
-    $this->required_service = [];
-
-    switch ($categorie->libelle) {
-        case "VIDANGE MOTEUR":
-            $this->required_service = ['Huile de moteur', 'Filtre à huile'];
-            break;
-
-        case "DIAGNOSTIC ÉLECTRIQUE":
-            $this->required_service = ['Diagnostic batterie'];
-            break;
-
-        case "VIDANGE DE BOÎTE":
-            $this->required_service = ['Filtre de boîte'];
-            break;
-
-        default:
-            $this->required_service = [];
-            break;
-    }
-
-    // Ajouter automatiquement les required dans la sélection
-    $this->select_service = $this->required_service;
-}
-
-
-    public function updatedChassis()  {
-
-        if(strlen($this->chassis) > 9 || strlen($this->chassis) < 17){
-            $vehicule =  $this->decodeChassis($this->chassis);
-
-            if($vehicule == null){
-                    $this->detail_vehicule = "";
-                    $this->reset('select_marque', 'select_type', 'year_vehicule');
-                    return;
+            if ($vehicule == null) {
+                $this->detail_vehicule = "";
+                $this->reset('select_marque', 'select_type', 'year_vehicule');
+                return;
             }
 
             $this->select_marque = $vehicule['marque'];
             $this->select_type = $vehicule['type_vehicule'];
             $this->year_vehicule = $vehicule['annee'];
-
             $this->detail_vehicule = "";
-            $this->infos_supp_vehicules = " Marque : ". $vehicule['marque'] . ", Type : ". $vehicule['type_vehicule'] . ", Annee : ". $vehicule['annee'].", Modèle : ". $vehicule['modele'].", Carburant : ". $vehicule['carburant'];
-            // $this->detail_vehicule = $this->detail_vehicule ."( ".$description . " )" ;
+            $this->infos_supp_vehicules = " Marque : " . $vehicule['marque'] . ", Type : " . $vehicule['type_vehicule'] . ", Année : " . $vehicule['annee'] . ", Modèle : " . $vehicule['modele'] . ", Carburant : " . $vehicule['carburant'];
         }
-
     }
 
-
-    public function SubmitRendezVous(){
-        $this->validate([
-            'adresse_livraison' => 'required',
-            'date_rdv' => 'required',
-            'time_rdv' => 'required',
-            'chassis' => 'required',
-            'contact_livraison' => 'required|numeric|min:8',
-            'select_commune' => 'required',
-        ],[
-            'select_service.required' => 'Le service est obligatoire',
-            'adresse_livraison.required' => 'L\'adresse est obligatoire',
-            'date_rdv.required' => 'La date est obligatoire',
-            'montant_service.required' => 'Le montant est obligatoire',
-            'montant_service.min' => 'Le montant doit etre superieur ou egal a 10000',
-            'contact_livraison.required' => 'Le contact est obligatoire',
-            'contact_livraison.min' => 'Le contact doit etre superieur ou egal a 8',
-            'contact_livraison.numeric' => 'Le contact doit etre numerique',
-            'chassis.required' => 'Le chassis est obligatoire',
-            'select_commune.required' => 'La commune est obligatoire',
-            'select_commune.exists' => 'La commune n\'existe pas',
-            'time_rdv.required' => 'L\'heure est obligatoire',
-        ]);
-
-
-        // if not selected marque and type vehicule validate detail_vehicule required
-        if($this->select_marque == null && $this->select_type == null){
-            $this->validate([
-                'detail_vehicule' => 'required',
-            ]);
+    public function SubmitRendezVous()
+    {
+        // Validation finale de l'étape 3
+        if (!$this->validateStep3()) {
+            return;
         }
 
-        $description = $this->detail_vehicule." ".$this->detail_rdv;
+        $description = $this->detail_vehicule . " " . $this->detail_rdv;
 
-        //if selected marque, verif if marque exist on the model Marque
-        // if($this->select_marque != null){
-        //     $marque = Marque::where('id', $this->select_marque)->first();
-        //     if($marque == null){
-        //         $this->validate([
-        //             'select_marque' => 'required',
-        //         ]);
-        //     }
-        //     $description = $description.", Marquue: ".$marque->libelle;
-        // }
-
-        //if selected type, verif if type exist on the model TypeVehicule
-        // if($this->select_type != null){
-        //     $type = TypeVehicule::where('id', $this->select_type)->first();
-        //     if($type == null){
-        //         $this->validate([
-        //             'select_type' => 'required',
-        //         ]);
-        //     }
-        //     $description = $description.", Type: ".$type->libelle;
-        // }
-
-        if(auth()->check() == false){
+        if (auth()->check() == false) {
             $this->loginUser();
         }
-
-        //if select_service is Autres, validate detail_rdv required
-        // if($this->select_service == "Autres"){
-        //     $this->validate([
-        //         'detail_rdv' => 'required',
-        //     ]);
-        // }
-
 
         $reservation = new Reservation();
         $reservation->montant = $this->montant_service;
         $reservation->chassis = $this->chassis;
-        $reservation->description = $description."( ".$this->infos_supp_vehicules." )";
+        $reservation->description = $description . "( " . $this->infos_supp_vehicules . " )";
         $reservation->adresse_name = $this->adresse_livraison;
         $reservation->location = $this->location;
         $reservation->date_debut = Carbon::parse($this->date_rdv . ' ' . $this->time_rdv);
         $reservation->user_id = auth()->user()->id;
-        $reservation->name_prestataire =  auth()->user()->username ?? null;
-        $reservation->service_id =  null;
+        $reservation->name_prestataire = auth()->user()->username ?? null;
+        $reservation->service_id = null;
         $reservation->category = $this->categorie ?? null;
         $reservation->outils = json_encode($this->select_service);
         $reservation->slug = generateSlug('Reservation', $this->adresse_livraison);
 
-
-        if($this->AsImages){
+        if ($this->AsImages) {
             $table_img = [];
             foreach ($this->AsImages as $key => $value) {
                 $img = $value;
-                $messi = md5($img->getClientOriginalExtension().time().$value).".".$img->getClientOriginalExtension();
+                $messi = md5($img->getClientOriginalExtension() . time() . $value) . "." . $img->getClientOriginalExtension();
 
-                $uploadedImage = Cloudinary::upload($img->getRealPath(),[
+                $uploadedImage = Cloudinary::upload($img->getRealPath(), [
                     'folder' => 'ivoireTransmission',
                     'transformation' => [
                         'width' => 900,
@@ -321,45 +357,34 @@ public function confirmPosition($location)
                 ]);
 
                 $publicId = $uploadedImage->getPublicId();
-
                 $imageUrl = Cloudinary::getUrl($publicId);
-
-                $table_img[]  = $imageUrl;
-
+                $table_img[] = $imageUrl;
             }
-         $reservation->images = json_encode($table_img);
+            $reservation->images = json_encode($table_img);
         }
         $reservation->commune = $this->select_commune;
-        // dd($reservation);
         $reservation->save();
 
-
-        $message = "Un rendez-vous viens d'être pris par le numero ".auth()->user()->phone_number." pour le : ".$this->date_rdv." a ". $this->time_rdv." et elle est en attente de paiement";
+        $message = "Un rendez-vous viens d'être pris par le numero " . auth()->user()->phone_number . " pour le : " . $this->date_rdv . " a " . $this->time_rdv . " et elle est en attente de paiement";
         NotificationAdmin::create([
-            'title' => 'Nouvelle réservation en attente',
+            'title' => 'Nouvelle réservation en attente',
             'subtitle' => $message,
             'type' => 'reservation',
             'meta_data_id' => $reservation->slug,
             'meta_data_type' => Reservation::class,
         ]);
 
-        User::where('role_id','!=',Role::where('libelle','Utilisateur')->first()->id)->get()->each(function ($user) use ($reservation,$message) {
-
-            broadcast(new MessageSend($user->id,$message,$reservation->slug));
+        User::where('role_id', '!=', Role::where('libelle', 'Utilisateur')->first()->id)->get()->each(function ($user) use ($reservation, $message) {
+            broadcast(new MessageSend($user->id, $message, $reservation->slug));
         });
 
         $url_payment = PaymentService::store($reservation->id, $this->contact_livraison);
         return redirect()->to($url_payment);
-
-
-
-        // $this->send_event_at_sweet_alert_not_timer('Réservation enregistrée', 'Votre réservation a été enregistrée avec succès, vous recevrez un SMS et un lien de paiement pour effectuer le paiement.', 'success');
-        // $this->reset();
     }
 
-    function loginUser()  {
-
-        $contact = "+".$this->dialCode .$this->contact_livraison;
+    function loginUser()
+    {
+        $contact = "+" . $this->dialCode . $this->contact_livraison;
 
         $user = User::where('phone', $contact)->first();
         if (!$user) {
@@ -380,62 +405,45 @@ public function confirmPosition($location)
         Auth::login($user);
     }
 
-
-
     public function decodeChassis($vin)
-{
-    // Validation du numéro de chassis (VIN)
-    if (strlen($vin) < 10 || strlen($vin) > 17) {
-
-            // $this->send_event_at_toast('Le numéro de châssis (VIN) doit contenir entre 10 et 17 caractères.', 'warning', 'bottom-right');
+    {
+        if (strlen($vin) < 10 || strlen($vin) > 17) {
             return;
-    }
-
-    // Appel de l'API gratuite de VINCheck.info
-    $url = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVin/{$vin}?format=json";
-    $response = Http::get($url);
-
-    if ($response->failed()) {
-
-    //   $this->send_event_at_toast('Erreur lors de la récupération des informations du véhicule.', 'error', 'bottom-right');
-      return;
-
-    }
-
-    // Traitement de la réponse
-    $data = $response->json();
-    $decodedInfo = collect($data['Results'])->mapWithKeys(function ($item) {
-        return [$item['Variable'] => $item['Value']];
-    });
-
-    // Extraction des informations clés
-    $vehicleInfo = [
-        'marque' => $decodedInfo->get('Make'),
-        'modele' => $decodedInfo->get('Model'),
-        'annee' => $decodedInfo->get('Model Year'),
-        'carburant' => $decodedInfo->get('Fuel Type - Primary'),
-        'type_vehicule' => $decodedInfo->get('Vehicle Type'),
-    ];
-
-
-
-    // Vérification si les informations sont disponibles
-    if (!$vehicleInfo['marque'] || !$vehicleInfo['modele'] || !$vehicleInfo['annee']) {
-
-    }else{
-        // Recherche de l'image du véhicule avec CarQuery API
-        $imageUrl = null;
-        $carQueryUrl = "https://www.carimagery.com/api.asmx/GetImageUrl?searchTerm={$vehicleInfo['marque']}+{$vehicleInfo['modele']}+{$vehicleInfo['annee']}";
-
-        $imageResponse = Http::get($carQueryUrl);
-        if ($imageResponse->successful() && $imageResponse->body()) {
-            $imageUrl = trim(strip_tags($imageResponse->body())); // Extraction de l'URL de l'image
         }
+
+        $url = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVin/{$vin}?format=json";
+        $response = Http::get($url);
+
+        if ($response->failed()) {
+            return;
+        }
+
+        $data = $response->json();
+        $decodedInfo = collect($data['Results'])->mapWithKeys(function ($item) {
+            return [$item['Variable'] => $item['Value']];
+        });
+
+        $vehicleInfo = [
+            'marque' => $decodedInfo->get('Make'),
+            'modele' => $decodedInfo->get('Model'),
+            'annee' => $decodedInfo->get('Model Year'),
+            'carburant' => $decodedInfo->get('Fuel Type - Primary'),
+            'type_vehicule' => $decodedInfo->get('Vehicle Type'),
+        ];
+
+        if (!$vehicleInfo['marque'] || !$vehicleInfo['modele'] || !$vehicleInfo['annee']) {
+        } else {
+            $imageUrl = null;
+            $carQueryUrl = "https://www.carimagery.com/api.asmx/GetImageUrl?searchTerm={$vehicleInfo['marque']}+{$vehicleInfo['modele']}+{$vehicleInfo['annee']}";
+
+            $imageResponse = Http::get($carQueryUrl);
+            if ($imageResponse->successful() && $imageResponse->body()) {
+                $imageUrl = trim(strip_tags($imageResponse->body()));
+            }
+        }
+
+        return array_merge($vehicleInfo, ['image' => $imageUrl ?? null]);
     }
-
-    return  array_merge($vehicleInfo, ['image' => $imageUrl ?? null]);
-}
-
 
     public function render()
     {

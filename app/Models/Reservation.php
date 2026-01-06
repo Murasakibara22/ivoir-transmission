@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Service;
 use App\Models\Paiement;
+use App\Models\Entreprise;
 use App\Models\CategorieService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,6 +45,14 @@ class Reservation extends Model
         'slug',
         'name_prestataire',
         'outils',
+
+        //new champs
+        'vehicule_id',
+        'type_maintenance',
+        'cout_reel',
+        'notes_mecanicien',
+        'rappel_envoye',
+        'entreprise_id',
     ];
 
     protected $casts = [
@@ -61,6 +70,9 @@ class Reservation extends Model
         return $this->hasMany(Paiement::class);
     }
 
+    public function entreprise()  {
+        return $this->belongsTo(Entreprise::class);
+    }
     // public function categorieService()  {
     //     $this->belongsTo(CategorieService::class, 'category_id');
     // }

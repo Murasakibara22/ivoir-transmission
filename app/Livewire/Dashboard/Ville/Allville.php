@@ -264,10 +264,14 @@ class Allville extends Component
         // Tous les jours de la semaine
         $tousLesJours = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
 
-        // Récupère les jours déjà utilisés pour cette ville
+        // ✅ Permettre la sélection de tous les jours pour toutes les communes
+        $this->joursDisponibles = $tousLesJours;
+
+        // Ancien code qui filtrait les jours déjà utilisés :
+        /*
         $joursOccupes = Commune::where('ville_id', $this->ville_id)
-            ->pluck('jours') // liste des champs JSON
-            ->filter() // évite les nulls
+            ->pluck('jours')
+            ->filter()
             ->map(function ($joursJson) {
                 return json_decode($joursJson, true);
             })
@@ -275,14 +279,9 @@ class Allville extends Component
             ->unique()
             ->values()
             ->toArray();
-
-        // Filtrer les jours encore disponibles
+        
         $this->joursDisponibles = array_values(array_diff($tousLesJours, $joursOccupes));
-
-        // si je veux qu'on puisse select tous les jours peu importe si ça deja été select :
-
-        // ✅ Plus besoin de filtrer selon les communes déjà enregistrées
-        // $this->joursDisponibles = $tousLesJours;
+        */
     }
 
 

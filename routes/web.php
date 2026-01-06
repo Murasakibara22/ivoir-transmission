@@ -3,6 +3,7 @@
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Paiement;
+use App\Models\Entreprise;
 use App\Events\MessageSend;
 use App\Models\Reservation;
 use App\Events\TestNotification;
@@ -22,8 +23,32 @@ Route::get('connexion', function() {
     return view('auth.login');
 })->name('login');
 
+Route::get('connexion/entreprise', function() {
+    if(auth()->guard('entreprise')->check())  return redirect('/entreprise/dashboard');
+
+    return view('Entreprise.auth.login');
+})->name('login.entreprise');
+
+Route::view('success-transaction', 'Frontend.pages.transaction-success')->name('success-transaction');
+
+
+
+    Route::group(['middleware' => 'verifyEntreprise'], function () {
+        Route::prefix('entreprise')->as('entreprise.')->group(function () {
+
+            Route::view('dashboard','Entreprise.dashboard.index')->name('dashboard.index');
+            Route::view('vehicules','Entreprise.dashboard.vehicules.index')->name('vehicules.index');
+            Route::view('reports','Entreprise.dashboard.reports.index')->name('reports.index');
+            Route::view('maintenance','Entreprise.dashboard.maintenance.index')->name('maintenance.index');
+            Route::view('contrats','Entreprise.dashboard.contrats.index')->name('contrats.index');
+            Route::view('mon-profile','Entreprise.dashboard.profile.index')->name('profile.index');
+
+        });
+    });
+
 
 Route::group(['middleware' => 'auth'], function () {
+
     Route::group(['middleware' => 'verifyAdmin'], function () {
         Route::prefix('dashboard')->as('dashboard.')->group(function () {
             //tableau de bord de l'admin
@@ -66,6 +91,22 @@ Route::group(['middleware' => 'auth'], function () {
                 return view('Dashboard.pages.paiement.show', compact('paiement'));
              })->name('paiements.show');
             Route::view('avis','Dashboard.pages.avis.index')->name('avis');
+            Route::view('entreprises/partenaires','Dashboard.pages.entreprise.index')->name('entreprise');
+            Route::get('entreprises/partenaires/show/{slug}', function ($slug) {
+                $entreprise = Entreprise::where('slug',$slug)->first();
+                if(!$entreprise){
+                    return redirect()->back();
+                }
+
+                return view('Dashboard.pages.entreprise.show', compact('entreprise'));
+            })->name('entreprise.show');
+
+            Route::view('vehicules','Dashboard.pages.vehicules.index')->name('vehicules');
+            Route::view('contrats','Dashboard.pages.contrats.index')->name('contrats');
+            Route::view('entretiens','Dashboard.pages.entretiens.index')->name('entretiens');
+            Route::view('factures','Dashboard.pages.factures.index')->name('factures');
+
+
             Route::view('etat_financiers','Dashboard.pages.finance.index')->name('finance');
             Route::view('services','Dashboard.pages.service.index')->name('services');
             Route::view('ville-communes','Dashboard.pages.Ville.index')->name('villes');
@@ -78,7 +119,7 @@ Route::group(['middleware' => 'auth'], function () {
                     return redirect()->back();
                 }
 
-                return view('Dashboard.pages.reservation.show', compact('reservation'));
+                return view('Dashboard.pages.Reservation.show', compact('reservation'));
              })->name('reservations.show');
              Route::get('reservations/invoice/{slug}',  function ($slug) {
 
@@ -121,6 +162,14 @@ Route::get('/broadcast', function () {
 
 
 Route::get('/deconnexion', function () {
+
+    if(auth()->guard('entreprise')->check()){
+        auth()->guard('entreprise')->logout();
+        session()->invalidate();
+        return redirect('/');
+    }
+
     auth()->logout();
+    session()->invalidate();
     return redirect('/');
 })->name('deconnexion');

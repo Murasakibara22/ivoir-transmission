@@ -346,7 +346,7 @@
                                     <td>
                                         <div class="d-flex gap-2 align-items-center">
                                             <div class="flex-shrink-0">
-                                                <img src="{{ json_decode(App\Models\Service::find($item->id)->images)[0] }}" alt="" class="avatar-xs rounded-2" />
+                                                <img src="{{  App\Models\Service::find($item->id)->images ?  json_decode(App\Models\Service::find($item->id)->images)[0] : '-' }}" alt="" class="avatar-xs rounded-2" />
                                             </div>
                                             <div class="flex-grow-1">
                                                 {{ str::words($item->libelle, 3) }}

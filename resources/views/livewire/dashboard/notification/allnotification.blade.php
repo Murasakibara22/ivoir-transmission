@@ -161,8 +161,8 @@
 
                                 <br />
                                 <br />
-                                @if($selected_notification->meta_data_id)
-                                <a href="{{ route('admin.reservations.show', App\Models\Reservation::find($selected_notification->meta_data_id)->slug) }}" class="link-success">voir la réservation</a>
+                                @if($selected_notification->meta_data_id && $selected_notification->meta_data_type == 'App\Models\Reservation')
+                                <a href="javascript:void(0);" wire:click="viewReservation({{ $selected_notification }})" class="link-success">voir la réservation</a>
                                 @endif
                             </p>
                         </div>

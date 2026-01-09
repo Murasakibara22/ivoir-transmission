@@ -234,17 +234,18 @@
                                     </div>
                                 </div><!--end col-->
 
-                                {{-- <div class="col-lg-6 col-12">
+                                <div class="col-lg-12 col-12">
                                     <div class="mb-3">
-                                        <label class="form-label text-start">Frais de service <span class="text-muted">( FACULTATIF)</span></label>
-                                        <input type="number" class="form-control" wire:model='price' placeholder="Veuillez renseigner le montant ">
-                                        @error('price')
+                                        <label class="form-label text-start">Services Obligatoire <span class="text-muted">( FACULTATIF )</span></label>
+                                        <input type="checkbox" class="form-check-input" wire:model='obligatoire' >
+                                         ️  Cochez si ce service est obligatoire pour la réservation
+                                        @error('obligatoire')
                                         <span class="feedback-text">
                                             {{ $message }}
                                         </span>
                                     @enderror
                                     </div>
-                                </div><!--end col--> --}}
+                                </div><!--end col-->
 
 
 
@@ -372,17 +373,18 @@
                                 </div><!--end col-->
 
 
-                                {{-- <div class="col-lg-6 col-12">
+                                <div class="col-lg-12 col-12">
                                     <div class="mb-3">
-                                        <label class="form-label text-start">Frais de service <span class="text-muted">( FACULTATIF)</span></label>
-                                        <input type="number" class="form-control" wire:model='price' placeholder="Veuillez renseigner le montant ">
-                                        @error('price')
+                                        <label class="form-label text-start">Services Obligatoire <span class="text-muted">( FACULTATIF )</span></label>
+                                        <input type="checkbox" class="form-check-input" wire:model='obligatoire' >
+                                         ️  Cochez si ce service est obligatoire pour la réservation
+                                        @error('obligatoire')
                                         <span class="feedback-text">
                                             {{ $message }}
                                         </span>
                                     @enderror
                                     </div>
-                                </div><!--end col--> --}}
+                                </div><!--end col-->
 
 
                                 {{-- <div class="col-12" wire:ignore>

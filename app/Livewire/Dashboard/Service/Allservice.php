@@ -25,7 +25,7 @@ class Allservice extends Component
 
     public $list_service;
 
-    public $libelle, $type ,$avantages_list, $price, $currency_code, $Aslogo, $category_id, $description, $start_price, $frais_service;
+    public $libelle, $type ,$avantages_list, $price, $obligatoire, $currency_code, $Aslogo, $category_id, $description, $start_price, $frais_service;
     public $AsImages = [];
     public $inputsAvantages ;
     public $images_list ;
@@ -98,6 +98,7 @@ class Allservice extends Component
         $service->description = $this->description;
 
         $service->categorie_service_id = $this->category_id ?? NULL;
+        $service->obligatoire = $this->obligatoire ?? false;
         $service->slug = generateSlug('Service' , $service->libelle);
         $service->save();
 
@@ -117,6 +118,7 @@ class Allservice extends Component
         $this->libelle = $service->libelle;
         $this->category_id = $service->categorie_service_id;
         $this->price = $service->frais_service;
+        $this->obligatoire = $service->obligatoire;
         $this->description = $service->description;
 
 
@@ -166,6 +168,7 @@ class Allservice extends Component
         $service->description = $this->description;
 
         $service->categorie_service_id = $this->category_id ?? NULL;
+        $service->obligatoire = $this->obligatoire ?? false;
         $service->slug = generateSlug('Service' , $service->libelle);
         $service->update();
 
@@ -324,7 +327,7 @@ class Allservice extends Component
 
     //Search
     function searchService() {
-        $this->list_service = Service::where('libelle', 'like', '%' . $this->search . '%')->Orwhere('type', 'like', '%' . $this->search . '%')->get();
+        $this->list_service = Service::where('libelle', 'like', '%' . $this->search . '%')->Orwhere('libelle', 'like', '%' . $this->search . '%')->get();
     }
 
 

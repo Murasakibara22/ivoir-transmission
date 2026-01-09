@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::get('/princing', function () {
     return view('Dashboard.pages.princing');
 });
@@ -31,6 +32,11 @@ Route::get('connexion/entreprise', function() {
 
 Route::view('success-transaction', 'Frontend.pages.transaction-success')->name('success-transaction');
 
+
+    Route::prefix('espace_user')->as('espace_user.')->group(function () {
+        Route::view('home', 'Frontend.pages.dashboard.pages.home')->name('home');
+        Route::view('rdv', 'Frontend.pages.dashboard.pages.rdv')->name('rdv');
+    });
 
 
     Route::group(['middleware' => 'verifyEntreprise'], function () {

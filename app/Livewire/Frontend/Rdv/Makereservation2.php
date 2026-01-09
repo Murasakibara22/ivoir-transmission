@@ -109,13 +109,16 @@ class Makereservation2 extends Component
             $this->validate([
                 'adresse_livraison' => 'required',
                 'date_rdv' => 'required',
-                'time_rdv' => 'required',
+                //Le temps doit etre entre 8h et 18h
+                'time_rdv' => 'required|date_format:H:i|after_or_equal:08:00|before_or_equal:18:00',
                 'select_commune' => 'required',
             ], [
                 'adresse_livraison.required' => 'L\'adresse est obligatoire',
                 'date_rdv.required' => 'La date est obligatoire',
                 'time_rdv.required' => 'L\'heure est obligatoire',
                 'select_commune.required' => 'La commune est obligatoire',
+                'time_rdv.after_or_equal' => 'L\'heure doit être après 08:00',
+                'time_rdv.before_or_equal' => 'L\'heure doit être avant 18:00',
             ]);
             return true;
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -277,20 +280,7 @@ class Makereservation2 extends Component
         $this->select_service = [];
         $this->required_service = [];
 
-        switch ($categorie->libelle) {
-            case "VIDANGE MOTEUR":
-                $this->required_service = ['Huile de moteur', 'Filtre à huile'];
-                break;
-            case "DIAGNOSTIC ÉLECTRIQUE":
-                $this->required_service = ['Diagnostic batterie'];
-                break;
-            case "VIDANGE DE BOÎTE":
-                $this->required_service = ['Filtre de boîte'];
-                break;
-            default:
-                $this->required_service = [];
-                break;
-        }
+        $this->required_service = Service::where('categorie_service_id', $categorie->id )->where('obligatoire', true)->pluck('libelle')->toArray();
 
         $this->select_service = $this->required_service;
     }
@@ -336,10 +326,15 @@ class Makereservation2 extends Component
         $reservation->date_debut = Carbon::parse($this->date_rdv . ' ' . $this->time_rdv);
         $reservation->user_id = auth()->user()->id;
         $reservation->name_prestataire = auth()->user()->username ?? null;
-        $reservation->service_id = null;
         $reservation->category = $this->categorie ?? null;
+        $reservation->categorie_service_id = CategorieService::where('libelle', $this->categorie)->first()->id ?? null;
+        $reservation->services_ids = array_map(function ($serviceLibelle) {
+            $service = Service::where('libelle', $serviceLibelle)->first();
+            return $service ? $service->id : null;
+        }, $this->select_service);
         $reservation->outils = json_encode($this->select_service);
         $reservation->slug = generateSlug('Reservation', $this->adresse_livraison);
+
 
         if ($this->AsImages) {
             $table_img = [];

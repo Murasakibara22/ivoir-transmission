@@ -269,7 +269,8 @@
                                                 Heure du rendez-vous <span class="text-danger">*</span>
                                             </label>
                                             <div class="mb-3">
-                                                <input type="time" wire:model="time_rdv" class="form-control">
+                                                {{-- Le temps doit etre entre 8h et 18h --}}
+                                                <input type="time" min="08:00" max="18:00" wire:model="time_rdv" class="form-control">
                                             </div>
                                             @error('time_rdv') <span class="text-danger">{{ $message }}</span> @enderror
                                         </div>

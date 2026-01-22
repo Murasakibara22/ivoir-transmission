@@ -36,6 +36,9 @@ Route::view('success-transaction', 'Frontend.pages.transaction-success')->name('
     Route::prefix('espace_user')->as('espace_user.')->group(function () {
         Route::view('home', 'Frontend.pages.dashboard.pages.home')->name('home');
         Route::view('rdv', 'Frontend.pages.dashboard.pages.rdv')->name('rdv');
+        Route::view('reservation', 'Frontend.pages.dashboard.pages.reservation')->name('reservation');
+        Route::view('paiement', 'Frontend.pages.dashboard.pages.paiement')->name('paiement');
+        Route::view('profile', 'Frontend.pages.dashboard.pages.profile')->name('profile');
     });
 
 
